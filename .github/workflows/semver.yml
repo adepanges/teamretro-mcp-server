@@ -29,7 +29,6 @@ jobs:
         uses: paulhatch/semantic-version@v5.4.0
         with:
           tag_prefix: "v"
-          change_path: "src/"
           enable_prerelease_mode: true
         
       # - name: 🔖 Create Git Tag
@@ -38,4 +37,4 @@ jobs:
       #     tag: ${{ steps.version.outputs.version }}
       
       - name: "Created tag"
-        run: echo "tag ${{ steps.version.outputs.version }}"
+        run: echo "tag ${{ steps.version.outputs.version_tag }}"
