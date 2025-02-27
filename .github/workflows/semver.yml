@@ -1,4 +1,4 @@
-name: Release Versioning
+name: Semantic Versioning
 on:
   # push:
   #   branches:
