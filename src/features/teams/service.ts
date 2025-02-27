@@ -21,7 +21,7 @@ class TeamsService extends TeamRetroService {
     });
 
     return this.get<ListApiResponse<Team>>(
-      `/v1/teams${searchString}`,
+      `/v1/teams?${searchString}`,
       { method: 'GET' }
     );
   }
@@ -36,6 +36,23 @@ class TeamsService extends TeamRetroService {
     return this.get<SingleApiResponse<Team>>(
       `/v1/teams/${teamId}`,
       { method: 'GET' }
+    );
+  }
+
+  /**
+   * Update an existing team
+   * @param teamId The ID of the team to update
+   * @param data Team data to update
+   * @returns Updated team object
+   * @throws ErrorMCP if team not found or validation fails
+   */
+  async updateTeam(
+    teamId: string,
+    data: Partial<Pick<Team, 'name' | 'tags' | 'members'>>
+  ): Promise<SingleApiResponse<Team>> {
+    return this.patch<SingleApiResponse<Team>>(
+      `/v1/teams/${teamId}`,
+      data
     );
   }
 }
