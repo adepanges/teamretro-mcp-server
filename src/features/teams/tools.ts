@@ -1,5 +1,6 @@
-import { teamsService } from './service.js';
+import { ErrorMCP } from '../../utils/error.js';
 import { createToolResponse } from '../../utils/tools.js';
+import { teamsService } from './service.js';
 
 /**
  * Tool configurations for Teams resource
@@ -70,6 +71,6 @@ export const handleTeamTool = async (toolName: string, request: any): Promise<an
       );
     }
     default:
-      throw new TeamRetroError('UNKNOWN_TOOL', 'TOOL_ERROR');
+      throw new ErrorMCP('UNKNOWN_TOOL', 'TOOL_ERROR');
   }
 };

@@ -2,15 +2,12 @@
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import {
-  CallToolRequestSchema,
-  ErrorCode,
-  ListResourcesRequestSchema,
-  ListResourceTemplatesRequestSchema,
-  ListToolsRequestSchema,
-  McpError,
-  ReadResourceRequestSchema,
+    CallToolRequestSchema, ErrorCode, ListResourcesRequestSchema,
+    ListResourceTemplatesRequestSchema, ListToolsRequestSchema, McpError, ReadResourceRequestSchema
 } from '@modelcontextprotocol/sdk/types.js';
-import { teamTools, handleTeamTool } from './features/index.js';
+
+import { handleTeamTool, teamTools } from './features/index.js';
+import { ErrorMCP } from './utils/error.js';
 
 class TeamRetroMCPServer {
   private server: Server;
@@ -81,7 +78,7 @@ class TeamRetroMCPServer {
       try {
         return await handleTeamTool(request.params.name, request);
       } catch (error) {
-        if (error instanceof TeamRetroError) {
+        if (error instanceof ErrorMCP) {
           throw new McpError(ErrorCode.InternalError, error.message);
         }
         throw new McpError(

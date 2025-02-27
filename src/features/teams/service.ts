@@ -43,7 +43,7 @@ class TeamsService extends TeamRetroService {
    * Get a single team by ID
    * @param teamId The ID of the team to retrieve
    * @returns Single team object
-   * @throws TeamRetroError if team not found
+   * @throws ErrorMCP if team not found
    */
   async getTeam(teamId: string): Promise<SingleApiResponse<Team>> {
     return this.get<SingleApiResponse<Team>>(
