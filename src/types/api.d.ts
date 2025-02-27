@@ -26,7 +26,7 @@ declare global {
 
   interface ToolResponse<T = unknown> {
     content: ToolContent[];
-    error?: string;
+    isError?: boolean;
   }
 }
 
