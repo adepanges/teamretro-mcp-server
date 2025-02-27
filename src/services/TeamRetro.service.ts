@@ -1,7 +1,13 @@
+
 import { config } from '../config.js';
 import { ErrorMCP } from '../utils/error.js';
 
 export abstract class TeamRetroService {
+  /**
+   * Get authentication headers based on the auth type
+   * @returns Authentication headers
+   * @throws ErrorMCP on invalid auth type or missing credentials
+   */
   protected getAuthHeaders(): Record<string, string> {
     switch (config.auth.type) {
       case 'apiKey':

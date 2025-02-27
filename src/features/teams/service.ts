@@ -2,19 +2,6 @@ import { TeamRetroService } from '../../services/TeamRetro.service.js';
 import { createSearchParams } from '../../utils/url.js';
 
 class TeamsService extends TeamRetroService {
-  private static instance: TeamsService;
-
-  private constructor() {
-    super();
-  }
-
-  public static getInstance(): TeamsService {
-    if (!TeamsService.instance) {
-      TeamsService.instance = new TeamsService();
-    }
-    return TeamsService.instance;
-  }
-
   /**
    * List teams with optional filtering and pagination
    * @param params Optional parameters for filtering and pagination
@@ -53,5 +40,4 @@ class TeamsService extends TeamRetroService {
   }
 }
 
-// Export singleton instance
-export const teamsService = TeamsService.getInstance();
+export const teamsService = new TeamsService();
