@@ -105,5 +105,8 @@ Add to your Claude MCP settings (`cline_mcp_settings.json`):
 
 ## Available Tools
 
-### fetch_teams
-Get all teams from TeamRetro.
+### list_teams
+Get list teams from TeamRetro.
+
+### get_team
+Get team details from TeamRetro.
