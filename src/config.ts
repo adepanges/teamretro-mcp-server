@@ -1,19 +1,32 @@
-export const config: TeamRetroConfig = {
-  baseUrl: process.env.TEAMRETRO_BASE_URL ?? "",
-  auth: {
-    type: (process.env.TEAMRETRO_AUTH_TYPE as TeamRetroConfig['auth']['type']) ?? "apiKey",
-    apiKey: process.env.TEAMRETRO_API_KEY,
-    username: process.env.TEAMRETRO_USERNAME,
-    password: process.env.TEAMRETRO_PASSWORD,
-    token: process.env.TEAMRETRO_TOKEN,
-  },
-  responseFormat: (process.env.TEAMRETRO_RESPONSE_FORMAT as ResponseFormat) ?? 'simple'
-};
+import dotenv from 'dotenv';
+import env from 'env-var';
 
-// Validate configuration
-if (!config.baseUrl) {
-  throw new TeamRetroError('BASE_URL_REQUIRED', 'CONFIG_ERROR');
+// Load environment variables from .env file
+const result = dotenv.config();
+if (result.error) {
+  console.warn('Warning: .env file not found or invalid');
 }
+
+// Create env reader instance
+const envVars = env.from(process.env);
+
+export const config: TeamRetroConfig = {
+  baseUrl: envVars.get('TEAMRETRO_BASE_URL')
+    .default('https://api.teamretro.com')
+    .asString(),
+  auth: {
+    type: envVars.get('TEAMRETRO_AUTH_TYPE')
+      .default('apiKey')
+      .asEnum(['apiKey', 'basic', 'bearer']) as TeamRetroConfig['auth']['type'],
+    apiKey: envVars.get('TEAMRETRO_API_KEY').asString(),
+    username: envVars.get('TEAMRETRO_USERNAME').asString(),
+    password: envVars.get('TEAMRETRO_PASSWORD').asString(),
+    token: envVars.get('TEAMRETRO_TOKEN').asString(),
+  },
+  responseFormat: envVars.get('TEAMRETRO_RESPONSE_FORMAT')
+    .default('simple')
+    .asEnum(['simple', 'json']) as ResponseFormat
+};
 
 // Validate auth configuration based on type
 switch (config.auth.type) {
@@ -32,6 +45,4 @@ switch (config.auth.type) {
       throw new TeamRetroError('BEARER_TOKEN_REQUIRED', 'CONFIG_ERROR');
     }
     break;
-  default:
-    throw new TeamRetroError('INVALID_AUTH_TYPE', 'CONFIG_ERROR');
 }
