@@ -1,6 +1,8 @@
 import dotenv from 'dotenv';
 import env from 'env-var';
 
+import { ErrorMCP } from './utils/error.js';
+
 // Load environment variables from .env file
 const result = dotenv.config();
 if (result.error) {

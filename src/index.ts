@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import {
@@ -17,6 +17,12 @@ class TeamRetroMCPServer {
       {
         name: "teamretro-mcp-server",
         version: "1.0.0"
+      },
+      {
+        capabilities: {
+          tools: {},
+          resources: {}
+        }
       }
     );
 

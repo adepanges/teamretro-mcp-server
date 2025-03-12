@@ -7,17 +7,15 @@ const tools = {
   ...userTools,
 };
 
-const toolSchema = [
-  Object.entries(tools).map(([name, tool]) => ({
-    name,
-    description: tool.description,
-    inputSchema: {
-      type: "object",
-      properties: tool.schema,
-      required: extractSchemaRequirements(tool.schema).required,
-    },
-  })),
-];
+const toolSchema = Object.entries(tools).map(([name, tool]) => ({
+  name,
+  description: tool.description,
+  inputSchema: {
+    type: "object",
+    properties: tool.schema,
+    required: extractSchemaRequirements(tool.schema).required,
+  },
+}));
 
 const toolHandlers: {
   [name: string]: (args: any) => Promise<any>;
