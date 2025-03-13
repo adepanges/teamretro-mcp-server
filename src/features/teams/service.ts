@@ -55,6 +55,34 @@ class TeamsService extends TeamRetroService {
       data
     );
   }
+
+  /**
+   * Create a new team
+   * @param data Team data including name, optional tags and members
+   * @returns Created team object
+   * @throws ErrorMCP if validation fails
+   */
+  async createTeam(data: {
+    name: string;
+    tags?: string[];
+    members?: TeamMember[];
+  }): Promise<SingleApiResponse<Team>> {
+    return this.post<SingleApiResponse<Team>>('/v1/teams', data);
+  }
+
+  /**
+   * Delete an existing team
+   * @param teamId The ID of the team to delete
+   * @returns void
+   * @throws ErrorMCP if team not found
+   */
+  async deleteTeam(teamId: string): Promise<SingleApiResponse<Record<string, never>>> {
+    await this.delete<void>(`/v1/teams/${teamId}`);
+    return {
+      success: true,
+      data: {}
+    };
+  }
 }
 
 export const teamsService = new TeamsService();

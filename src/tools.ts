@@ -1,4 +1,5 @@
-import { extractSchemaRequirements } from "./utils/tools.js";
+import { zodToJsonSchema } from "zod-to-json-schema";
+
 import { teamTools } from "./features/teams/tools.js";
 import { userTools } from "./features/users/tools.js";
 
@@ -10,11 +11,7 @@ const tools = {
 const toolSchema = Object.entries(tools).map(([name, tool]) => ({
   name,
   description: tool.description,
-  inputSchema: {
-    type: "object",
-    properties: tool.schema,
-    required: extractSchemaRequirements(tool.schema).required,
-  },
+  inputSchema: zodToJsonSchema(tool.schema),
 }));
 
 const toolHandlers: {
@@ -22,9 +19,9 @@ const toolHandlers: {
 } = {};
 
 Object.entries(tools).forEach(([name, tool]) => {
-    toolHandlers[name] = async (args) => {
-        return tool.handler(args);
-    };
+  toolHandlers[name] = async (args) => {
+    return tool.handler(args);
+  };
 });
 
 export { toolSchema, toolHandlers };

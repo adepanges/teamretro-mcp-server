@@ -1,31 +1,5 @@
 import { formatTable, formatItem } from './formatter.js';
 import { config } from '../config.js';
-import { z } from 'zod';
-
-/**
- * Extract required and optional field names from a Zod schema
- * @param schema Record of Zod schema fields
- * @returns Object containing arrays of required and optional field names
- */
-export function extractSchemaRequirements(schema: Record<string, z.ZodType>): {
-    required: string[],
-    optional: string[]
-} {
-  const required: string[] = [];
-  const optional: string[] = [];
-
-  Object.entries(schema).forEach(([key, field]) => {
-    const def = field._def;
-    if (def.hasOwnProperty('optional') || def.hasOwnProperty('default')) {
-      optional.push(key);
-    } else {
-      required.push(key);
-    }
-  });
-
-  return { required, optional };
-}
-
 
 /**
  * Type guard to check if response is a list response
