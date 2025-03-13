@@ -1,6 +1,6 @@
 {
-  "name": "teamretro-mcp-server",
-  "version": "1.0.0",
+  "name": "@adepanges/teamretro-mcp-server",
+  "version": "0.1.0",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
