@@ -16,14 +16,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: List existing tags
-        run: git tag -l
-
-      - name: Verify git config
-        run: |
-          git config --list
-          git remote -v
-
       - id: semver
         uses: gandarez/semver-action@v2.0.0
         with:
@@ -43,16 +35,5 @@ jobs:
       - name: Create tag locally
         run: git tag ${{ steps.semver.outputs.semver_tag }}
 
-      - name: Verify local tag creation
-        run: git tag -l | grep ${{ steps.semver.outputs.semver_tag }}
-
       - name: Push tag to origin
         run: git push origin ${{ steps.semver.outputs.semver_tag }}
-        continue-on-error: true
-
-      - name: Verify tag creation
-        if: ${{ failure() }}
-        run: |
-          echo "Tag push failed, checking local tags..."
-          git tag -l
-          exit 1
