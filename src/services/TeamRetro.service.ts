@@ -1,6 +1,5 @@
-
-import { config } from '../config.js';
-import { ErrorMCP } from '../utils/error.js';
+import { config } from "../config.js";
+import { ErrorMCP } from "../utils/error.js";
 
 export abstract class TeamRetroService {
   /**
@@ -10,27 +9,29 @@ export abstract class TeamRetroService {
    */
   protected getAuthHeaders(): Record<string, string> {
     switch (config.auth.type) {
-      case 'apiKey':
+      case "apiKey":
         if (!config.auth.apiKey) {
-          throw new ErrorMCP('API_KEY_REQUIRED', 'AUTH_ERROR');
+          throw new ErrorMCP("API_KEY_REQUIRED", "AUTH_ERROR");
         }
-        return { 'X-API-KEY': config.auth.apiKey };
+        return { "X-API-KEY": config.auth.apiKey };
 
-      case 'basic':
+      case "basic":
         if (!config.auth.username || !config.auth.password) {
-          throw new ErrorMCP('AUTH_CREDENTIALS_REQUIRED', 'AUTH_ERROR');
+          throw new ErrorMCP("AUTH_CREDENTIALS_REQUIRED", "AUTH_ERROR");
         }
-        const basicAuth = Buffer.from(`${config.auth.username}:${config.auth.password}`).toString('base64');
-        return { 'Authorization': `Basic ${basicAuth}` };
+        const basicAuth = Buffer.from(
+          `${config.auth.username}:${config.auth.password}`
+        ).toString("base64");
+        return { Authorization: `Basic ${basicAuth}` };
 
-      case 'bearer':
+      case "bearer":
         if (!config.auth.token) {
-          throw new ErrorMCP('TOKEN_REQUIRED', 'AUTH_ERROR');
+          throw new ErrorMCP("TOKEN_REQUIRED", "AUTH_ERROR");
         }
-        return { 'Authorization': `Bearer ${config.auth.token}` };
+        return { Authorization: `Bearer ${config.auth.token}` };
 
       default:
-        throw new ErrorMCP('INVALID_AUTH_TYPE', 'AUTH_ERROR');
+        throw new ErrorMCP("INVALID_AUTH_TYPE", "AUTH_ERROR");
     }
   }
 
@@ -42,30 +43,10 @@ export abstract class TeamRetroService {
    * @throws ErrorMCP on request failure
    */
   protected async get<T>(
-    endpoint: string, 
+    endpoint: string,
     options: RequestInit = {}
   ): Promise<T> {
     return this.request<T>(endpoint, options);
-  }
-
-  /**
-   * Base HTTP PUT request handler
-   * @param endpoint API endpoint
-   * @param body Request body
-   * @param options Fetch options
-   * @returns Parsed response data
-   * @throws ErrorMCP on request failure
-   */
-  protected async put<T>(
-    endpoint: string,
-    body: unknown,
-    options: RequestInit = {}
-  ): Promise<T> {
-    return this.request<T>(endpoint, {
-      ...options,
-      method: 'PUT',
-      body: JSON.stringify(body)
-    });
   }
 
   /**
@@ -83,8 +64,8 @@ export abstract class TeamRetroService {
   ): Promise<T> {
     return this.request<T>(endpoint, {
       ...options,
-      method: 'PATCH',
-      body: JSON.stringify(body)
+      method: "PATCH",
+      body: JSON.stringify(body),
     });
   }
 
@@ -103,8 +84,8 @@ export abstract class TeamRetroService {
   ): Promise<T> {
     return this.request<T>(endpoint, {
       ...options,
-      method: 'POST',
-      body: JSON.stringify(body)
+      method: "POST",
+      body: JSON.stringify(body),
     });
   }
 
@@ -121,7 +102,27 @@ export abstract class TeamRetroService {
   ): Promise<T> {
     return this.request<T>(endpoint, {
       ...options,
-      method: 'DELETE'
+      method: "DELETE",
+    });
+  }
+
+  /**
+   * Base HTTP PUT request handler
+   * @param endpoint API endpoint
+   * @param body Request body
+   * @param options Fetch options
+   * @returns Parsed response data
+   * @throws ErrorMCP on request failure
+   */
+  protected async put<T>(
+    endpoint: string,
+    body: unknown,
+    options: RequestInit = {}
+  ): Promise<T> {
+    return this.request<T>(endpoint, {
+      ...options,
+      method: "PUT",
+      body: JSON.stringify(body),
     });
   }
 
@@ -138,7 +139,7 @@ export abstract class TeamRetroService {
   ): Promise<T> {
     const url = `${config.baseUrl}${endpoint}`;
     const headers = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...this.getAuthHeaders(),
       ...options.headers,
     };
@@ -150,10 +151,7 @@ export abstract class TeamRetroService {
       });
 
       if (!response.ok) {
-        throw new ErrorMCP(
-          'API_REQUEST_FAILED',
-          response.status.toString()
-        );
+        throw new ErrorMCP("API_REQUEST_FAILED", response.status.toString());
       }
 
       return response.json();
@@ -161,10 +159,7 @@ export abstract class TeamRetroService {
       if (error instanceof ErrorMCP) {
         throw error;
       }
-      throw new ErrorMCP(
-        'REQUEST_FAILED',
-        'REQUEST_ERROR'
-      );
+      throw new ErrorMCP("REQUEST_FAILED", "REQUEST_ERROR");
     }
   }
 }

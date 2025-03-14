@@ -39,18 +39,18 @@ Add to your Claude MCP settings (`cline_mcp_settings.json`):
   "mcpServers": {
     "teamretro-mcp-server": {
       "command": "node",
-      "args": ["/Volumes/Data/groupmap/teamretro-mcp-server/dist/index.js"],
+      "args": ["/path/to/teamretro-mcp-server/dist/index.js"],
       "env": {
-        "TEAMRETRO_BASE_URL": "https://https://api.teamretro-test.sandbox.groupmap.com",
+        "TEAMRETRO_BASE_URL": "https://api.teamretro.com",
         "TEAMRETRO_AUTH_TYPE": "apiKey",
-        "TEAMRETRO_API_KEY": "7ALndGgLDrwbfEoSc2eyL3"
+        "TEAMRETRO_API_KEY": "your-api-key"
       }
     }
   }
 }
 ```
 
-### NPM Package (After Publishing)
+### NPM Package
 ```json
 {
   "mcpServers": {
@@ -102,11 +102,3 @@ Add to your Claude MCP settings (`cline_mcp_settings.json`):
   }
 }
 ```
-
-## Available Tools
-
-### list_teams
-Get list teams from TeamRetro.
-
-### get_team
-Get team details from TeamRetro.

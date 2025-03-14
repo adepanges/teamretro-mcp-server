@@ -1,6 +1,6 @@
-import { z } from 'zod';
-import { createToolResponse } from '../../utils/tools.js';
-import { teamsService } from './service.js';
+import { z } from "zod";
+import { createToolResponse } from "../../utils/tools.js";
+import { teamsService } from "./service.js";
 
 export const teamTools = {
   list_teams: {
@@ -27,7 +27,10 @@ export const teamTools = {
 
   detail_team: {
     schema: z.object({
-      teamId: z.string().regex(/^[a-zA-Z0-9]{22}$/, "Invalid team ID format").describe("string"),
+      teamId: z
+        .string()
+        .regex(/^[a-zA-Z0-9]{22}$/, "Invalid team ID format")
+        .describe("string"),
     }),
     description: "Get a single team by ID",
     handler: async (args: { teamId: string }) => {
@@ -82,7 +85,10 @@ export const teamTools = {
 
   delete_team: {
     schema: z.object({
-      teamId: z.string().regex(/^[a-zA-Z0-9]{22}$/, "Invalid team ID format").describe("string"),
+      teamId: z
+        .string()
+        .regex(/^[a-zA-Z0-9]{22}$/, "Invalid team ID format")
+        .describe("string"),
     }),
     description: "Delete an existing team",
     handler: async (args: { teamId: string }) => {

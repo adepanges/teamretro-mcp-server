@@ -1,5 +1,5 @@
-import { TeamRetroService } from '../../services/TeamRetro.service.js';
-import { createSearchParams } from '../../utils/url.js';
+import { TeamRetroService } from "../../services/TeamRetro.service.js";
+import { createSearchParams } from "../../utils/url.js";
 
 class TeamsService extends TeamRetroService {
   /**
@@ -17,13 +17,12 @@ class TeamsService extends TeamRetroService {
       offset: { value: params?.offset },
       limit: { value: params?.limit },
       teamTags: { value: params?.teamTags },
-      teamIds: { value: params?.teamIds }
+      teamIds: { value: params?.teamIds },
     });
 
-    return this.get<ListApiResponse<Team>>(
-      `/v1/teams?${searchString}`,
-      { method: 'GET' }
-    );
+    return this.get<ListApiResponse<Team>>(`/v1/teams?${searchString}`, {
+      method: "GET",
+    });
   }
 
   /**
@@ -33,10 +32,9 @@ class TeamsService extends TeamRetroService {
    * @throws ErrorMCP if team not found
    */
   async getTeam(teamId: string): Promise<SingleApiResponse<Team>> {
-    return this.get<SingleApiResponse<Team>>(
-      `/v1/teams/${teamId}`,
-      { method: 'GET' }
-    );
+    return this.get<SingleApiResponse<Team>>(`/v1/teams/${teamId}`, {
+      method: "GET",
+    });
   }
 
   /**
@@ -48,12 +46,9 @@ class TeamsService extends TeamRetroService {
    */
   async updateTeam(
     teamId: string,
-    data: Partial<Pick<Team, 'name' | 'tags' | 'members'>>
+    data: Partial<Pick<Team, "name" | "tags" | "members">>
   ): Promise<SingleApiResponse<Team>> {
-    return this.patch<SingleApiResponse<Team>>(
-      `/v1/teams/${teamId}`,
-      data
-    );
+    return this.patch<SingleApiResponse<Team>>(`/v1/teams/${teamId}`, data);
   }
 
   /**
@@ -67,7 +62,7 @@ class TeamsService extends TeamRetroService {
     tags?: string[];
     members?: TeamMember[];
   }): Promise<SingleApiResponse<Team>> {
-    return this.post<SingleApiResponse<Team>>('/v1/teams', data);
+    return this.post<SingleApiResponse<Team>>("/v1/teams", data);
   }
 
   /**
@@ -76,11 +71,13 @@ class TeamsService extends TeamRetroService {
    * @returns void
    * @throws ErrorMCP if team not found
    */
-  async deleteTeam(teamId: string): Promise<SingleApiResponse<Record<string, never>>> {
+  async deleteTeam(
+    teamId: string
+  ): Promise<SingleApiResponse<Record<string, never>>> {
     await this.delete<void>(`/v1/teams/${teamId}`);
     return {
       success: true,
-      data: {}
+      data: {},
     };
   }
 }

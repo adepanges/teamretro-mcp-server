@@ -1,12 +1,17 @@
-
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import {
-    CallToolRequestSchema, ErrorCode, ListPromptsRequestSchema, ListResourcesRequestSchema,
-    ListResourceTemplatesRequestSchema, ListToolsRequestSchema, McpError, ReadResourceRequestSchema
-} from '@modelcontextprotocol/sdk/types.js';
+  CallToolRequestSchema,
+  ErrorCode,
+  ListPromptsRequestSchema,
+  ListResourcesRequestSchema,
+  ListResourceTemplatesRequestSchema,
+  ListToolsRequestSchema,
+  McpError,
+  ReadResourceRequestSchema,
+} from "@modelcontextprotocol/sdk/types.js";
 
-import { toolHandlers, toolSchema } from './tools.js';
+import { toolHandlers, toolSchema } from "./tools.js";
 
 class TeamRetroMCPServer {
   private server: Server;
@@ -16,13 +21,13 @@ class TeamRetroMCPServer {
     this.server = new Server(
       {
         name: "teamretro-mcp-server",
-        version: "1.0.0"
+        version: "1.0.0",
       },
       {
         capabilities: {
           tools: {},
-          resources: {}
-        }
+          resources: {},
+        },
       }
     );
 
@@ -32,17 +37,16 @@ class TeamRetroMCPServer {
     this.server.onerror = (error) => console.error("[MCP Error]", error);
 
     // Error handling
-    process.on('SIGINT', async () => {
+    process.on("SIGINT", async () => {
       await this.server.close();
       process.exit(0);
     });
   }
 
   private setupTools(): void {
-
     // List available tools
     this.server.setRequestHandler(ListToolsRequestSchema, async () => ({
-      tools: toolSchema
+      tools: toolSchema,
     }));
 
     // Handle tool calls
@@ -53,19 +57,13 @@ class TeamRetroMCPServer {
       const func = toolHandlers[name];
 
       if (!func) {
-        throw new McpError(
-          ErrorCode.MethodNotFound,
-          `Tool not found: ${name}`
-        );
+        throw new McpError(ErrorCode.MethodNotFound, `Tool not found: ${name}`);
       }
 
       try {
         response = await func(args);
       } catch (error: any) {
-        throw new McpError(
-          ErrorCode.InternalError,
-          error.message
-        );
+        throw new McpError(ErrorCode.InternalError, error.message);
       }
 
       return response;
@@ -108,7 +106,7 @@ class TeamRetroMCPServer {
   async run(): Promise<void> {
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
-    console.error('TeamRetro MCP server running on stdio');
+    console.error("TeamRetro MCP server running on stdio");
   }
 }
 
