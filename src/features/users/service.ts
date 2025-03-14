@@ -58,3 +58,4 @@ class UsersService extends TeamRetroService {
 }
 
 export const usersService = new UsersService();
+
