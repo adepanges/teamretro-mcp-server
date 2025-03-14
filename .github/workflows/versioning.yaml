@@ -20,6 +20,7 @@ jobs:
         uses: gandarez/semver-action@v2.0.0
         with:
           branching_model: "git-flow"
+          prerelease_id: "alpha"
           main_branch_name: "main"
           develop_branch_name: "develop"
           debug: true
@@ -31,8 +32,17 @@ jobs:
           echo "Ancestor tag: ${{ steps.semver.outputs.ancestor_tag }}"
           echo "Is prerelease: ${{ steps.semver.outputs.is_prerelease }}"
 
-      - name: Create tag locally
+      - name: Update package.json version
+        if: github.ref == 'refs/heads/main'
+        run: |
+          npm version ${{ steps.semver.outputs.semver_tag }} --no-git-tag-version
+          git add package.json
+          git commit -m "chore: update version to ${{ steps.semver.outputs.semver_tag }}"
+
+      - name: Update version and create tag
         run: git tag ${{ steps.semver.outputs.semver_tag }}
 
       - name: Push tag to origin
-        run: git push origin ${{ steps.semver.outputs.semver_tag }}
+        run: |
+          git push origin ${{ github.ref }}
+          git push origin ${{ steps.semver.outputs.semver_tag }}
