@@ -44,5 +44,5 @@ export const createSearchParams = (mapping: ParamsMapping): string => {
   });
   
   const searchString = searchParams.toString();
-  return searchString ? `?${searchString}` : '';
+  return searchString ? searchString : "";
 };
