@@ -35,6 +35,9 @@ jobs:
       - name: Update package.json version
         if: ${{ steps.semver.outputs.is_prerelease }} == 'false'
         run: |
+          git config --global user.email "adepanges@gmail.com"
+          git config --global user.name "Ade Pangestu"
+
           npm version ${{ steps.semver.outputs.semver_tag }} --no-git-tag-version
           git add package.json
           git commit -m "chore: update version to ${{ steps.semver.outputs.semver_tag }}"
