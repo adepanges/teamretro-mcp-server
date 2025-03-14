@@ -41,7 +41,6 @@ export async function createToolResponse<T extends Record<string, any>>(
     content: [{
       type: 'text',
       text
-    }],
-    isError: !response.success
+    }]
   };
 }
