@@ -19,6 +19,7 @@ jobs:
           branching_model: "git-flow"
           main_branch_name: "main"
           develop_branch_name: "develop"
+          debug: true
       
       - name: Push tag to origin
         run: git push origin ${{ steps.semver.outputs.semver_tag }}
