@@ -27,4 +27,3 @@ Object.entries(tools).forEach(([name, tool]) => {
 });
 
 export { toolSchema, toolHandlers };
-
