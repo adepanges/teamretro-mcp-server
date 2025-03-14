@@ -83,4 +83,3 @@ class TeamsService extends TeamRetroService {
 }
 
 export const teamsService = new TeamsService();
-
