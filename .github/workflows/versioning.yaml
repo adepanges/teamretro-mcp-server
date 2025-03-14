@@ -33,7 +33,7 @@ jobs:
           echo "Is prerelease: ${{ steps.semver.outputs.is_prerelease }}"
 
       - name: Update package.json version
-        if: github.ref == 'refs/heads/main'
+        if: ${{ steps.semver.outputs.is_prerelease }} == 'false'
         run: |
           npm version ${{ steps.semver.outputs.semver_tag }} --no-git-tag-version
           git add package.json
@@ -48,7 +48,7 @@ jobs:
           git push origin ${{ steps.semver.outputs.semver_tag }}
 
       - name: Cleanup old alpha tags (keep latest 10)
-        if: github.ref == 'refs/heads/main' && ${{ steps.semver.outputs.is_prerelease }} == 'true'
+        if: ${{ steps.semver.outputs.is_prerelease }} == 'true'
         run: |
           git fetch --tags
           
