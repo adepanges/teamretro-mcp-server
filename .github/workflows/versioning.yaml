@@ -39,7 +39,6 @@ jobs:
           git commit -m "chore: update version to ${{ steps.semver.outputs.semver_tag }}"
 
       - name: Update version and create tag
-        if: github.ref == 'refs/heads/develop'
         run: git tag ${{ steps.semver.outputs.semver_tag }}
 
       - name: Push tag to origin
