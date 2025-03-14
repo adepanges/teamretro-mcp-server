@@ -1,0 +1,48 @@
+name: Semantic Versioning
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+      - develop
+
+jobs:
+  versioning:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - id: semver
+        uses: gandarez/semver-action@v2.0.0
+        with:
+          branching_model: "git-flow"
+          prerelease_id: "alpha"
+          main_branch_name: "main"
+          develop_branch_name: "develop"
+          debug: true
+
+      - name: Debug semver outputs
+        run: |
+          echo "Semver tag: ${{ steps.semver.outputs.semver_tag }}"
+          echo "Previous tag: ${{ steps.semver.outputs.previous_tag }}"
+          echo "Ancestor tag: ${{ steps.semver.outputs.ancestor_tag }}"
+          echo "Is prerelease: ${{ steps.semver.outputs.is_prerelease }}"
+
+      - name: Update package.json version
+        if: github.ref == 'refs/heads/main'
+        run: |
+          npm version ${{ steps.semver.outputs.semver_tag }} --no-git-tag-version
+          git add package.json
+          git commit -m "chore: update version to ${{ steps.semver.outputs.semver_tag }}"
+
+      - name: Update version and create tag
+        run: git tag ${{ steps.semver.outputs.semver_tag }}
+
+      - name: Push tag to origin
+        run: |
+          git push origin ${{ github.ref }}
+          git push origin ${{ steps.semver.outputs.semver_tag }}

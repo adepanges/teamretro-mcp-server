@@ -1,36 +1,30 @@
-
+import { TeamRetroError } from '../types/errors.js';
 import { config } from '../config.js';
-import { ErrorMCP } from '../utils/error.js';
 
 export abstract class TeamRetroService {
-  /**
-   * Get authentication headers based on the auth type
-   * @returns Authentication headers
-   * @throws ErrorMCP on invalid auth type or missing credentials
-   */
   protected getAuthHeaders(): Record<string, string> {
     switch (config.auth.type) {
       case 'apiKey':
         if (!config.auth.apiKey) {
-          throw new ErrorMCP('API_KEY_REQUIRED', 'AUTH_ERROR');
+          throw new TeamRetroError('API_KEY_REQUIRED', 'AUTH_ERROR');
         }
         return { 'X-API-KEY': config.auth.apiKey };
 
       case 'basic':
         if (!config.auth.username || !config.auth.password) {
-          throw new ErrorMCP('AUTH_CREDENTIALS_REQUIRED', 'AUTH_ERROR');
+          throw new TeamRetroError('AUTH_CREDENTIALS_REQUIRED', 'AUTH_ERROR');
         }
         const basicAuth = Buffer.from(`${config.auth.username}:${config.auth.password}`).toString('base64');
         return { 'Authorization': `Basic ${basicAuth}` };
 
       case 'bearer':
         if (!config.auth.token) {
-          throw new ErrorMCP('TOKEN_REQUIRED', 'AUTH_ERROR');
+          throw new TeamRetroError('TOKEN_REQUIRED', 'AUTH_ERROR');
         }
         return { 'Authorization': `Bearer ${config.auth.token}` };
 
       default:
-        throw new ErrorMCP('INVALID_AUTH_TYPE', 'AUTH_ERROR');
+        throw new TeamRetroError('INVALID_AUTH_TYPE', 'AUTH_ERROR');
     }
   }
 
@@ -39,7 +33,7 @@ export abstract class TeamRetroService {
    * @param endpoint API endpoint
    * @param options Fetch options
    * @returns Parsed response data
-   * @throws ErrorMCP on request failure
+   * @throws TeamRetroError on request failure
    */
   protected async get<T>(
     endpoint: string, 
@@ -150,7 +144,7 @@ export abstract class TeamRetroService {
       });
 
       if (!response.ok) {
-        throw new ErrorMCP(
+        throw new TeamRetroError(
           'API_REQUEST_FAILED',
           response.status.toString()
         );
@@ -158,10 +152,10 @@ export abstract class TeamRetroService {
 
       return response.json();
     } catch (error) {
-      if (error instanceof ErrorMCP) {
+      if (error instanceof TeamRetroError) {
         throw error;
       }
-      throw new ErrorMCP(
+      throw new TeamRetroError(
         'REQUEST_FAILED',
         'REQUEST_ERROR'
       );
