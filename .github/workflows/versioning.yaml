@@ -1,0 +1,57 @@
+name: Semantic Versioning
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+      - develop
+
+jobs:
+  versioning:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: List existing tags
+        run: git tag -l
+
+      - name: Verify git config
+        run: |
+          git config --list
+          git remote -v
+
+      - id: semver
+        uses: gandarez/semver-action@v2.0.0
+        with:
+          branching_model: "git-flow"
+          main_branch_name: "main"
+          develop_branch_name: "develop"
+          debug: true
+
+      - name: Debug semver outputs
+        run: |
+          echo "Semver tag: ${{ steps.semver.outputs.semver_tag }}"
+          echo "Previous tag: ${{ steps.semver.outputs.previous_tag }}"
+          echo "Ancestor tag: ${{ steps.semver.outputs.ancestor_tag }}"
+          echo "Is prerelease: ${{ steps.semver.outputs.is_prerelease }}"
+
+      - name: Create tag locally
+        run: git tag ${{ steps.semver.outputs.semver_tag }}
+
+      - name: Verify local tag creation
+        run: git tag -l | grep ${{ steps.semver.outputs.semver_tag }}
+
+      - name: Push tag to origin
+        run: git push origin ${{ steps.semver.outputs.semver_tag }}
+        continue-on-error: true
+
+      - name: Verify tag creation
+        if: ${{ failure() }}
+        run: |
+          echo "Tag push failed, checking local tags..."
+          git tag -l
+          exit 1

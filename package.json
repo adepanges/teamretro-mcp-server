@@ -16,7 +16,8 @@
     "@modelcontextprotocol/sdk": "^1.6.0",
     "dotenv": "^16.4.7",
     "env-var": "^7.5.0",
-    "zod-to-json-schema": "^3.24.3"
+    "zod-to-json-schema": "^3.24.3",
+    "markdown-table": "^3.0.4"
   },
   "devDependencies": {
     "@types/node": "^20.17.19",

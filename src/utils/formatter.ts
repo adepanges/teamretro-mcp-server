@@ -1,3 +1,5 @@
+import { markdownTable } from 'markdown-table';
+
 const formatValue = (value: any, key: string): string => {
   if (Array.isArray(value)) {
     // If array contains objects (like members), show count
@@ -29,20 +31,20 @@ export const formatTable = <T extends Record<string, any>>(
     `Showing: ${meta.offset + 1}-${meta.offset + meta.count}`,
     ''  // Empty line before table
   ] : [];
-  
+
   // Get all keys from first item
   const keys = Object.keys(items[0]);
   
-  // Create header with cleaned up field names
-  const header = keys.map(key => key.toUpperCase()).join(' | ');
-  const separator = header.replace(/[^|]/g, '-');
-  
-  // Format rows
-  const rows = items.map(item => 
-    keys.map(key => formatValue(item[key], key)).join(' | ')
-  );
+  // Create table data for markdown-table
+  const tableData = [
+    keys.map(key => key.toUpperCase()), // Header row
+    ...items.map(item => 
+      keys.map(key => formatValue(item[key], key))) // Data rows
+  ];
 
-  return [...paginationInfo, header, separator, ...rows].join('\n');
+  const table = markdownTable(tableData);
+  
+  return [...paginationInfo, table].join('\n');
 };
 
 export const formatItem = <T extends Record<string, any>>(item: T): string => {
