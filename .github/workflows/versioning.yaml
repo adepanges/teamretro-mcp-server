@@ -1,19 +1,13 @@
 name: Semantic Versioning
 
 on:
-  pull_request:
-    types: [closed]
-    branches:
-      - main
-      - develop
-
   push:
     branches:
       - develop
+      - main
 
 jobs:
   versioning:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
