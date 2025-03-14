@@ -1,13 +1,15 @@
 name: Semantic Versioning
 
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches:
-      - develop
       - main
+      - develop
 
 jobs:
   versioning:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -33,9 +35,6 @@ jobs:
       - name: Update package.json version
         if: ${{ steps.semver.outputs.is_prerelease }} == 'false'
         run: |
-          git config --global user.email "adepanges@gmail.com"
-          git config --global user.name "Ade Pangestu"
-          
           npm version ${{ steps.semver.outputs.semver_tag }} --no-git-tag-version
           git add package.json
           git commit -m "chore: update version to ${{ steps.semver.outputs.semver_tag }}"
