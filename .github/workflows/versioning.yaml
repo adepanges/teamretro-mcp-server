@@ -7,6 +7,10 @@ on:
       - main
       - develop
 
+  push:
+    branches:
+      - develop
+
 jobs:
   versioning:
     if: github.event.pull_request.merged == true
