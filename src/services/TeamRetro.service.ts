@@ -107,6 +107,26 @@ export abstract class TeamRetroService {
   }
 
   /**
+   * Base HTTP PUT request handler
+   * @param endpoint API endpoint
+   * @param body Request body
+   * @param options Fetch options
+   * @returns Parsed response data
+   * @throws ErrorMCP on request failure
+   */
+  protected async put<T>(
+    endpoint: string,
+    body: unknown,
+    options: RequestInit = {}
+  ): Promise<T> {
+    return this.request<T>(endpoint, {
+      ...options,
+      method: "PUT",
+      body: JSON.stringify(body),
+    });
+  }
+
+  /**
    * Base HTTP request handler
    * @param endpoint API endpoint
    * @param options Fetch options

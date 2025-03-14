@@ -2,10 +2,12 @@ import { zodToJsonSchema } from "zod-to-json-schema";
 
 import { teamTools } from "./features/teams/tools.js";
 import { userTools } from "./features/users/tools.js";
+import { teamMembersTools } from "./features/team-members/tools.js";
 
 const tools = {
   ...teamTools,
   ...userTools,
+  ...teamMembersTools,
 };
 
 const toolSchema = Object.entries(tools).map(([name, tool]) => ({
@@ -15,7 +17,7 @@ const toolSchema = Object.entries(tools).map(([name, tool]) => ({
 }));
 
 const toolHandlers: {
-  [name: string]: (args: any) => Promise<any>,
+  [name: string]: (args: any) => Promise<any>;
 } = {};
 
 Object.entries(tools).forEach(([name, tool]) => {
