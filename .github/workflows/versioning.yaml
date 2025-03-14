@@ -39,10 +39,11 @@ jobs:
           echo "Ancestor tag: ${{ steps.semver.outputs.ancestor_tag }}"
           echo "Is prerelease: ${{ steps.semver.outputs.is_prerelease }}"
 
-      - name: Create Git Tag
-        uses: rickstaa/action-create-tag@v1.7.2
-        with:
-          tag: ${{ steps.semver.outputs.semver_tag }}
+      - name: Create tag locally
+        run: git tag ${{ steps.semver.outputs.semver_tag }}
+
+      - name: Verify local tag creation
+        run: git tag -l | grep ${{ steps.semver.outputs.semver_tag }}
 
       - name: Push tag to origin
         run: git push origin ${{ steps.semver.outputs.semver_tag }}
