@@ -107,20 +107,6 @@ export abstract class TeamRetroService {
   }
 
   /**
-   * Base HTTP request handler
-   * @param endpoint API endpoint
-   * @param options Fetch options
-   * @returns Parsed response data
-   * @throws ErrorMCP on request failure
-   */
-  private async request<T>(
-    endpoint: string,
-    options: RequestInit = {}
-  ): Promise<T> {
-    return this.request<T>(endpoint, options);
-  }
-
-  /**
    * Base HTTP PUT request handler
    * @param endpoint API endpoint
    * @param body Request body
@@ -135,65 +121,8 @@ export abstract class TeamRetroService {
   ): Promise<T> {
     return this.request<T>(endpoint, {
       ...options,
-      method: 'PUT',
-      body: JSON.stringify(body)
-    });
-  }
-
-  /**
-   * Base HTTP PATCH request handler
-   * @param endpoint API endpoint
-   * @param body Request body
-   * @param options Fetch options
-   * @returns Parsed response data
-   * @throws ErrorMCP on request failure
-   */
-  protected async patch<T>(
-    endpoint: string,
-    body: unknown,
-    options: RequestInit = {}
-  ): Promise<T> {
-    return this.request<T>(endpoint, {
-      ...options,
-      method: 'PATCH',
-      body: JSON.stringify(body)
-    });
-  }
-
-  /**
-   * Base HTTP POST request handler
-   * @param endpoint API endpoint
-   * @param body Request body
-   * @param options Fetch options
-   * @returns Parsed response data
-   * @throws ErrorMCP on request failure
-   */
-  protected async post<T>(
-    endpoint: string,
-    body: unknown,
-    options: RequestInit = {}
-  ): Promise<T> {
-    return this.request<T>(endpoint, {
-      ...options,
-      method: 'POST',
-      body: JSON.stringify(body)
-    });
-  }
-
-  /**
-   * Base HTTP DELETE request handler
-   * @param endpoint API endpoint
-   * @param options Fetch options
-   * @returns Parsed response data
-   * @throws ErrorMCP on request failure
-   */
-  protected async delete<T>(
-    endpoint: string,
-    options: RequestInit = {}
-  ): Promise<T> {
-    return this.request<T>(endpoint, {
-      ...options,
-      method: 'DELETE'
+      method: "PUT",
+      body: JSON.stringify(body),
     });
   }
 
