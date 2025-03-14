@@ -39,11 +39,11 @@ Add to your Claude MCP settings (`cline_mcp_settings.json`):
   "mcpServers": {
     "teamretro-mcp-server": {
       "command": "node",
-      "args": ["/path/to/teamretro-mcp-server/dist/index.js"],
+      "args": ["/Volumes/Data/groupmap/teamretro-mcp-server/dist/index.js"],
       "env": {
-        "TEAMRETRO_BASE_URL": "https://api.teamretro.com",
+        "TEAMRETRO_BASE_URL": "https://https://api.teamretro-test.sandbox.groupmap.com",
         "TEAMRETRO_AUTH_TYPE": "apiKey",
-        "TEAMRETRO_API_KEY": "your-api-key"
+        "TEAMRETRO_API_KEY": "7ALndGgLDrwbfEoSc2eyL3"
       }
     }
   }
