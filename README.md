@@ -50,7 +50,7 @@ Add to your Claude MCP settings (`cline_mcp_settings.json`):
 }
 ```
 
-### NPM Package (After Publishing)
+### NPM Package
 ```json
 {
   "mcpServers": {
