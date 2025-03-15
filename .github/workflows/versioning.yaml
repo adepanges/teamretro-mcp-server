@@ -79,26 +79,6 @@ jobs:
           draft: false
           delete-branch: true
 
-      # - name: Cleanup old alpha tags (keep latest 10)
-      #   if: ${{ steps.semver.outputs.is_prerelease == 'true' }}
-      #   run: |
-      #     git fetch --tags
-          
-      #     # Get all alpha tags sorted by creation date (newest first)
-      #     TAGS=$(git for-each-ref --sort=-creatordate --format '%(refname:short)' refs/tags | grep -E '.*-alpha.*')
-          
-      #     # Count total alpha tags
-      #     TOTAL_TAGS=$(echo "$TAGS" | wc -l)
-          
-      #     # If more than 10 tags, delete the oldest ones
-      #     if [ $TOTAL_TAGS -gt 10 ]; then
-      #       TAGS_TO_DELETE=$(echo "$TAGS" | tail -n +11)
-      #       for tag in $TAGS_TO_DELETE; do
-      #         git tag -d $tag
-      #         git push origin --delete $tag
-      #       done
-      #     fi
-
   prerelease-version:
     if: |
       github.event.pull_request.merged == true &&
@@ -126,6 +106,27 @@ jobs:
           echo "Is prerelease: ${{ steps.semver.outputs.is_prerelease }}"
       
       - name: Create version tag
+        if: ${{ steps.semver.outputs.is_prerelease == 'true' }}
         run: |
           git tag ${{ steps.semver.outputs.semver_tag }}
           git push origin ${{ steps.semver.outputs.semver_tag }}
+
+      - name: Cleanup old alpha tags (keep latest 10)
+        if: ${{ steps.semver.outputs.is_prerelease == 'true' }}
+        run: |
+          git fetch --tags
+          
+          # Get all alpha tags sorted by creation date (newest first)
+          TAGS=$(git for-each-ref --sort=-creatordate --format '%(refname:short)' refs/tags | grep -E '.*-alpha.*')
+          
+          # Count total alpha tags
+          TOTAL_TAGS=$(echo "$TAGS" | wc -l)
+          
+          # If more than 10 tags, delete the oldest ones
+          if [ $TOTAL_TAGS -gt 10 ]; then
+            TAGS_TO_DELETE=$(echo "$TAGS" | tail -n +11)
+            for tag in $TAGS_TO_DELETE; do
+              git tag -d $tag
+              git push origin --delete $tag
+            done
+          fi
