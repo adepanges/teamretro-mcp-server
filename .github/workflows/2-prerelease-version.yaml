@@ -38,22 +38,8 @@ jobs:
       - name: Cleanup old alpha tags (keep latest 10)
         if: ${{ steps.semver.outputs.is_prerelease == 'true' }}
         run: |
-          git fetch --tags
-          
-          # Get all alpha tags sorted by creation date (newest first)
-          TAGS=$(git for-each-ref --sort=-creatordate --format '%(refname:short)' refs/tags | grep -E '.*-alpha.*')
-          
-          # Count total alpha tags
-          TOTAL_TAGS=$(echo "$TAGS" | wc -l)
-          
-          # If more than 10 tags, delete the oldest ones
-          if [ $TOTAL_TAGS -gt 10 ]; then
-            TAGS_TO_DELETE=$(echo "$TAGS" | tail -n +11)
-            for tag in $TAGS_TO_DELETE; do
-              git tag -d $tag
-              git push origin --delete $tag
-            done
-          fi
+          source ./scripts/cleanup-tags.sh
+          cleanup_tags alpha 10
 
   beta-prerelease:
     if: |
@@ -85,19 +71,5 @@ jobs:
       - name: Cleanup old beta tags (keep latest 10)
         if: ${{ steps.semver.outputs.is_prerelease == 'true' }}
         run: |
-          git fetch --tags
-          
-          # Get all beta tags sorted by creation date (newest first)
-          TAGS=$(git for-each-ref --sort=-creatordate --format '%(refname:short)' refs/tags | grep -E '.*-beta.*')
-          
-          # Count total beta tags
-          TOTAL_TAGS=$(echo "$TAGS" | wc -l)
-          
-          # If more than 10 tags, delete the oldest ones
-          if [ $TOTAL_TAGS -gt 10 ]; then
-            TAGS_TO_DELETE=$(echo "$TAGS" | tail -n +11)
-            for tag in $TAGS_TO_DELETE; do
-              git tag -d $tag
-              git push origin --delete $tag
-            done
-          fi
+          source ./scripts/cleanup-tags.sh
+          cleanup_tags beta 10
