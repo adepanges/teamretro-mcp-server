@@ -9,7 +9,9 @@ on:
 
 jobs:
   release-version:
-    if: github.event_name == 'workflow_dispatch'
+    if: |
+      github.event_name == 'workflow_dispatch' &&
+      github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -112,7 +114,7 @@ jobs:
             done
           done
 
-  create-tag:
+  create-release-tag:
     if: |
       github.event_name == 'pull_request' &&
       github.event.pull_request.merged == true &&
