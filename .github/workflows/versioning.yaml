@@ -32,15 +32,25 @@ jobs:
           echo "Ancestor tag: ${{ steps.semver.outputs.ancestor_tag }}"
           echo "Is prerelease: ${{ steps.semver.outputs.is_prerelease }}"
 
-      # - name: Update package.json version
-      #   if: ${{ steps.semver.outputs.is_prerelease == 'false' }}
-      #   run: |
-      #     git config --global user.email "adepanges@gmail.com"
-      #     git config --global user.name "Ade Pangestu"
+      - name: Update package.json version
+        if: ${{ steps.semver.outputs.is_prerelease == 'false' }}
+        run: |
+          git config --global user.email "adepanges@gmail.com"
+          git config --global user.name "Ade Pangestu"
+          npm version ${{ steps.semver.outputs.semver_tag }} --no-git-tag-version
+          git add package.json
+          git commit -m "chore: update version to ${{ steps.semver.outputs.semver_tag }}"
 
-      #     npm version ${{ steps.semver.outputs.semver_tag }} --no-git-tag-version
-      #     git add package.json
-      #     git commit -m "chore: update version to ${{ steps.semver.outputs.semver_tag }}"
+      - name: Install conventional-changelog
+        run: npm install -g conventional-changelog-cli
+
+      - name: Generate Version Changelog
+        run: |
+          mkdir -p changelog
+          conventional-changelog -p angular -o changelog/v${{ steps.semver.outputs.semver_tag }}.md
+          echo "- [v${{ steps.semver.outputs.semver_tag }}](./changelog/v${{ steps.semver.outputs.semver_tag }}.md)" >> CHANGELOG.md
+          git add changelog/ CHANGELOG.md
+          git commit -m "docs: add changelog for ${{ steps.semver.outputs.semver_tag }}"
 
       - name: Update version and create tag
         run: git tag ${{ steps.semver.outputs.semver_tag }}
