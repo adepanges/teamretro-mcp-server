@@ -3,16 +3,48 @@
   "version": "1.0.0",
   "type": "module",
   "main": "dist/index.js",
+  "description": "MCP Server for TeamRetro integration, providing API services and tools for team management and analytics",
+  "keywords": [
+    "mcp",
+    "teamretro",
+    "api",
+    "server",
+    "integration",
+    "team-management"
+  ],
+  "author": {
+    "name": "Ade Pangestu",
+    "email": "adepanges@gmail.com",
+    "url": "https://github.com/adepanges"
+  },
+  "contributors": [
+    {
+      "name": "Ade Pangestu",
+      "email": "adepanges@gmail.com",
+      "url": "https://github.com/adepanges"
+    }
+  ],
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adepanges/teamretro-mcp-server"
+  },
+  "bugs": {
+    "url": "https://github.com/adepanges/teamretro-mcp-server/issues"
+  },
+  "homepage": "https://github.com/adepanges/teamretro-mcp-server",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "tsc -w",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rm -rf dist",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write src/**/*.ts",
+    "test": "echo \"Error: no test specified\" && exit 0"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "MCP Server for TeamRetro integration",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.6.0",
     "dotenv": "^16.4.7",
@@ -21,6 +53,10 @@
   },
   "devDependencies": {
     "@types/node": "^20.17.19",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.5",
+    "@typescript-eslint/eslint-plugin": "^7.0.1",
+    "@typescript-eslint/parser": "^7.0.1"
   }
 }
