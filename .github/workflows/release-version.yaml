@@ -130,6 +130,15 @@ jobs:
         run: |
           echo "version=v$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
 
+      - name: Validate changelog
+        id: validate-changelog
+        run: |
+          if [ ! -f "changelog/${{ steps.version.outputs.version }}.md" ]; then
+            echo "Changelog file for ${{ steps.version.outputs.version }} not found"
+            exit 1
+          fi
+          echo "Changelog validation successful"
+
       - name: Create tag
         run: |
           git config --global user.email "noreply@github.com"
