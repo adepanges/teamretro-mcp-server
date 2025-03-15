@@ -30,13 +30,6 @@ jobs:
           develop_branch_name: "develop"
           debug: true
 
-      - name: Semantic Version Output
-        run: |
-          echo "Semver tag: ${{ steps.semver.outputs.semver_tag }}"
-          echo "Previous tag: ${{ steps.semver.outputs.previous_tag }}"
-          echo "Ancestor tag: ${{ steps.semver.outputs.ancestor_tag }}"
-          echo "Is prerelease: ${{ steps.semver.outputs.is_prerelease }}"
-
       - name: Branching
         id: branch
         run: |
