@@ -45,7 +45,6 @@ jobs:
       github.event_name == 'pull_request' &&
       github.event.pull_request.merged == true &&
       github.event.pull_request.base.ref == 'master' &&
-      startsWith(github.event.pull_request.head.ref, 'release/') ||
       startsWith(github.event.pull_request.head.ref, 'hotfix/')
     runs-on: ubuntu-latest
     steps:
@@ -63,13 +62,6 @@ jobs:
           debug: true
       
       - name: Create version tag
-        if: ${{ steps.semver.outputs.is_prerelease == 'true' }}
         run: |
           git tag ${{ steps.semver.outputs.semver_tag }}
           git push origin ${{ steps.semver.outputs.semver_tag }}
-
-      - name: Cleanup old beta tags (keep latest 10)
-        if: ${{ steps.semver.outputs.is_prerelease == 'true' }}
-        run: |
-          source ./scripts/cleanup-tags.sh
-          cleanup_tags beta 10
