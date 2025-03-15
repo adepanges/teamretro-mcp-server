@@ -1,4 +1,4 @@
-name: Prerelease Version
+name: 2. Prerelease Version
 
 on:
   pull_request:

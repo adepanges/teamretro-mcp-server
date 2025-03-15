@@ -1,4 +1,4 @@
-name: Release Version
+name: 3. Release Version
 
 on:
   workflow_dispatch:
@@ -9,7 +9,9 @@ on:
 
 jobs:
   release-version:
-    if: github.event_name == 'workflow_dispatch'
+    if: |
+      github.event_name == 'workflow_dispatch' &&
+      github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -63,7 +65,7 @@ jobs:
       - name: Generate Version Changelog
         run: |
           mkdir -p changelog
-          conventional-changelog -p angular --skip-unstable -o changelog/${{ steps.semver.outputs.semver_tag }}.md
+          conventional-changelog -p angular --skip-unstable --output-unreleased -o changelog/${{ steps.semver.outputs.semver_tag }}.md
           echo "- [${{ steps.semver.outputs.semver_tag }}](./changelog/${{ steps.semver.outputs.semver_tag }}.md)" >> CHANGELOG.md
           git add changelog/ CHANGELOG.md
           git commit -m "docs: add changelog for ${{ steps.semver.outputs.semver_tag }}"
@@ -113,9 +115,11 @@ jobs:
           done
 
   create-release-tag:
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
+    if: |
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.merged == true &&
+      startsWith(github.event.pull_request.head.ref, 'version/')
     runs-on: ubuntu-latest
-    needs: release-version
     steps:
       - uses: actions/checkout@v4
         with:
@@ -124,11 +128,11 @@ jobs:
       - name: Get package version
         id: version
         run: |
-          echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+          echo "version=v$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
 
       - name: Create tag
         run: |
           git config --global user.email "noreply@github.com"
           git config --global user.name "github-actions[bot]"
-          git tag -a v${{ steps.version.outputs.version }} -m "Release v${{ steps.version.outputs.version }}"
-          git push origin v${{ steps.version.outputs.version }}
+          git tag ${{ steps.version.outputs.version }}
+          git push origin ${{ steps.version.outputs.version }}
