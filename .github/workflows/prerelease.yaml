@@ -1,4 +1,4 @@
-name: Semantic Versioning
+name: Prerelease Version
 
 on:
   pull_request:
