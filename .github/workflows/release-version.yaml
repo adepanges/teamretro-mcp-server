@@ -20,6 +20,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install conventional-changelog
+        run: npm install -g conventional-changelog-cli
+
       - id: semver
         uses: gandarez/semver-action@v2.0.0
         with:
@@ -41,6 +44,17 @@ jobs:
         run: |
           git checkout -b version/${{ steps.semver.outputs.semver_tag }}
           git push origin version/${{ steps.semver.outputs.semver_tag }}
+          
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            # When triggered by PR, use the PR's base branch
+            echo "target=${{ github.base_ref }}" >> $GITHUB_OUTPUT
+          elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            # When manually dispatched, use the branch where workflow was triggered
+            echo "target=${{ github.ref }}" >> $GITHUB_OUTPUT
+          else
+            # Fallback to main branch
+            echo "target=main" >> $GITHUB_OUTPUT
+          fi
 
       - name: Update package.json version
         run: |
@@ -50,13 +64,10 @@ jobs:
           git add package.json
           git commit -m "chore: update version to ${{ steps.semver.outputs.semver_tag }}"
 
-      - name: Install conventional-changelog
-        run: npm install -g conventional-changelog-cli
-
       - name: Generate Version Changelog
         run: |
           mkdir -p changelog
-          conventional-changelog -p angular -o changelog/${{ steps.semver.outputs.semver_tag }}.md
+          conventional-changelog -p angular --skip-unstable -o changelog/${{ steps.semver.outputs.semver_tag }}.md
           echo "- [${{ steps.semver.outputs.semver_tag }}](./changelog/${{ steps.semver.outputs.semver_tag }}.md)" >> CHANGELOG.md
           git add changelog/ CHANGELOG.md
           git commit -m "docs: add changelog for ${{ steps.semver.outputs.semver_tag }}"
@@ -66,7 +77,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: version/${{ steps.semver.outputs.semver_tag }}
-          base: main
+          base: "${{ steps.branch.outputs.target }}"
           title: "Version Update: ${{ steps.semver.outputs.semver_tag }}"
           body: |
             ### Version Update
