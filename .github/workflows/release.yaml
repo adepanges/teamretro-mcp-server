@@ -4,14 +4,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  one:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: echo "$GITHUB_CONTEXT"
-
   release-version:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
