@@ -36,6 +36,7 @@ jobs:
           git fetch --tags
 
           git checkout -b version/${{ steps.semver.outputs.semver_tag }}
+          git push origin version/${{ steps.semver.outputs.semver_tag }}
           
           if [ "${{ github.event_name }}" == "pull_request" ]; then
             # When triggered by PR, use the PR's base branch
@@ -69,8 +70,6 @@ jobs:
           
           git add changelog/ CHANGELOG.md
           git commit -m "docs: add changelog for ${{ steps.semver.outputs.semver_tag }}"
-          
-          git push origin version/${{ steps.semver.outputs.semver_tag }}
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
