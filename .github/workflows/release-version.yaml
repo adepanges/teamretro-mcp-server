@@ -1,4 +1,4 @@
-name: Semantic Versioning
+name: Release Version
 
 on:
   workflow_dispatch:
@@ -8,11 +8,12 @@ on:
       - develop
 
 jobs:
-  create_version_branch:
-    if: |
+  release-version:
+    if:
       github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'pull_request' && 
-       github.event.label.name == 'release')
+      github.event_name == 'pull_request' &&
+      github.event.action == 'labeled' &&
+      github.event.label.name == 'release'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -35,7 +36,8 @@ jobs:
           echo "Ancestor tag: ${{ steps.semver.outputs.ancestor_tag }}"
           echo "Is prerelease: ${{ steps.semver.outputs.is_prerelease }}"
 
-      - name: Create version branch
+      - name: Branching
+        id: branch
         run: |
           git checkout -b version/${{ steps.semver.outputs.semver_tag }}
           git push origin version/${{ steps.semver.outputs.semver_tag }}
@@ -73,23 +75,3 @@ jobs:
             - Package.json updated
           draft: false
           delete-branch: true
-
-      # - name: Cleanup old alpha tags (keep latest 10)
-      #   if: ${{ steps.semver.outputs.is_prerelease == 'true' }}
-      #   run: |
-      #     git fetch --tags
-          
-      #     # Get all alpha tags sorted by creation date (newest first)
-      #     TAGS=$(git for-each-ref --sort=-creatordate --format '%(refname:short)' refs/tags | grep -E '.*-alpha.*')
-          
-      #     # Count total alpha tags
-      #     TOTAL_TAGS=$(echo "$TAGS" | wc -l)
-          
-      #     # If more than 10 tags, delete the oldest ones
-      #     if [ $TOTAL_TAGS -gt 10 ]; then
-      #       TAGS_TO_DELETE=$(echo "$TAGS" | tail -n +11)
-      #       for tag in $TAGS_TO_DELETE; do
-      #         git tag -d $tag
-      #         git push origin --delete $tag
-      #       done
-      #     fi
