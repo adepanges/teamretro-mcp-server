@@ -3,35 +3,44 @@ name: 4. Publish Package
 on:
   workflow_dispatch:
     inputs:
-      tag:
+      version:
         description: 'Release tag version'
         required: true
         type: string
 
 jobs:
-  validate-changelog:
+  validate-version:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ref/tags/${{ inputs.version }}
 
-      - name: Validate changelog
-        id: validate-changelog
+      - name: Validate Version
         run: |
-          if [ ! -f "changelog/${{ github.event.inputs.tag }}.md" ]; then
-            echo "Changelog file for ${{ github.event.inputs.tag }} not found"
+          if [ ! -f "changelog/${{ inputs.version }}.md" ]; then
+            echo "Changelog file for ${{ inputs.version }} not found"
             exit 1
           fi
           echo "Changelog validation successful"
 
+          version=v$(node -p "require('./package.json').version")
+
+          if [ "$version" != "${{ inputs.version }}" ]; then
+            echo "Version mismatch: $version != ${{ inputs.version }}"
+            exit 1
+          fi
+          echo "Version validation successful"
+
   publish-npm:
-    needs: validate-changelog
+    needs: validate-version
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ref/tags/${{ inputs.version }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -52,14 +61,15 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   create-release:
-    needs: [publish-npm]
+    needs: publish-npm
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ref/tags/${{ inputs.version }}
 
       - uses: ncipollo/release-action@v1
         with:
-          tag: ${{ github.event.inputs.tag }}
-          bodyFile: "changelog/${{ github.event.inputs.tag }}.md"
+          tag: ${{ inputs.version }}
+          bodyFile: "changelog/${{ inputs.version }}.md"
