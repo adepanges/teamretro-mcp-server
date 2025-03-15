@@ -1,6 +1,6 @@
 {
   "name": "teamretro-mcp-server",
-  "version": "0.2.8",
+  "version": "0.2.10",
   "type": "module",
   "main": "dist/index.js",
   "description": "MCP Server for TeamRetro integration, providing API services and tools for team management and analytics",
