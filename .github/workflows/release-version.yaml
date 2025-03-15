@@ -2,23 +2,17 @@ name: Release Version
 
 on:
   workflow_dispatch:
-  pull_request:
-    types: [labeled]
-    branches:
-      - develop
 
 jobs:
   release-version:
-    if:
-      github.event_name == 'workflow_dispatch' ||
-      github.event_name == 'pull_request' &&
-      github.event.action == 'labeled' &&
-      github.event.label.name == 'release'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Install conventional-changelog
+        run: npm install -g conventional-changelog-cli
 
       - id: semver
         uses: gandarez/semver-action@v2.0.0
@@ -41,23 +35,31 @@ jobs:
         run: |
           git checkout -b version/${{ steps.semver.outputs.semver_tag }}
           git push origin version/${{ steps.semver.outputs.semver_tag }}
+          
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            # When triggered by PR, use the PR's base branch
+            echo "target=${{ github.base_ref }}" >> $GITHUB_OUTPUT
+          elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            # When manually dispatched, use the branch where workflow was triggered
+            echo "target=${{ github.ref }}" >> $GITHUB_OUTPUT
+          else
+            # Fallback to main branch
+            echo "target=main" >> $GITHUB_OUTPUT
+          fi
 
       - name: Update package.json version
         run: |
-          git config --global user.email "adepanges@gmail.com"
-          git config --global user.name "Ade Pangestu"
+          git config --global user.email "noreply@github.com"
+          git config --global user.name "github-actions[bot]"
           npm version ${{ steps.semver.outputs.semver_tag }} --no-git-tag-version
           git add package.json
           git commit -m "chore: update version to ${{ steps.semver.outputs.semver_tag }}"
 
-      - name: Install conventional-changelog
-        run: npm install -g conventional-changelog-cli
-
       - name: Generate Version Changelog
         run: |
           mkdir -p changelog
-          conventional-changelog -p angular -o changelog/v${{ steps.semver.outputs.semver_tag }}.md
-          echo "- [v${{ steps.semver.outputs.semver_tag }}](./changelog/v${{ steps.semver.outputs.semver_tag }}.md)" >> CHANGELOG.md
+          conventional-changelog -p angular --skip-unstable -o changelog/${{ steps.semver.outputs.semver_tag }}.md
+          echo "- [${{ steps.semver.outputs.semver_tag }}](./changelog/${{ steps.semver.outputs.semver_tag }}.md)" >> CHANGELOG.md
           git add changelog/ CHANGELOG.md
           git commit -m "docs: add changelog for ${{ steps.semver.outputs.semver_tag }}"
 
@@ -66,7 +68,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: version/${{ steps.semver.outputs.semver_tag }}
-          base: main
+          base: "${{ steps.branch.outputs.target }}"
           title: "Version Update: ${{ steps.semver.outputs.semver_tag }}"
           body: |
             ### Version Update
