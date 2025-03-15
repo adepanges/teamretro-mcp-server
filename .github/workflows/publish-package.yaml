@@ -39,8 +39,10 @@ jobs:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install and Build
+        run: |
+          npm install
+          npm run build
 
       - name: Publish package
         run: |
@@ -50,26 +52,14 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   create-release:
-    needs: publish-npm
+    needs: [publish-npm]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Read changelog
-        id: changelog
-        run: |
-          echo "content<<EOF" >> $GITHUB_OUTPUT
-          cat changelog/${{ github.event.inputs.tag }}.md >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
-      - name: Create GitHub Release
-        uses: actions/create-release@v1
+      - uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ github.event.inputs.tag }}
-          release_name: Release ${{ github.event.inputs.tag }}
-          body: |
-            ${{ steps.changelog.outputs.content }}
-          draft: false
-          prerelease: false
+          tag: ${{ github.event.inputs.tag }}
+          bodyFile: "changelog/${{ github.event.inputs.tag }}.md"
