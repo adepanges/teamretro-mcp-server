@@ -3,12 +3,20 @@ name: Semantic Versioning
 on:
   workflow_dispatch:
   pull_request:
-    types: [labeled]
+    types: [labeled, closed]
     branches:
       - develop
 
 jobs:
-  create_version_branch:
+  one:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
+  release-version:
     if: |
       github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'pull_request' && 
@@ -93,3 +101,32 @@ jobs:
       #         git push origin --delete $tag
       #       done
       #     fi
+
+  prerelease-version:
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'develop'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - id: semver
+        uses: gandarez/semver-action@v2.0.0
+        with:
+          branching_model: "git-flow"
+          prerelease_id: "alpha"
+          main_branch_name: "main"
+          develop_branch_name: "develop"
+          debug: true
+
+      - name: Semantic Version Output
+        run: |
+          echo "Semver tag: ${{ steps.semver.outputs.semver_tag }}"
+          echo "Previous tag: ${{ steps.semver.outputs.previous_tag }}"
+          echo "Ancestor tag: ${{ steps.semver.outputs.ancestor_tag }}"
+          echo "Is prerelease: ${{ steps.semver.outputs.is_prerelease }}"
+      
+      - name: Create version tag
+        run: |
+          git tag ${{ steps.semver.outputs.semver_tag }}
+          git push origin ${{ steps.semver.outputs.semver_tag }}
