@@ -1,15 +1,11 @@
-name: Semantic Versioning
+name: Release Version
 
 on:
-  pull_request:
-    types: [closed]
-    branches:
-      - main
-      - develop
+  workflow_dispatch:
 
 jobs:
-  versioning:
-    if: github.event.pull_request.merged == true
+  release-version:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,15 +21,19 @@ jobs:
           develop_branch_name: "develop"
           debug: true
 
-      - name: Debug semver outputs
+      - name: Semantic Version Output
         run: |
           echo "Semver tag: ${{ steps.semver.outputs.semver_tag }}"
           echo "Previous tag: ${{ steps.semver.outputs.previous_tag }}"
           echo "Ancestor tag: ${{ steps.semver.outputs.ancestor_tag }}"
           echo "Is prerelease: ${{ steps.semver.outputs.is_prerelease }}"
 
+      - name: Create version branch
+        run: |
+          git checkout -b version/${{ steps.semver.outputs.semver_tag }}
+          git push origin version/${{ steps.semver.outputs.semver_tag }}
+
       - name: Update package.json version
-        if: ${{ steps.semver.outputs.is_prerelease == 'false' }}
         run: |
           git config --global user.email "adepanges@gmail.com"
           git config --global user.name "Ade Pangestu"
@@ -52,30 +52,17 @@ jobs:
           git add changelog/ CHANGELOG.md
           git commit -m "docs: add changelog for ${{ steps.semver.outputs.semver_tag }}"
 
-      - name: Update version and create tag
-        run: git tag ${{ steps.semver.outputs.semver_tag }}
-
-      - name: Push tag to origin
-        run: |
-          git push origin ${{ github.ref }}
-          git push origin ${{ steps.semver.outputs.semver_tag }}
-
-      - name: Cleanup old alpha tags (keep latest 10)
-        if: ${{ steps.semver.outputs.is_prerelease == 'true' }}
-        run: |
-          git fetch --tags
-          
-          # Get all alpha tags sorted by creation date (newest first)
-          TAGS=$(git for-each-ref --sort=-creatordate --format '%(refname:short)' refs/tags | grep -E '.*-alpha.*')
-          
-          # Count total alpha tags
-          TOTAL_TAGS=$(echo "$TAGS" | wc -l)
-          
-          # If more than 10 tags, delete the oldest ones
-          if [ $TOTAL_TAGS -gt 10 ]; then
-            TAGS_TO_DELETE=$(echo "$TAGS" | tail -n +11)
-            for tag in $TAGS_TO_DELETE; do
-              git tag -d $tag
-              git push origin --delete $tag
-            done
-          fi
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: version/${{ steps.semver.outputs.semver_tag }}
+          base: main
+          title: "Version Update: ${{ steps.semver.outputs.semver_tag }}"
+          body: |
+            ### Version Update
+            - New version: ${{ steps.semver.outputs.semver_tag }}
+            - Changelog generated
+            - Package.json updated
+          draft: false
+          delete-branch: true
