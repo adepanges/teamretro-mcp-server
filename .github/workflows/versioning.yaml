@@ -17,10 +17,7 @@ jobs:
         run: echo "$GITHUB_CONTEXT"
 
   release-version:
-    if: |
-      github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'pull_request' && 
-       github.event.label.name == 'release')
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -103,7 +100,9 @@ jobs:
       #     fi
 
   prerelease-version:
-    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'develop'
+    if: |
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.base.ref == 'develop'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
