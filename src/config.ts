@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import envVar from 'env-var';
+import env from 'env-var';
 
 // Load environment variables from .env file
 const result = dotenv.config();
@@ -8,7 +8,7 @@ if (result.error) {
 }
 
 // Create env reader instance
-const envVars = envVar.from(process.env);
+const envVars = env.from(process.env);
 
 export const config: TeamRetroConfig = {
   baseUrl: envVars.get('TEAMRETRO_BASE_URL')
