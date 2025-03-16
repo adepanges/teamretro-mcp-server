@@ -5,7 +5,7 @@ on:
     types: [closed]
     branches:
       - develop
-      - main
+      - master
 
 jobs:
   alpha-prerelease:
@@ -24,8 +24,6 @@ jobs:
         with:
           branching_model: "git-flow"
           prerelease_id: "alpha"
-          main_branch_name: "main"
-          develop_branch_name: "develop"
           debug: true
       
       - name: Create version tag
@@ -44,7 +42,7 @@ jobs:
     if: |
       github.event_name == 'pull_request' &&
       github.event.pull_request.merged == true &&
-      github.event.pull_request.base.ref == 'master' &&
+      github.event.pull_request.base.ref == 'main' &&
       startsWith(github.event.pull_request.head.ref, 'hotfix/')
     runs-on: ubuntu-latest
     steps:
@@ -57,8 +55,6 @@ jobs:
         with:
           branching_model: "git-flow"
           prerelease_id: "beta"
-          main_branch_name: "main"
-          develop_branch_name: "develop"
           debug: true
       
       - name: Create version tag
