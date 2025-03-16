@@ -27,15 +27,22 @@ export async function createToolResponse<T extends Record<string, any>>(
   promise: Promise<ApiResponse<T>>
 ): Promise<ToolResponse> {
   const response = await promise;
-  const text = config.responseFormat === 'json' 
-    ? JSON.stringify(response.data, null, 2)
-    : Array.isArray(response.data)
-      ? formatTable(response.data, isListResponse(response) ? {
-          total: response.total,
-          offset: response.offset,
-          count: response.count
-        } : undefined)
-      : formatItem(response.data);
+  let text = "";
+
+  if (config.responseFormat === 'json') {
+    text = JSON.stringify(response.data, null, 2);
+  } else if (config.responseFormat === 'simple') {
+    if (Array.isArray(response.data) && isListResponse(response)) {
+      text = formatTable(response.data, {
+        total: response.total,
+        offset: response.offset,
+        count: response.count
+      });
+    }
+    else {
+      text = formatItem(response.data);
+    }
+  }
 
   return {
     content: [{
