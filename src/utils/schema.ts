@@ -1,9 +1,9 @@
 import { z } from "zod";
 
-const paginationSchema = z.object({
+const paginationSchema = {
   offset: z.number().int().min(0).default(0).describe("number"),
   limit: z.number().int().min(1).max(1000).default(1000).describe("number"),
-});
+};
 
 const idRegex = /^[a-zA-Z0-9]{22}$/;
 const idsRegex = /^([a-zA-Z0-9]{22})?(,[a-zA-Z0-9]{22})*$/;
@@ -17,7 +17,7 @@ export const tagSchema = z.string().min(0).max(16).describe("string");
 export const tagsSchema = z.array(tagSchema).describe("string[]");
 
 export const listTeamsSchema = z.object({
-  paginationSchema,
+  ...paginationSchema,
   teamTags: z.string().optional().describe("string,string,..."),
   teamIds: z.string().regex(idsRegex).optional().describe("string,string,..."),
 });
@@ -54,9 +54,9 @@ export const deleteTeamSchema = z.object({
 
 export const emailSchema = z.string().email();
 
-export const listUsersSchema = {
+export const listUsersSchema = z.object({
   ...paginationSchema,
-};
+});
 
 export const addUserSchema = z.object({
   email: emailSchema,
