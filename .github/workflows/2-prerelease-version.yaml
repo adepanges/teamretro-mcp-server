@@ -52,20 +52,20 @@ jobs:
       - id: semver
         uses: gandarez/semver-action@v2.0.0
         with:
-          prerelease_id: "beta"
+          prerelease_id: "alpha"
           debug: true
       
       - name: Create version tag
         run: |
           semver_tag=${{ steps.semver.outputs.semver_tag }}
-          if [[ ! $semver_tag == *"beta"* ]]; then
-            semver_tag="$semver_tag-beta.1"
+          if [[ ! $semver_tag == *"alpha"* ]]; then
+            semver_tag="$semver_tag-alpha.1"
           fi
           git tag $semver_tag
           git push origin $semver_tag
 
-      - name: Cleanup old beta tags (keep latest 10)
+      - name: Cleanup old alpha tags (keep latest 10)
         if: ${{ steps.semver.outputs.is_prerelease == 'true' }}
         run: |
           source ./scripts/cleanup-tags.sh
-          cleanup_tags beta 10
+          cleanup_tags alpha 10
