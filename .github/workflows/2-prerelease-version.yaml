@@ -1,0 +1,71 @@
+name: 2. Prerelease Version
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - develop
+      - master
+
+jobs:
+  alpha-prerelease:
+    if: |
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.base.ref == 'develop'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - id: semver
+        uses: gandarez/semver-action@v2.0.0
+        with:
+          prerelease_id: "alpha"
+          debug: true
+      
+      - name: Create version tag
+        if: ${{ steps.semver.outputs.is_prerelease == 'true' }}
+        run: |
+          git tag ${{ steps.semver.outputs.semver_tag }}
+          git push origin ${{ steps.semver.outputs.semver_tag }}
+
+      - name: Cleanup old alpha tags (keep latest 10)
+        if: ${{ steps.semver.outputs.is_prerelease == 'true' }}
+        run: |
+          source ./scripts/cleanup-tags.sh
+          cleanup_tags alpha 10
+
+  beta-prerelease:
+    if: |
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.base.ref == 'master' &&
+      startsWith(github.event.pull_request.head.ref, 'hotfix/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - id: semver
+        uses: gandarez/semver-action@v2.0.0
+        with:
+          prerelease_id: "alpha"
+          debug: true
+      
+      - name: Create version tag
+        run: |
+          semver_tag=${{ steps.semver.outputs.semver_tag }}
+          if [[ ! $semver_tag == *"alpha"* ]]; then
+            semver_tag="$semver_tag-alpha.1"
+          fi
+          git tag $semver_tag
+          git push origin $semver_tag
+
+      - name: Cleanup old alpha tags (keep latest 10)
+        if: ${{ steps.semver.outputs.is_prerelease == 'true' }}
+        run: |
+          source ./scripts/cleanup-tags.sh
+          cleanup_tags alpha 10

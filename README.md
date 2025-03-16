@@ -56,7 +56,7 @@ Add to your Claude MCP settings (`cline_mcp_settings.json`):
   "mcpServers": {
     "teamretro-mcp-server": {
       "command": "npx",
-      "args": ["-y", "@adepanges/teamretro-mcp-server"],
+      "args": ["-y", "teamretro-mcp-server"],
       "env": {
         "TEAMRETRO_BASE_URL": "https://api.teamretro.com",
         "TEAMRETRO_AUTH_TYPE": "apiKey",

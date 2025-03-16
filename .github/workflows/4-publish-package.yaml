@@ -1,0 +1,77 @@
+name: 4. Publish Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release tag version'
+        required: true
+        type: string
+
+jobs:
+  validate-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ inputs.version }}
+
+      - name: Validate Version
+        run: |
+          if [ ! -f "changelog/${{ inputs.version }}.md" ]; then
+            echo "Changelog file for ${{ inputs.version }} not found"
+            exit 1
+          fi
+          echo "Changelog validation successful"
+
+          version=v$(node -p "require('./package.json').version")
+
+          if [ "$version" != "${{ inputs.version }}" ]; then
+            echo "Version mismatch: $version != ${{ inputs.version }}"
+            exit 1
+          fi
+          echo "Version validation successful"
+
+  publish-npm:
+    needs: validate-version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ inputs.version }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install and Build
+        run: |
+          npm install
+          npm run build
+
+          chmod +x ./dist/index.js
+
+      - name: Publish package
+        run: |
+          npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
+          npm publish --access public --tag latest
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  create-release:
+    needs: publish-npm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ inputs.version }}
+
+      - uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ inputs.version }}
+          bodyFile: "changelog/${{ inputs.version }}.md"

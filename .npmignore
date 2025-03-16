@@ -1,0 +1,15 @@
+# Ignore everything except dist and README.md
+*
+!dist/
+!README.md
+
+# Specific exclusions
+src/
+tsconfig.json
+.gitignore
+.env.example
+todo.md
+changelog/
+.github/
+scripts/
+test/

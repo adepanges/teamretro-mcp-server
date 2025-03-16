@@ -1,0 +1,142 @@
+name: 3. Release Version
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [closed]
+    branches:
+      - master
+
+jobs:
+  release-version:
+    if: |
+      github.event_name == 'workflow_dispatch' &&
+      github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install conventional-changelog
+        run: npm install -g conventional-changelog-cli
+
+      - id: semver
+        uses: gandarez/semver-action@v2.0.0
+        with:
+          prerelease_id: "alpha"
+          debug: true
+
+      - name: Branching
+        id: branch
+        run: |
+          git fetch --tags
+
+          git checkout -b version/${{ steps.semver.outputs.semver_tag }}
+          git push origin version/${{ steps.semver.outputs.semver_tag }}
+          
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            # When triggered by PR, use the PR's base branch
+            echo "target=${{ github.base_ref }}" >> $GITHUB_OUTPUT
+          elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            # When manually dispatched, use the branch where workflow was triggered
+            echo "target=${{ github.ref }}" >> $GITHUB_OUTPUT
+          else
+            # Fallback to master branch
+            echo "target=master" >> $GITHUB_OUTPUT
+          fi
+
+          git config --global user.email "noreply@github.com"
+          git config --global user.name "github-actions[bot]"
+
+      - name: Update package.json version
+        run: |
+          
+          npm version ${{ steps.semver.outputs.semver_tag }} --no-git-tag-version
+          git add package.json
+          git commit -m "chore: update version to ${{ steps.semver.outputs.semver_tag }}"
+
+      - name: Generate Version Changelog
+        run: |
+          mkdir -p changelog
+
+          rm -f changelog/${{ steps.semver.outputs.semver_tag }}.md
+
+          conventional-changelog -p angular --skip-unstable -o changelog/${{ steps.semver.outputs.semver_tag }}.md
+          echo "- [${{ steps.semver.outputs.semver_tag }}](./changelog/${{ steps.semver.outputs.semver_tag }}.md)" >> CHANGELOG.md
+          
+          git add changelog/ CHANGELOG.md
+          git commit -m "docs: add changelog for ${{ steps.semver.outputs.semver_tag }}"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: version/${{ steps.semver.outputs.semver_tag }}
+          base: "${{ steps.branch.outputs.target }}"
+          title: "Version Update: ${{ steps.semver.outputs.semver_tag }}"
+          body: |
+            ### Version Update
+            - New version: ${{ steps.semver.outputs.semver_tag }}
+            - Changelog generated
+            - Package.json updated
+          draft: false
+          delete-branch: true
+
+      - name: Cleanup Old Version Branches
+        run: |
+          source ./scripts/cleanup-branches.sh
+          cleanup_branches 5
+
+  create-release-tag:
+    if: |
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.merged == true &&
+      startsWith(github.event.pull_request.head.ref, 'version/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get package version
+        id: version
+        run: |
+          echo "version=v$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Validate version
+        id: validate-changelog
+        run: |
+          if [ ! -f "changelog/${{ steps.version.outputs.version }}.md" ]; then
+            echo "Changelog file for ${{ steps.version.outputs.version }} not found"
+            exit 1
+          fi
+          echo "Changelog validation successful"
+
+          if git ls-remote --tags origin ${{ steps.version.outputs.version }} | grep -q ${{ steps.version.outputs.version }}; then
+            echo "Tag ${{ steps.version.outputs.version }} already exists"
+            exit 1
+          fi
+          echo "Tag ${{ steps.version.outputs.version }} does not exist"
+
+      - name: Create tag
+        run: |
+          git config --global user.email "noreply@github.com"
+          git config --global user.name "github-actions[bot]"
+          git tag ${{ steps.version.outputs.version }}
+          git push origin ${{ steps.version.outputs.version }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: version/${{ steps.version.outputs.version }}
+          base: develop
+          title: "Sync version/${{ steps.version.outputs.version }} to develop"
+          body: |
+            ### Version Update
+            - New version: ${{ steps.version.outputs.version }}
+            - Changelog generated
+            - Package.json updated
+          draft: false
+          delete-branch: false
