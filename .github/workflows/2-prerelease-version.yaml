@@ -52,7 +52,7 @@ jobs:
       - id: semver
         uses: gandarez/semver-action@v2.0.0
         with:
-          prerelease_id: "beta"
+          prerelease_id: "alpha"
           debug: true
       
       - name: Create version tag
