@@ -1,16 +1,24 @@
 import { z } from "zod";
+
 import { createToolResponse } from "../../utils/tools.js";
 import { teamsService } from "./service.js";
+import {
+  idSchema,
+  idsRegex,
+  memberSchema,
+  nameSchema,
+  paginationSchema,
+  tagsSchema,
+} from "../../utils/schema.js";
 
 export const teamTools = {
   list_teams: {
     schema: z.object({
-      offset: z.number().int().min(0).default(0).describe("number"),
-      limit: z.number().int().min(1).max(1000).default(1000).describe("number"),
+      ...paginationSchema,
       teamTags: z.string().optional().describe("string,string,..."),
       teamIds: z
         .string()
-        .regex(/^([a-zA-Z0-9]{22})?(,[a-zA-Z0-9]{22})*$/)
+        .regex(idsRegex)
         .optional()
         .describe("string,string,..."),
     }),
@@ -20,32 +28,23 @@ export const teamTools = {
       limit?: number;
       teamTags?: string;
       teamIds?: string;
-    }) => {
-      return createToolResponse(teamsService.listTeams(args));
-    },
+    }) => createToolResponse(teamsService.listTeams(args)),
   },
 
   detail_team: {
     schema: z.object({
-      teamId: z
-        .string()
-        .regex(/^[a-zA-Z0-9]{22}$/, "Invalid team ID format")
-        .describe("string"),
+      teamId: idSchema,
     }),
     description: "Get a single team by ID",
-    handler: async (args: { teamId: string }) => {
-      return createToolResponse(teamsService.getTeam(args.teamId));
-    },
+    handler: async (args: { teamId: string }) =>
+      createToolResponse(teamsService.getTeam(args.teamId)),
   },
 
   update_team: {
     schema: z.object({
-      teamId: z
-        .string()
-        .regex(/^[a-zA-Z0-9]{22}$/, "Invalid team ID format")
-        .describe("string"),
-      name: z.string().min(1).max(64).describe("string"),
-      tags: z.array(z.string()).min(0).max(16).optional().describe("string[]"),
+      teamId: idSchema,
+      name: nameSchema,
+      tags: tagsSchema.optional(),
     }),
     description: "Update an existing team",
     handler: async (args: {
@@ -60,16 +59,10 @@ export const teamTools = {
 
   create_team: {
     schema: z.object({
-      name: z.string().min(1).max(64).describe("string"),
-      tags: z.array(z.string()).min(0).max(16).optional().describe("string[]"),
+      name: nameSchema,
+      tags: tagsSchema.optional(),
       members: z
-        .array(
-          z.object({
-            email: z.string().email(),
-            name: z.string().nullable().optional(),
-            teamAdmin: z.boolean().default(false),
-          })
-        )
+        .array(memberSchema)
         .optional()
         .describe("{ email: string, name?: string, teamAdmin?: boolean }[]"),
     }),
@@ -78,21 +71,15 @@ export const teamTools = {
       name: string;
       tags?: string[];
       members?: TeamMember[];
-    }) => {
-      return createToolResponse(teamsService.createTeam(args));
-    },
+    }) => createToolResponse(teamsService.createTeam(args)),
   },
 
   delete_team: {
     schema: z.object({
-      teamId: z
-        .string()
-        .regex(/^[a-zA-Z0-9]{22}$/, "Invalid team ID format")
-        .describe("string"),
+      teamId: idSchema,
     }),
     description: "Delete an existing team",
-    handler: async (args: { teamId: string }) => {
-      return createToolResponse(teamsService.deleteTeam(args.teamId));
-    },
+    handler: async (args: { teamId: string }) =>
+      createToolResponse(teamsService.deleteTeam(args.teamId)),
   },
 };
