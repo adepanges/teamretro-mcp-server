@@ -24,3 +24,5 @@ export const memberSchema = z.object({
   name: z.string().nullable().optional(),
   teamAdmin: z.boolean().default(false),
 });
+
+export const booleanSchema = z.boolean().describe("boolean");

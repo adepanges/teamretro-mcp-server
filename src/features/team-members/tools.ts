@@ -1,13 +1,14 @@
 import { z } from 'zod';
 import { createToolResponse } from '../../utils/tools.js';
 import { teamMembersService } from "./service.js";
+import { idSchema, emailSchema, paginationSchema, nameSchema, booleanSchema } from "../../utils/schema.js";
 
 export const teamMembersTools = {
+
   list_team_members: {
     schema: z.object({
-      teamId: z.string().regex(/^[a-zA-Z0-9]{22}$/, "Invalid team ID format").describe("string"),
-      offset: z.number().int().min(0).default(0).describe("number"),
-      limit: z.number().int().min(1).max(1000).default(1000).describe("number")
+      teamId: idSchema,
+      ...paginationSchema,
     }),
     description: "List team members with pagination",
     handler: async (args: {
@@ -18,10 +19,11 @@ export const teamMembersTools = {
       return createToolResponse(teamMembersService.listTeamMembers(args));
     },
   },
+
   get_team_member: {
     schema: z.object({
-      teamId: z.string().regex(/^[a-zA-Z0-9]{22}$/, "Invalid team ID format").describe("string"),
-      email: z.string().email().describe("string")
+      teamId: idSchema,
+      email: emailSchema,
     }),
     description: "Get a team member by email",
     handler: async (args: {
@@ -31,12 +33,13 @@ export const teamMembersTools = {
       return createToolResponse(teamMembersService.getTeamMember(args));
     },
   },
+
   update_team_member: {
     schema: z.object({
-      teamId: z.string().regex(/^[a-zA-Z0-9]{22}$/, "Invalid team ID format").describe("string"),
-      email: z.string().email().describe("string"),
-      name: z.string().nullable().optional().describe("string"),
-      teamAdmin: z.boolean().optional().describe("boolean"),
+      teamId: idSchema,
+      email: emailSchema,
+      name: nameSchema.nullable().optional(),
+      teamAdmin: booleanSchema.optional(),
     }),
     description: "Update a team member by email",
     handler: async (args: {
@@ -56,10 +59,11 @@ export const teamMembersTools = {
       return createToolResponse(teamMembersService.updateTeamMember({ teamId, email }, body));
     },
   },
+
   remove_team_member: {
     schema: z.object({
-      teamId: z.string().regex(/^[a-zA-Z0-9]{22}$/, "Invalid team ID format").describe("string"),
-      email: z.string().email().describe("string"),
+      teamId: idSchema,
+      email: emailSchema,
     }),
     description: "Remove a team member by email",
     handler: async (args: {
@@ -69,12 +73,13 @@ export const teamMembersTools = {
       return createToolResponse(teamMembersService.removeTeamMember(args));
     },
   },
+
   add_team_member: {
     schema: z.object({
-      teamId: z.string().regex(/^[a-zA-Z0-9]{22}$/, "Invalid team ID format").describe("string"),
-      email: z.string().email().describe("string"),
-      name: z.string().nullable().optional().describe("string"),
-      teamAdmin: z.boolean().optional().describe("boolean"),
+      teamId: idSchema,
+      email: emailSchema,
+      name: nameSchema.nullable().optional(),
+      teamAdmin: booleanSchema.optional(),
     }),
     description: "Add a team member by email",
     handler: async (args: {
@@ -94,4 +99,5 @@ export const teamMembersTools = {
       return createToolResponse(teamMembersService.addTeamMember({ teamId, email }, body));
     },
   }
+
 };
