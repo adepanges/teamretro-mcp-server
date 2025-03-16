@@ -51,7 +51,6 @@ jobs:
       - name: Install and Build
         run: |
           npm install
-          npm run build
 
           chmod +x ./dist/index.js
 
