@@ -53,6 +53,8 @@ jobs:
           npm install
           npm run build
 
+          chmod +x ./dist/index.js
+
       - name: Publish package
         run: |
           npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
