@@ -3,6 +3,7 @@
   "version": "0.2.21",
   "type": "module",
   "main": "dist/index.js",
+  "bin": "./dist/index.js",
   "description": "MCP Server for TeamRetro integration, providing API services and tools for team management and analytics",
   "keywords": [
     "mcp",
@@ -10,7 +11,9 @@
     "api",
     "server",
     "integration",
-    "team-management"
+    "retrospective",
+    "meeting",
+    "tools"
   ],
   "author": {
     "name": "Ade Pangestu",
