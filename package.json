@@ -1,6 +1,6 @@
 {
   "name": "teamretro-mcp-server",
-  "version": "0.2.21",
+  "version": "0.2.23",
   "type": "module",
   "main": "dist/index.js",
   "bin": "./dist/index.js",
