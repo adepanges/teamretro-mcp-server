@@ -50,3 +50,29 @@ export const createTeamSchema = z.object({
 export const deleteTeamSchema = z.object({
   teamId: idSchema,
 });
+
+
+export const emailSchema = z.string().email();
+
+export const listUsersSchema = {
+  ...paginationSchema,
+};
+
+export const addUserSchema = z.object({
+  email: emailSchema,
+  name: nameSchema.optional(),
+});
+
+export const updateUserSchema = z.object({
+  email: emailSchema,
+  name: nameSchema.optional(),
+  emailAddress: emailSchema,
+});
+
+export const deleteUserSchema = z.object({
+  email: emailSchema,
+});
+
+export const getUserSchema = z.object({
+  email: emailSchema,
+});
