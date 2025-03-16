@@ -22,7 +22,6 @@ jobs:
       - id: semver
         uses: gandarez/semver-action@v2.0.0
         with:
-          branching_model: "git-flow"
           prerelease_id: "alpha"
           debug: true
       
@@ -53,11 +52,10 @@ jobs:
       - id: semver
         uses: gandarez/semver-action@v2.0.0
         with:
-          branching_model: "git-flow"
           prerelease_id: "beta"
           debug: true
       
       - name: Create version tag
         run: |
-          git tag ${{ steps.semver.outputs.semver_tag }}
-          git push origin ${{ steps.semver.outputs.semver_tag }}
+          git tag ${{ steps.semver.outputs.semver_tag }}-beta.1
+          git push origin ${{ steps.semver.outputs.semver_tag }}-beta.1
