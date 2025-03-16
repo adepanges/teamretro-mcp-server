@@ -5,13 +5,13 @@ on:
   pull_request:
     types: [closed]
     branches:
-      - main
+      - master
 
 jobs:
   release-version:
     if: |
       github.event_name == 'workflow_dispatch' &&
-      github.ref == 'refs/heads/main'
+      github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -24,10 +24,7 @@ jobs:
       - id: semver
         uses: gandarez/semver-action@v2.0.0
         with:
-          branching_model: "git-flow"
           prerelease_id: "alpha"
-          main_branch_name: "main"
-          develop_branch_name: "develop"
           debug: true
 
       - name: Branching
@@ -45,8 +42,8 @@ jobs:
             # When manually dispatched, use the branch where workflow was triggered
             echo "target=${{ github.ref }}" >> $GITHUB_OUTPUT
           else
-            # Fallback to main branch
-            echo "target=main" >> $GITHUB_OUTPUT
+            # Fallback to master branch
+            echo "target=master" >> $GITHUB_OUTPUT
           fi
 
           git config --global user.email "noreply@github.com"

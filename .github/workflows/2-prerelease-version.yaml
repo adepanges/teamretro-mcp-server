@@ -5,8 +5,7 @@ on:
     types: [closed]
     branches:
       - develop
-      - hotfix/*
-      - release/*
+      - master
 
 jobs:
   alpha-prerelease:
@@ -23,10 +22,7 @@ jobs:
       - id: semver
         uses: gandarez/semver-action@v2.0.0
         with:
-          branching_model: "git-flow"
           prerelease_id: "alpha"
-          main_branch_name: "main"
-          develop_branch_name: "develop"
           debug: true
       
       - name: Create version tag
@@ -45,8 +41,8 @@ jobs:
     if: |
       github.event_name == 'pull_request' &&
       github.event.pull_request.merged == true &&
-      (github.event.pull_request.base.ref == 'hotfix/*' ||
-       github.event.pull_request.base.ref == 'release/*')
+      github.event.pull_request.base.ref == 'master' &&
+      startsWith(github.event.pull_request.head.ref, 'hotfix/')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -56,17 +52,17 @@ jobs:
       - id: semver
         uses: gandarez/semver-action@v2.0.0
         with:
-          branching_model: "git-flow"
           prerelease_id: "beta"
-          main_branch_name: "main"
-          develop_branch_name: "develop"
           debug: true
       
       - name: Create version tag
-        if: ${{ steps.semver.outputs.is_prerelease == 'true' }}
         run: |
-          git tag ${{ steps.semver.outputs.semver_tag }}
-          git push origin ${{ steps.semver.outputs.semver_tag }}
+          semver_tag=${{ steps.semver.outputs.semver_tag }}
+          if [[ ! $semver_tag == *"beta"* ]]; then
+            semver_tag="$semver_tag-beta.1"
+          fi
+          git tag $semver_tag
+          git push origin $semver_tag
 
       - name: Cleanup old beta tags (keep latest 10)
         if: ${{ steps.semver.outputs.is_prerelease == 'true' }}
