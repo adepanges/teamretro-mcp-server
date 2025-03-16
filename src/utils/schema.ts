@@ -5,22 +5,58 @@ export const paginationSchema = {
   limit: z.number().int().min(1).max(1000).default(1000).describe("number"),
 };
 
+
+// ----------------------
+// -------- Regex -------
+// ----------------------
 export const idRegex = /^[a-zA-Z0-9]{22}$/;
 
 export const idsRegex = /^([a-zA-Z0-9]{22})?(,[a-zA-Z0-9]{22})*$/;
 
-export const idSchema = z.string().regex(idRegex, "Invalid ID format").describe("string");
+// ----------------------
+// --- Common Schemas ---
+// ----------------------
 
-export const nameSchema = z.string().min(1).max(64).describe("string");
+export const stringSchema = z.string().describe("string");
 
-export const tagSchema = z.string().min(0).max(16).describe("string");
+export const idSchema = stringSchema.regex(idRegex, "Invalid ID format");
+
+export const nameSchema = stringSchema.min(1).max(64);
+
+export const tagSchema = stringSchema.min(0).max(16);
 
 export const tagsSchema = z.array(tagSchema).describe("string[]");
 
-export const emailSchema = z.string().email();
+export const emailSchema = stringSchema.email().describe("email");
+
+export const dateStringSchema = stringSchema.datetime().describe("iso date");
+
+export const booleanSchema = z.boolean().default(false).describe("boolean");
+
+export const stringFilterSchema = z
+  .string()
+  .optional()
+  .describe("string,string,...");
+
+export const idFilterSchema = z
+  .string()
+  .regex(idsRegex)
+  .optional()
+  .describe("id,id,...");
+
+export const nullableStringSchema = stringSchema.nullable();
+export const titleSchema = stringSchema.min(1).max(10000);
+
+export const objectEmailSchema = z.object({
+  email: emailSchema,
+});
+
+// ----------------------
+// --- Entity Schemas ---
+// ----------------------
 
 export const memberSchema = z.object({
-  email: z.string().email(),
-  name: z.string().nullable().optional(),
-  teamAdmin: z.boolean().default(false),
+  email: emailSchema,
+  name: nameSchema.nullable().optional(),
+  teamAdmin: booleanSchema,
 });

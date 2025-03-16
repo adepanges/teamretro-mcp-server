@@ -48,7 +48,7 @@ declare global {
      * @maxLength 64
      * @example "TeamRetro"
      */
-    name: string;
+    name?: string;
 
     /**
      * Set of unique tags for filtering reports
@@ -61,14 +61,14 @@ declare global {
     /**
      * List of team members
      */
-    members: TeamMember[];
+    members?: TeamMember[];
 
     /**
      * Date when this team was first created
      * @format date-time
      * @readonly
      */
-    created: string;
+    created?: string;
   }
 }
 

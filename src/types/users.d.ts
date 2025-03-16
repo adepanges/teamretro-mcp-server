@@ -9,33 +9,33 @@ declare global {
      * @maxLength 64
      * @example "Lucy Webster"
      */
-    name: string | null;
+    name?: string | null;
 
     /**
      * User's email address
      * @format email
      * @example "lucy@teamretro.com"
      */
-    email: string;
+    email?: string;
 
     /**
      * Whether the user has organization admin privileges
      * @default false
      */
-    organizationAdmin: boolean;
+    organizationAdmin?: boolean;
 
     /**
      * Date when this user was created
      * @format date-time
      * @readonly
      */
-    created: string;
+    created?: string;
 
     /**
      * Whether the user is active
      * @default true
      */
-    active: boolean;
+    active?: boolean;
   }
 }
 

@@ -14,16 +14,16 @@ declare global {
    * @property {User[]} assignedTo - Array of users assigned to this action
    */
   interface Action {
-    id: string;
-    title: string;
-    priority: 'low' | 'medium' | 'high';
-    created: string;
-    due?: string;
-    completed?: string;
-    team: Team;
-    assignedTo: User[];
+    id?: string;
+    title?: string;
+    priority?: 'low' | 'medium' | 'high';
+    created?: string;
+    due?: string | null;
+    completed?: string | null;
+    team?: Team;
+    teamId?: string;
+    assignedTo?: User[];
   }
-
 }
 
 export {};

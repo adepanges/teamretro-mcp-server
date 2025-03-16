@@ -4,7 +4,7 @@ import { createSearchParams } from '../../utils/url';
 export class ActionsService extends TeamRetroService {
   /**
    * Retrieves a paginated list of actions based on the provided parameters.
-   * 
+   *
    * @param params - The parameters for filtering and pagination
    * @param params.offset - The number of items to skip before starting to collect the result set
    * @param params.limit - The maximum number of items to return
@@ -27,4 +27,19 @@ export class ActionsService extends TeamRetroService {
 
     return this.get<ListApiResponse<Action>>(`/v1/actions?${searchParams}`);
   }
+
+  /**
+   * Create a new action
+   * @param data Action data
+   * @returns Created action object
+   */
+  async createAction(data: Action): Promise<SingleApiResponse<Action>> {
+    return this.post<SingleApiResponse<Action>>("/v1/actions", data);
+  }
+
+  async getAction(actionId: string): Promise<SingleApiResponse<Action>> {
+    return this.get<SingleApiResponse<Action>>(`/v1/actions/${actionId}`);
+  }
 }
+
+export const actionsService = new ActionsService();
