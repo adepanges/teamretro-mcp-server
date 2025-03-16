@@ -10,7 +10,9 @@
     "api",
     "server",
     "integration",
-    "team-management"
+    "retrospective",
+    "meeting",
+    "tools"
   ],
   "author": {
     "name": "Ade Pangestu",
