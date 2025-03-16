@@ -10,12 +10,13 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "baseUrl": ".",
+    "baseUrl": "./",
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
     "paths": {
-      "@types/*": ["src/types/*"]
+      "@types/*": ["src/types/*"],
+      "src/*": ["./src/*"]
     }
   },
   "include": ["src/**/*"],

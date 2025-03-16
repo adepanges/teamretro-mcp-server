@@ -1,26 +1,22 @@
 import { z } from "zod";
 
-import { createToolResponse } from "../../utils/tools.js";
+import { createToolResponse } from "src/utils/tools.js";
 import { teamsService } from "./service.js";
 import {
+  idFilterSchema,
   idSchema,
-  idsRegex,
-  memberSchema,
   nameSchema,
   paginationSchema,
+  tagFilterSchema,
   tagsSchema,
-} from "../../utils/schema.js";
+} from "src/utils/schema/generic.js";
+import { TeamMember, teamMemberSchema, teamSchema } from "src/utils/schema/Team.js";
 
 export const teamTools = {
   list_teams: {
-    schema: z.object({
-      ...paginationSchema,
-      teamTags: z.string().optional().describe("string,string,..."),
-      teamIds: z
-        .string()
-        .regex(idsRegex)
-        .optional()
-        .describe("string,string,..."),
+    schema: paginationSchema.extend({
+      teamTags: tagFilterSchema,
+      teamIds: idFilterSchema,
     }),
     description: "List teams from TeamRetro with filtering and pagination",
     handler: async (args: {
@@ -32,39 +28,34 @@ export const teamTools = {
   },
 
   detail_team: {
-    schema: z.object({
-      teamId: idSchema,
-    }),
+    schema: teamSchema.pick({ id: true }),
     description: "Get a single team by ID",
-    handler: async (args: { teamId: string }) =>
-      createToolResponse(teamsService.getTeam(args.teamId)),
+    handler: async (args: { id: string }) =>
+      createToolResponse(teamsService.getTeam(args.id)),
   },
 
   update_team: {
-    schema: z.object({
-      teamId: idSchema,
-      name: nameSchema,
-      tags: tagsSchema.optional(),
+    schema: teamSchema.pick({
+      id: true,
+      name: true,
+      tags: true
     }),
     description: "Update an existing team",
     handler: async (args: {
-      teamId: string;
+      id: string;
       name?: string;
       tags?: string[];
     }) => {
-      const { teamId, ...updateData } = args;
-      return createToolResponse(teamsService.updateTeam(teamId, updateData));
+      const { id, ...updateData } = args;
+      return createToolResponse(teamsService.updateTeam(id, updateData));
     },
   },
 
   create_team: {
-    schema: z.object({
-      name: nameSchema,
-      tags: tagsSchema.optional(),
-      members: z
-        .array(memberSchema)
-        .optional()
-        .describe("{ email: string, name?: string, teamAdmin?: boolean }[]"),
+    schema: teamSchema.pick({
+      name: true,
+      tags: true,
+      members: true,
     }),
     description: "Create a new team with optional members and tags",
     handler: async (args: {

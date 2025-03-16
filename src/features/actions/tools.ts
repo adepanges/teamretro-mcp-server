@@ -1,17 +1,13 @@
-import { z } from 'zod';
+import { Action, actionSchema } from 'src/utils/schema/Action.js';
+import { idFilterSchema, paginationSchema, tagFilterSchema } from 'src/utils/schema/generic.js';
+import { createToolResponse } from 'src/utils/tools.js';
 
-import {
-    dateStringSchema, idFilterSchema, idSchema, objectEmailSchema, paginationSchema,
-    stringFilterSchema, titleSchema
-} from '../../utils/schema.js';
-import { createToolResponse } from '../../utils/tools.js';
 import { actionsService } from './service.js';
 
 export const actionTools = {
   list_actions: {
-    schema: z.object({
-      ...paginationSchema,
-      teamTags: stringFilterSchema,
+    schema: paginationSchema.extend({
+      teamTags: tagFilterSchema,
       teamIds: idFilterSchema,
     }),
     description: "List actions from TeamRetro with filtering and pagination",
@@ -24,12 +20,12 @@ export const actionTools = {
   },
 
   create_action: {
-    schema: z.object({
-      teamId: idSchema,
-      title: titleSchema,
-      due: dateStringSchema.nullable().optional(),
-      complete: dateStringSchema.nullable().optional(),
-      assignedTo: z.array(objectEmailSchema).max(16).default([]).optional(),
+    schema: actionSchema.pick({
+      teamId: true,
+      title: true,
+      due: true,
+      complete: true,
+      assignedTo: true,
     }),
     description: "Create a new action in TeamRetro",
     handler: async (args: Action) =>
@@ -37,11 +33,9 @@ export const actionTools = {
   },
 
   get_action: {
-    schema: z.object({
-      actionId: idSchema,
-    }),
+    schema: actionSchema.pick({ id: true }),
     description: "Get a single action by ID",
-    handler: async (args: { actionId: string }) =>
-      createToolResponse(actionsService.getAction(args.actionId)),
+    handler: async (args: { id: string }) =>
+      createToolResponse(actionsService.getAction(args.id)),
   },
 };

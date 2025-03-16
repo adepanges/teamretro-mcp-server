@@ -1,5 +1,6 @@
-import { TeamRetroService } from '../../services/TeamRetro.service';
-import { createSearchParams } from '../../utils/url';
+import { Action } from 'src/utils/schema/Action.js';
+import { TeamRetroService } from 'src/services/TeamRetro.service.js';
+import { createSearchParams } from 'src/utils/url.js';
 
 export class ActionsService extends TeamRetroService {
   /**
