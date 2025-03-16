@@ -20,9 +20,7 @@ class TeamsService extends TeamRetroService {
       teamIds: { value: params?.teamIds },
     });
 
-    return this.get<ListApiResponse<Team>>(`/v1/teams?${searchString}`, {
-      method: "GET",
-    });
+    return this.get<ListApiResponse<Team>>(`/v1/teams?${searchString}`, {});
   }
 
   /**
@@ -32,9 +30,7 @@ class TeamsService extends TeamRetroService {
    * @throws ErrorMCP if team not found
    */
   async getTeam(teamId: string): Promise<SingleApiResponse<Team>> {
-    return this.get<SingleApiResponse<Team>>(`/v1/teams/${teamId}`, {
-      method: "GET",
-    });
+    return this.get<SingleApiResponse<Team>>(`/v1/teams/${teamId}`, {});
   }
 
   /**
