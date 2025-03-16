@@ -57,5 +57,15 @@ jobs:
       
       - name: Create version tag
         run: |
-          git tag ${{ steps.semver.outputs.semver_tag }}-beta.1
-          git push origin ${{ steps.semver.outputs.semver_tag }}-beta.1
+          semver_tag=${{ steps.semver.outputs.semver_tag }}
+          if [[ ! $semver_tag == *"beta"* ]]; then
+            semver_tag="$semver_tag-beta.1"
+          fi
+          git tag $semver_tag
+          git push origin $semver_tag
+
+      - name: Cleanup old beta tags (keep latest 10)
+        if: ${{ steps.semver.outputs.is_prerelease == 'true' }}
+        run: |
+          source ./scripts/cleanup-tags.sh
+          cleanup_tags beta 10
