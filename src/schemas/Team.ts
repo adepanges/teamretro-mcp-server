@@ -1,18 +1,18 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 import {
-  baseSchema,
-  booleanSchema,
-  hasName,
-  hasNameEmail,
-  tagsSchema,
-} from "./generic.js";
+    baseSchema, booleanSchema, hasName, hasNameEmail, idSchema, tagsSchema
+} from './generic.js';
+
+export const teamIdSchema = z.object({
+  teamId: idSchema,
+});
 
 export const teamMemberSchema = baseSchema
   .extend({
     teamAdmin: booleanSchema,
   })
-  .merge(hasNameEmail);
+  .merge(hasNameEmail).merge(teamIdSchema);
 
 export const teamSchema = baseSchema
   .extend({
@@ -26,7 +26,7 @@ export const teamSchema = baseSchema
         })
     ).optional(),
   })
-  .merge(hasName);
+  .merge(hasName).merge(teamIdSchema);
 
 export type Team = z.infer<typeof teamSchema>;
 
