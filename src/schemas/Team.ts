@@ -24,7 +24,7 @@ export const teamSchema = baseSchema
           name: true,
           teamAdmin: true,
         })
-    ).optional(),
+    ).optional().describe('{ email: email, name?: string, teamAdmin: boolean }[]'),
   })
   .merge(hasName).merge(teamIdSchema);
 
