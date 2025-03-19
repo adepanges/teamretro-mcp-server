@@ -40,31 +40,28 @@ export const actionTools = {
   },
 
   update_action: {
-    schema: actionSchema
-      .pick({
-        id: true,
-        teamId: true,
-        title: true,
-        due: true,
-        complete: true,
-        priority: true,
-        assignedTo: true,
-      })
-      .partial()
-      .extend({ id: actionSchema.shape.id }),
+    schema: actionSchema.pick({
+      actionId: true,
+      teamId: true,
+      title: true,
+      due: true,
+      complete: true,
+      priority: true,
+      assignedTo: true,
+    }),
     description: "Update an existing action",
     handler: async (args: Action) => {
-      let { id, ...data } = args;
+      let { actionId, ...data } = args;
       data.team = { id: data.teamId, name: "" };
-      return createToolResponse(actionsService.updateAction(id, data));
+      return createToolResponse(actionsService.updateAction(actionId, data));
     },
   },
 
   delete_action: {
-    schema: actionSchema.pick({ id: true }),
+    schema: actionSchema.pick({ actionId: true }),
     description: "Delete an existing action",
-    handler: async (args: { id: string }) => {
-      return createToolResponse(actionsService.deleteAction(args.id));
+    handler: async (args: { actionId: string }) => {
+      return createToolResponse(actionsService.deleteAction(args.actionId));
     },
   },
 };
