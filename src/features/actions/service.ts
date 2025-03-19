@@ -41,6 +41,30 @@ export class ActionsService extends TeamRetroService {
   async getAction(actionId: string): Promise<SingleApiResponse<Action>> {
     return this.get<SingleApiResponse<Action>>(`/v1/actions/${actionId}`);
   }
+
+  /**
+   * Update an existing action
+   * @param actionId Action ID
+   * @param data Action data to update
+   * @returns Updated action object
+   */
+  async updateAction(
+    actionId: string,
+    data: Partial<Action>
+  ): Promise<SingleApiResponse<Action>> {
+    return this.patch<SingleApiResponse<Action>>(
+      `/v1/actions/${actionId}`,
+      data
+    );
+  }
+
+  /**
+   * Delete an existing action
+   * @param actionId Action ID
+   */
+  async deleteAction(actionId: string): Promise<SingleApiResponse<any>> {
+    return this.delete<any>(`/v1/actions/${actionId}`);
+  }
 }
 
 export const actionsService = new ActionsService();

@@ -38,4 +38,33 @@ export const actionTools = {
     handler: async (args: { id: string }) =>
       createToolResponse(actionsService.getAction(args.id)),
   },
+
+  update_action: {
+    schema: actionSchema
+      .pick({
+        id: true,
+        teamId: true,
+        title: true,
+        due: true,
+        complete: true,
+        priority: true,
+        assignedTo: true,
+      })
+      .partial()
+      .extend({ id: actionSchema.shape.id }),
+    description: "Update an existing action",
+    handler: async (args: Action) => {
+      let { id, ...data } = args;
+      data.team = { id: data.teamId, name: "" };
+      return createToolResponse(actionsService.updateAction(id, data));
+    },
+  },
+
+  delete_action: {
+    schema: actionSchema.pick({ id: true }),
+    description: "Delete an existing action",
+    handler: async (args: { id: string }) => {
+      return createToolResponse(actionsService.deleteAction(args.id));
+    },
+  },
 };

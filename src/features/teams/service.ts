@@ -71,8 +71,8 @@ class TeamsService extends TeamRetroService {
    */
   async deleteTeam(
     teamId: string
-  ): Promise<SingleApiResponse<Record<string, never>>> {
-    await this.delete<void>(`/v1/teams/${teamId}`);
+  ): Promise<SingleApiResponse<any>> {
+    await this.delete<any>(`/v1/teams/${teamId}`);
     return {
       success: true,
       data: {},
