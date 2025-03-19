@@ -1,4 +1,4 @@
-import { User } from 'src/utils/schema/User.js';
+import { User } from 'src/schemas/User.js';
 
 import { TeamRetroService } from '../../services/TeamRetro.service.js';
 import { createSearchParams } from '../../utils/url.js';

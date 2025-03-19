@@ -1,5 +1,5 @@
-import { Action, actionSchema } from 'src/utils/schema/Action.js';
-import { idFilterSchema, paginationSchema, tagFilterSchema } from 'src/utils/schema/generic.js';
+import { Action, actionSchema } from 'src/schemas/Action.js';
+import { idFilterSchema, paginationSchema, tagFilterSchema } from 'src/schemas/generic.js';
 import { createToolResponse } from 'src/utils/tools.js';
 
 import { actionsService } from './service.js';

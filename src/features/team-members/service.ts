@@ -1,4 +1,4 @@
-import { TeamMember } from 'src/utils/schema/Team.js';
+import { TeamMember } from 'src/schemas/Team.js';
 
 import { TeamRetroService } from 'src/services/TeamRetro.service.js';
 import { createSearchParams } from 'src/utils/url.js';

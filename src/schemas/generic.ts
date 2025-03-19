@@ -42,6 +42,11 @@ export const idFilterSchema = z.string()
 export const nullableStringSchema = z.string().nullable();
 export const titleSchema = z.string().min(1).max(10000);
 
+
+// ----------------------
+// --- Base Schemas ---
+// ----------------------
+
 export const baseSchema = z.object({
   id: idSchema,
   created: dateStringSchema.optional(),
@@ -55,4 +60,6 @@ export const hasName = z.object({
   name: nameSchema,
 });
 
-export const hasNameEmail = z.object({}).merge(hasName).merge(hasEmail);
+export const hasNameEmail = z.object({})
+  .merge(hasName)
+  .merge(hasEmail);

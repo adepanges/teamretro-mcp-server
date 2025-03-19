@@ -9,8 +9,8 @@ import {
   paginationSchema,
   tagFilterSchema,
   tagsSchema,
-} from "src/utils/schema/generic.js";
-import { TeamMember, teamMemberSchema, teamSchema } from "src/utils/schema/Team.js";
+} from "src/schemas/generic.js";
+import { TeamMember, teamMemberSchema, teamSchema } from "src/schemas/Team.js";
 
 export const teamTools = {
   list_teams: {

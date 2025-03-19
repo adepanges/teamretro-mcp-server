@@ -1,4 +1,4 @@
-import { Action } from 'src/utils/schema/Action.js';
+import { Action } from 'src/schemas/Action.js';
 import { TeamRetroService } from 'src/services/TeamRetro.service.js';
 import { createSearchParams } from 'src/utils/url.js';
 

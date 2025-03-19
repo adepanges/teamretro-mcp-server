@@ -6,7 +6,7 @@ import {
   emailSchema,
   nameSchema,
   paginationSchema,
-} from "../../utils/schema/generic.js";
+} from "../../schemas/generic.js";
 
 export const userTools = {
   list_users: {

@@ -7,11 +7,6 @@ import {
   hasNameEmail,
   tagsSchema,
 } from "./generic.js";
-import { autoDescribe } from "./helpers.js";
-
-// ----------------------
-// --- Entity Schemas ---
-// ----------------------
 
 export const teamMemberSchema = baseSchema
   .extend({
