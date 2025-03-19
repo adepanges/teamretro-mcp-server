@@ -3,17 +3,21 @@ import { zodToJsonSchema } from "zod-to-json-schema";
 import { teamTools } from "./features/teams/tools.js";
 import { userTools } from "./features/users/tools.js";
 import { teamMembersTools } from "./features/team-members/tools.js";
+import { actionTools } from "./features/actions/tools.js";
 
 const tools = {
   ...teamTools,
   ...userTools,
   ...teamMembersTools,
+  ...actionTools
 };
 
 const toolSchema = Object.entries(tools).map(([name, tool]) => ({
   name,
   description: tool.description,
-  inputSchema: zodToJsonSchema(tool.schema),
+  inputSchema: zodToJsonSchema(tool.schema, {
+    $refStrategy: "none",
+  }),
 }));
 
 const toolHandlers: {
