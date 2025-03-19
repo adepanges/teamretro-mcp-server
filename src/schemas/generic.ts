@@ -47,10 +47,14 @@ export const titleSchema = z.string().min(1).max(10000);
 // --- Base Schemas ---
 // ----------------------
 
-export const baseSchema = z.object({
+export const onlyIdSchema = z.object({
   id: idSchema,
-  created: dateStringSchema.optional(),
 });
+
+export const baseSchema = z.object({
+  created: dateStringSchema.optional(),
+})
+  .merge(onlyIdSchema);
 
 export const hasEmail = z.object({
   email: emailSchema.readonly(),

@@ -18,7 +18,7 @@ class UsersService extends TeamRetroService {
       limit: { value: params?.limit },
     });
 
-    return this.get<ListApiResponse<User>>(`/v1/users?${searchString}`, {});
+    return this.get<ListApiResponse<User>>(`/v1/users?${searchString}`);
   }
 
   async addUser(
