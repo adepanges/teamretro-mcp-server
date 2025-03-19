@@ -1,10 +1,11 @@
 import { z } from 'zod';
 
-import {
-  baseSchema, dateStringSchema, hasEmail, idSchema,
-  titleSchema
-} from './generic.js';
+import { baseSchema, dateStringSchema, hasEmail, idSchema, titleSchema } from './generic.js';
 import { teamSchema } from './Team.js';
+
+export const actionIdSchema = z.object({
+  actionId: idSchema,
+});
 
 export const actionSchema = baseSchema.extend({
   title: titleSchema,
@@ -20,6 +21,6 @@ export const actionSchema = baseSchema.extend({
     .default([])
     .optional()
     .describe("{ email: string }[]"),
-});
+}).merge(actionIdSchema);
 
 export type Action = z.infer<typeof actionSchema>;
