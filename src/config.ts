@@ -39,8 +39,6 @@ export const config: TeamRetroConfig = {
   }
 };
 
-console.log('Config:', config);
-
 // Validate auth configuration based on type
 switch (config.auth.type) {
   case 'apiKey':
