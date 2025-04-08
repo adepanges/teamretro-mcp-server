@@ -6,13 +6,11 @@ import {
   emailSchema,
   nameSchema,
   paginationSchema,
-} from "../../utils/schema.js";
+} from "../../schemas/generic.js";
 
 export const userTools = {
   list_users: {
-    schema: z.object({
-      ...paginationSchema,
-    }),
+    schema: paginationSchema,
     description: "List users with pagination",
     handler: async (args: { offset?: number; limit?: number }) =>
       createToolResponse(usersService.listUsers(args)),

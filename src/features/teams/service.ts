@@ -1,5 +1,7 @@
-import { TeamRetroService } from "../../services/TeamRetro.service.js";
-import { createSearchParams } from "../../utils/url.js";
+import { Team, TeamMember } from 'src/schemas/Team.js';
+
+import { TeamRetroService } from '../../services/TeamRetro.service.js';
+import { createSearchParams } from '../../utils/url.js';
 
 class TeamsService extends TeamRetroService {
   /**
@@ -69,8 +71,8 @@ class TeamsService extends TeamRetroService {
    */
   async deleteTeam(
     teamId: string
-  ): Promise<SingleApiResponse<Record<string, never>>> {
-    await this.delete<void>(`/v1/teams/${teamId}`);
+  ): Promise<SingleApiResponse<any>> {
+    await this.delete<any>(`/v1/teams/${teamId}`);
     return {
       success: true,
       data: {},

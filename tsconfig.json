@@ -10,12 +10,14 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "baseUrl": ".",
+    "baseUrl": "./",
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
+    "rootDirs":  ["src/**/*.ts", "!src/**/*.d.ts", "!**/node_modules/**", "!**/dist/**", "!node_modules", "!dist"],
     "paths": {
-      "@types/*": ["src/types/*"]
+      "@types/*": ["src/types/*"],
+      "src/*": ["./src/*"]
     }
   },
   "include": ["src/**/*"],
