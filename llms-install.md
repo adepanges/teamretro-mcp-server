@@ -6,20 +6,9 @@ This document provides instructions for LLMs to install and configure the TeamRe
 
 The simplest way to install is using NPX:
 
+**Environment Configuration:**
 ```json
-{
-  "mcpServers": {
-    "teamretro-mcp-server": {
-      "command": "npx",
-      "args": ["-y", "teamretro-mcp-server"],
-      "env": {
-        "TEAMRETRO_BASE_URL": "https://api.teamretro.com",
-        "TEAMRETRO_AUTH_TYPE": "apiKey",
-        "TEAMRETRO_API_KEY": "your-api-key"
-      }
-    }
-  }
-}
+{"mcpServers":{"teamretro-mcp-server":{"command":"npx","args":["-y","teamretro-mcp-server"],"env":{"TEAMRETRO_BASE_URL":"https://api.teamretro.com","TEAMRETRO_AUTH_TYPE":"apiKey","TEAMRETRO_API_KEY":"your-api-key"}}}}
 ```
 
 ## Required Environment Variables
@@ -33,56 +22,31 @@ The simplest way to install is using NPX:
 | TEAMRETRO_PASSWORD | Conditional | Required when TEAMRETRO_AUTH_TYPE=basic |
 | TEAMRETRO_TOKEN | Conditional | Required when TEAMRETRO_AUTH_TYPE=bearer |
 
-## Authentication Configuration Examples
+## Environment Configuration Tables
 
-### API Key Authentication (Default)
-```json
-{
-  "env": {
-    "TEAMRETRO_BASE_URL": "https://api.teamretro.com",
-    "TEAMRETRO_AUTH_TYPE": "apiKey",
-    "TEAMRETRO_API_KEY": "your-api-key"
-  }
-}
-```
+### API Key Authentication
+| Variable | Required | Description | Example |
+|----------|----------|-------------|---------|
+| TEAMRETRO_AUTH_TYPE | Yes | Must be set to `apiKey` | `apiKey` |
+| TEAMRETRO_API_KEY | Yes | Your TeamRetro API key | `your-api-key` |
 
-### Basic Authentication
-```json
-{
-  "env": {
-    "TEAMRETRO_BASE_URL": "https://api.teamretro.com",
-    "TEAMRETRO_AUTH_TYPE": "basic",
-    "TEAMRETRO_USERNAME": "your-username",
-    "TEAMRETRO_PASSWORD": "your-password"
-  }
-}
-```
+### Basic Authentication  
+| Variable | Required | Description | Example |
+|----------|----------|-------------|---------|
+| TEAMRETRO_AUTH_TYPE | Yes | Must be set to `basic` | `basic` |
+| TEAMRETRO_USERNAME | Yes | Your TeamRetro username | `your-username` |
+| TEAMRETRO_PASSWORD | Yes | Your TeamRetro password | `your-password` |
 
 ### Bearer Token Authentication
-```json
-{
-  "env": {
-    "TEAMRETRO_BASE_URL": "https://api.teamretro.com",
-    "TEAMRETRO_AUTH_TYPE": "bearer",
-    "TEAMRETRO_TOKEN": "your-bearer-token"
-  }
-}
-```
+| Variable | Required | Description | Example |
+|----------|----------|-------------|---------|
+| TEAMRETRO_AUTH_TYPE | Yes | Must be set to `bearer` | `bearer` |
+| TEAMRETRO_TOKEN | Yes | Your bearer token | `your-bearer-token` |
 
-## Logging Configuration (Optional)
-
-```json
-{
-  "env": {
-    "LOG_ENABLED": true,
-    "LOG_DIR": "/your-directory/logs",
-    "LOG_LEVEL": "info",
-    "LOG_MAX_FILES": 30
-  }
-}
-```
-
-## Notes
-- This is an unofficial integration with TeamRetro.com
-- All API calls are made directly to TeamRetro's public API endpoints
-- For API documentation: https://groupmap.stoplight.io/docs/teamretro/
+### Logging Configuration
+| Variable | Required | Description | Example |
+|----------|----------|-------------|---------|
+| LOG_ENABLED | No | Enable logging (default false) | `true` |
+| LOG_DIR | No | Log directory path | `/your-directory/logs` |
+| LOG_LEVEL | No | Log level (error, warn, info, debug) | `info` |
+| LOG_MAX_FILES | No | Maximum log files to keep | `30` |
