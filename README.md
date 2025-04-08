@@ -28,26 +28,18 @@ All API endpoints and functionality are based on TeamRetro's official API docume
 
 For a complete list of available MCP tools and their usage, see [TOOLS.md](TOOLS.md).
 
-## Installation
+## How to Use
 
-```bash
-git clone https://github.com/adepanges/teamretro-mcp-server.git
-cd teamretro-mcp-server
-npm install
-npm run build
-```
+Add to your Claude (`claude_desktop_config.json`) OR Cline settings (`cline_mcp_settings.json`) or another client that supports MCP servers:
 
-## Claude Integration
+### NPX (Recommended, Easy Setup)
 
-Add to your Claude MCP settings (`cline_mcp_settings.json`):
-
-### Local Development
 ```json
 {
   "mcpServers": {
     "teamretro-mcp-server": {
-      "command": "node",
-      "args": ["/path/to/teamretro-mcp-server/dist/index.js"],
+      "command": "npx",
+      "args": ["-y", "teamretro-mcp-server"],
       "env": {
         "TEAMRETRO_BASE_URL": "https://api.teamretro.com",
         "TEAMRETRO_AUTH_TYPE": "apiKey",
@@ -58,13 +50,21 @@ Add to your Claude MCP settings (`cline_mcp_settings.json`):
 }
 ```
 
-### NPM Package
+### From Source Code
+
+```bash
+git clone https://github.com/adepanges/teamretro-mcp-server.git
+cd teamretro-mcp-server
+npm install
+npm run build
+```
+
 ```json
 {
   "mcpServers": {
     "teamretro-mcp-server": {
-      "command": "npx",
-      "args": ["-y", "teamretro-mcp-server"],
+      "command": "node",
+      "args": ["/path/to/teamretro-mcp-server/dist/index.js"],
       "env": {
         "TEAMRETRO_BASE_URL": "https://api.teamretro.com",
         "TEAMRETRO_AUTH_TYPE": "apiKey",
