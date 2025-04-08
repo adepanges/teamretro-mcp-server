@@ -116,3 +116,9 @@ Add to your Claude MCP settings (`cline_mcp_settings.json`):
   }
 }
 ```
+
+
+## Changelog
+
+### [v0.2.21](changelog/v0.2.21.md)
+### [v0.2.23](changelog/v0.2.23.md)
