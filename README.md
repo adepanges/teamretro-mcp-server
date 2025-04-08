@@ -20,6 +20,10 @@ All API endpoints and functionality are based on TeamRetro's official API docume
 - Implementation strictly follows the public API specifications
 - Any changes to the TeamRetro API may affect this MCP server's functionality
 
+## Available Tools
+
+For a complete list of available MCP tools and their usage, see [TOOLS.md](TOOLS.md).
+
 ## Installation
 
 ```bash
