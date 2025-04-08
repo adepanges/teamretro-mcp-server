@@ -2,6 +2,10 @@
 
 Model Context Protocol (MCP) server for TeamRetro integration.
 
+<a href="https://glama.ai/mcp/servers/@adepanges/teamretro-mcp-server">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@adepanges/teamretro-mcp-server/badge" />
+</a>
+
 ## Important Notes
 
 ### Unofficial Integration
