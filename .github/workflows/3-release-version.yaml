@@ -11,7 +11,8 @@ jobs:
   release-version:
     if: |
       github.event_name == 'workflow_dispatch' &&
-      github.ref == 'refs/heads/master'
+      (github.ref == 'refs/heads/master' || 
+       github.ref == 'refs/heads/develop')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -35,16 +36,7 @@ jobs:
           git checkout -b version/${{ steps.semver.outputs.semver_tag }}
           git push origin version/${{ steps.semver.outputs.semver_tag }}
           
-          if [ "${{ github.event_name }}" == "pull_request" ]; then
-            # When triggered by PR, use the PR's base branch
-            echo "target=${{ github.base_ref }}" >> $GITHUB_OUTPUT
-          elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            # When manually dispatched, use the branch where workflow was triggered
-            echo "target=${{ github.ref }}" >> $GITHUB_OUTPUT
-          else
-            # Fallback to master branch
-            echo "target=master" >> $GITHUB_OUTPUT
-          fi
+          echo "target=master" >> $GITHUB_OUTPUT
 
           git config --global user.email "noreply@github.com"
           git config --global user.name "github-actions[bot]"

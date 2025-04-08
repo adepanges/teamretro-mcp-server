@@ -2,45 +2,49 @@ name: 4. Publish Package
 
 on:
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'Release tag version'
-        required: true
-        type: string
 
 jobs:
-  validate-version:
+  validation:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.extract_version.outputs.version }}
     steps:
+      - name: Extract version from tag
+        id: extract_version
+        run: |
+          echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: ${{ inputs.version }}
+          ref: ${{ steps.extract_version.outputs.version }}
 
       - name: Validate Version
         run: |
-          if [ ! -f "changelog/${{ inputs.version }}.md" ]; then
-            echo "Changelog file for ${{ inputs.version }} not found"
+          if [ ! -f "changelog/${{ steps.extract_version.outputs.version }}.md" ]; then
+            echo "Changelog file for ${{ steps.extract_version.outputs.version }} not found"
             exit 1
           fi
           echo "Changelog validation successful"
 
           version=v$(node -p "require('./package.json').version")
 
-          if [ "$version" != "${{ inputs.version }}" ]; then
-            echo "Version mismatch: $version != ${{ inputs.version }}"
+          if [ "$version" != "${{ steps.extract_version.outputs.version }}" ]; then
+            echo "Version mismatch: $version != ${{ steps.extract_version.outputs.version }}"
             exit 1
           fi
           echo "Version validation successful"
 
   publish-npm:
-    needs: validate-version
+    needs: validation
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ needs.validation.outputs.version }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: ${{ inputs.version }}
+          ref: ${{ needs.validation.outputs.version }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -62,15 +66,15 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   create-release:
-    needs: publish-npm
+    needs: [publish-npm]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: ${{ inputs.version }}
+          ref: ${{ needs.publish-npm.outputs.version }}
 
       - uses: ncipollo/release-action@v1
         with:
-          tag: ${{ inputs.version }}
-          bodyFile: "changelog/${{ inputs.version }}.md"
+          tag: ${{ needs.publish-npm.outputs.version }}
+          bodyFile: "changelog/${{ needs.publish-npm.outputs.version }}.md"
