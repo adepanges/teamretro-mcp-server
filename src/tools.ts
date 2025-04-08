@@ -9,7 +9,7 @@ const tools = {
   ...teamTools,
   ...userTools,
   ...teamMembersTools,
-  ...actionTools
+  // ...actionTools,
 };
 
 const toolSchema = Object.entries(tools).map(([name, tool]) => ({

@@ -1,5 +1,6 @@
-import { config } from "../config.js";
-import { ErrorMCP } from "../utils/error.js";
+import { config } from '../config.js';
+import { ErrorMCP } from '../utils/error.js';
+import { logger } from '../utils/logger.js';
 
 export abstract class TeamRetroService {
   /**
@@ -11,13 +12,13 @@ export abstract class TeamRetroService {
     switch (config.auth.type) {
       case "apiKey":
         if (!config.auth.apiKey) {
-          throw new ErrorMCP("API_KEY_REQUIRED", "AUTH_ERROR");
+          throw new ErrorMCP("API key is required for authentication. Please configure the 'apiKey' in your config.", "AUTH_ERROR");
         }
         return { "X-API-KEY": config.auth.apiKey };
 
       case "basic":
         if (!config.auth.username || !config.auth.password) {
-          throw new ErrorMCP("AUTH_CREDENTIALS_REQUIRED", "AUTH_ERROR");
+          throw new ErrorMCP("Basic auth requires both username and password. Please configure both in your config.", "AUTH_ERROR");
         }
         const basicAuth = Buffer.from(
           `${config.auth.username}:${config.auth.password}`
@@ -26,12 +27,12 @@ export abstract class TeamRetroService {
 
       case "bearer":
         if (!config.auth.token) {
-          throw new ErrorMCP("TOKEN_REQUIRED", "AUTH_ERROR");
+          throw new ErrorMCP("Bearer token is required for authentication. Please configure the 'token' in your config.", "AUTH_ERROR");
         }
         return { Authorization: `Bearer ${config.auth.token}` };
 
       default:
-        throw new ErrorMCP("INVALID_AUTH_TYPE", "AUTH_ERROR");
+        throw new ErrorMCP("Invalid authentication type configured. Supported types: 'apiKey', 'basic', 'bearer'.", "AUTH_ERROR");
     }
   }
 
@@ -144,22 +145,52 @@ export abstract class TeamRetroService {
       ...options.headers,
     };
 
+    const startTime = Date.now();
+    const method = options.method || 'GET';
+    const fullUrl = `${config.baseUrl}${endpoint}`;
+    logger.info(`${method} ${fullUrl} - Request started`);
+
     try {
       const response = await fetch(url, {
         ...options,
         headers,
       });
 
+      const duration = Date.now() - startTime;
+      logger.info(`${method} ${fullUrl} - ${response.status} (${duration}ms)`);
+
       if (!response.ok) {
-        throw new ErrorMCP("API_REQUEST_FAILED", response.status.toString());
+        const errorContext = {
+          url: fullUrl,
+          method,
+          status: response.status,
+          duration: Date.now() - startTime,
+        };
+        logger.error(`API request failed`, errorContext);
+        throw new ErrorMCP(
+          `API request failed with status ${response.status}. Check your request parameters and try again.`, 
+          "API_REQUEST_FAILED", 
+          { ...errorContext, body: response.body }
+        );
       }
 
       return response.json();
     } catch (error) {
+      const errorContext = {
+        url: fullUrl,
+        method,
+        duration: Date.now() - startTime,
+      };
+      logger.error("Network request failed", errorContext);
+      
       if (error instanceof ErrorMCP) {
         throw error;
       }
-      throw new ErrorMCP("REQUEST_FAILED", "REQUEST_ERROR");
+      throw new ErrorMCP(
+        "Network request failed. Check your connection and try again.", 
+        "REQUEST_ERROR",
+        errorContext
+      );
     }
   }
 }

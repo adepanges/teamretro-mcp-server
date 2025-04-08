@@ -1,10 +1,9 @@
-import dotenv from 'dotenv';
 import env from 'env-var';
+import { fileURLToPath } from 'url';
+import * as path from 'path';
 
-// Load environment variables from .env file
-const result = dotenv.config();
-if (result.error) {
-  console.warn('Warning: .env file not found or invalid');
+function getCurrentDir() {
+  return path.dirname(fileURLToPath(import.meta.url));
 }
 
 // Create env reader instance
@@ -25,8 +24,22 @@ export const config: TeamRetroConfig = {
   },
   responseFormat: envVars.get('TEAMRETRO_RESPONSE_FORMAT')
     .default('simple')
-    .asEnum(['simple', 'json']) as ResponseFormat
+    .asEnum(['simple', 'json']) as ResponseFormat,
+  log: {
+    enabled: envVars.get('LOG_ENABLED')
+      .default('false')
+      .asBool(),
+    dir: envVars.get('LOG_DIR')
+      .default(path.join(getCurrentDir(), '..', 'logs'))
+      .asString(),
+    level: envVars.get('LOG_LEVEL')
+      .default('info')
+      .asEnum(['error', 'warn', 'info', 'debug']),
+    maxFiles: envVars.get('LOG_MAX_FILES').default(30).asInt()
+  }
 };
+
+console.log('Config:', config);
 
 // Validate auth configuration based on type
 switch (config.auth.type) {
