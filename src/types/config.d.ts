@@ -6,6 +6,13 @@ declare global {
    */
   type ResponseFormat = 'json' | 'simple';
 
+  interface LogConfig {
+    dir: string;
+    level: 'error' | 'warn' | 'info' | 'debug';
+    maxFiles?: number;
+    enabled: boolean;
+  }
+
   // Service Configuration type
   interface TeamRetroConfig {
     baseUrl: string;
@@ -20,6 +27,7 @@ declare global {
       token?: string;
     };
     responseFormat: ResponseFormat;
+    log: LogConfig;
   }
 }
 

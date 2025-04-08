@@ -69,6 +69,16 @@ Add to your Claude MCP settings (`cline_mcp_settings.json`):
 
 ### Environment Variables Examples
 
+#### Logging Configuration
+```json
+{
+  "env": {
+    "LOG_DIR": "/your-directory/logs",  // Custom log directory path
+    "LOG_LEVEL": "info",  // error, warn, info, debug
+    "LOG_MAX_FILES": 30   // Maximum number of log files to keep
+  }
+}
+
 #### API Key Authentication (Default)
 ```json
 {

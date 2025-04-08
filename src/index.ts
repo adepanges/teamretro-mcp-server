@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { logger } from "./utils/logger.js";
 import {
   CallToolRequestSchema,
   ErrorCode,
@@ -13,6 +14,7 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 
 import { toolHandlers, toolSchema } from "./tools.js";
+import { formatClientError } from "./utils/error.js";
 
 class TeamRetroMCPServer {
   private server: Server;
@@ -35,7 +37,7 @@ class TeamRetroMCPServer {
     this.setupTools();
     this.setupResource();
 
-    this.server.onerror = (error) => console.error("[MCP Error]", error);
+    this.server.onerror = (error) => logger.error(error, { source: "MCP Server" });
 
     // Error handling
     process.on("SIGINT", async () => {
@@ -64,7 +66,9 @@ class TeamRetroMCPServer {
       try {
         response = await func(args);
       } catch (error: any) {
-        throw new McpError(ErrorCode.InternalError, error.message);
+        logger.error(error, { tool: name, arguments: args });
+        const clientError = formatClientError(error);
+        throw new McpError(ErrorCode.InternalError, clientError.message, clientError.code);
       }
 
       return response;
@@ -89,9 +93,13 @@ class TeamRetroMCPServer {
     this.server.setRequestHandler(
       ReadResourceRequestSchema,
       async (request) => {
+        const errorMessage = `Resource not found: ${request.params.uri}`;
+        logger.error(errorMessage, { type: "ResourceNotFound" });
+        const clientError = formatClientError(new Error(errorMessage));
         throw new McpError(
           ErrorCode.MethodNotFound,
-          `Resource not found: ${request.params.uri}`
+          clientError.message,
+          clientError.code
         );
       }
     );
@@ -112,4 +120,8 @@ class TeamRetroMCPServer {
 }
 
 const server = new TeamRetroMCPServer();
-server.run().catch(console.error);
+server.run().catch((error) => {
+  logger.error(error, { context: "Server Startup" });
+  const clientError = formatClientError(error);
+  console.error(JSON.stringify(clientError));
+});
