@@ -2,6 +2,10 @@
 
 Model Context Protocol (MCP) server for TeamRetro integration.
 
+<a href="https://glama.ai/mcp/servers/@adepanges/teamretro-mcp-server">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@adepanges/teamretro-mcp-server/badge" />
+</a>
+
 ## Important Notes
 
 ### Unofficial Integration
@@ -77,9 +81,10 @@ Add to your Claude MCP settings (`cline_mcp_settings.json`):
 ```json
 {
   "env": {
-    "LOG_DIR": "/your-directory/logs",  // Custom log directory path
-    "LOG_LEVEL": "info",  // error, warn, info, debug
-    "LOG_MAX_FILES": 30   // Maximum number of log files to keep
+    "LOG_ENABLED": true,
+    "LOG_DIR": "/your-directory/logs",
+    "LOG_LEVEL": "info",
+    "LOG_MAX_FILES": 30
   }
 }
 ```
@@ -117,9 +122,3 @@ Add to your Claude MCP settings (`cline_mcp_settings.json`):
   }
 }
 ```
-
-
-## Changelog
-
-### [v0.2.21](changelog/v0.2.21.md)
-### [v0.2.23](changelog/v0.2.23.md)
