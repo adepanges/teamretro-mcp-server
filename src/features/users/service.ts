@@ -1,3 +1,5 @@
+import { User } from 'src/schemas/User.js';
+
 import { TeamRetroService } from '../../services/TeamRetro.service.js';
 import { createSearchParams } from '../../utils/url.js';
 
@@ -16,7 +18,7 @@ class UsersService extends TeamRetroService {
       limit: { value: params?.limit },
     });
 
-    return this.get<ListApiResponse<User>>(`/v1/users?${searchString}`, {});
+    return this.get<ListApiResponse<User>>(`/v1/users?${searchString}`);
   }
 
   async addUser(

@@ -1,18 +1,22 @@
 import { z } from "zod";
-import { createToolResponse } from "../../utils/tools.js";
+
+import { createToolResponse } from "src/utils/tools.js";
 import { teamsService } from "./service.js";
+import {
+  idFilterSchema,
+  idSchema,
+  nameSchema,
+  paginationSchema,
+  tagFilterSchema,
+  tagsSchema,
+} from "src/schemas/generic.js";
+import { TeamMember, teamMemberSchema, teamSchema } from "src/schemas/Team.js";
 
 export const teamTools = {
   list_teams: {
-    schema: z.object({
-      offset: z.number().int().min(0).default(0).describe("number"),
-      limit: z.number().int().min(1).max(1000).default(1000).describe("number"),
-      teamTags: z.string().optional().describe("string,string,..."),
-      teamIds: z
-        .string()
-        .regex(/^([a-zA-Z0-9]{22})?(,[a-zA-Z0-9]{22})*$/)
-        .optional()
-        .describe("string,string,..."),
+    schema: paginationSchema.extend({
+      teamTags: tagFilterSchema,
+      teamIds: idFilterSchema,
     }),
     description: "List teams from TeamRetro with filtering and pagination",
     handler: async (args: {
@@ -20,79 +24,53 @@ export const teamTools = {
       limit?: number;
       teamTags?: string;
       teamIds?: string;
-    }) => {
-      return createToolResponse(teamsService.listTeams(args));
-    },
+    }) => createToolResponse(teamsService.listTeams(args)),
   },
 
   detail_team: {
-    schema: z.object({
-      teamId: z
-        .string()
-        .regex(/^[a-zA-Z0-9]{22}$/, "Invalid team ID format")
-        .describe("string"),
-    }),
+    schema: teamSchema.pick({ id: true }),
     description: "Get a single team by ID",
-    handler: async (args: { teamId: string }) => {
-      return createToolResponse(teamsService.getTeam(args.teamId));
-    },
+    handler: async (args: { id: string }) =>
+      createToolResponse(teamsService.getTeam(args.id)),
   },
 
   update_team: {
-    schema: z.object({
-      teamId: z
-        .string()
-        .regex(/^[a-zA-Z0-9]{22}$/, "Invalid team ID format")
-        .describe("string"),
-      name: z.string().min(1).max(64).describe("string"),
-      tags: z.array(z.string()).min(0).max(16).optional().describe("string[]"),
+    schema: teamSchema.pick({
+      id: true,
+      name: true,
+      tags: true
     }),
     description: "Update an existing team",
     handler: async (args: {
-      teamId: string;
+      id: string;
       name?: string;
       tags?: string[];
     }) => {
-      const { teamId, ...updateData } = args;
-      return createToolResponse(teamsService.updateTeam(teamId, updateData));
+      const { id, ...updateData } = args;
+      return createToolResponse(teamsService.updateTeam(id, updateData));
     },
   },
 
   create_team: {
-    schema: z.object({
-      name: z.string().min(1).max(64).describe("string"),
-      tags: z.array(z.string()).min(0).max(16).optional().describe("string[]"),
-      members: z
-        .array(
-          z.object({
-            email: z.string().email(),
-            name: z.string().nullable().optional(),
-            teamAdmin: z.boolean().default(false),
-          })
-        )
-        .optional()
-        .describe("{ email: string, name?: string, teamAdmin?: boolean }[]"),
+    schema: teamSchema.pick({
+      name: true,
+      tags: true,
+      members: true,
     }),
     description: "Create a new team with optional members and tags",
     handler: async (args: {
       name: string;
       tags?: string[];
       members?: TeamMember[];
-    }) => {
-      return createToolResponse(teamsService.createTeam(args));
-    },
+    }) => createToolResponse(teamsService.createTeam(args)),
   },
 
   delete_team: {
     schema: z.object({
-      teamId: z
-        .string()
-        .regex(/^[a-zA-Z0-9]{22}$/, "Invalid team ID format")
-        .describe("string"),
+      teamId: idSchema,
     }),
     description: "Delete an existing team",
-    handler: async (args: { teamId: string }) => {
-      return createToolResponse(teamsService.deleteTeam(args.teamId));
-    },
+    handler: async (args: { teamId: string }) =>
+      createToolResponse(teamsService.deleteTeam(args.teamId)),
   },
 };

@@ -1,66 +1,75 @@
-import { z } from 'zod';
+import { z } from "zod";
 
-import { createToolResponse } from '../../utils/tools.js';
-import { usersService } from './service.js';
+import { createToolResponse } from "../../utils/tools.js";
+import { usersService } from "./service.js";
+import {
+  emailSchema,
+  nameSchema,
+  paginationSchema,
+} from "../../schemas/generic.js";
 
 export const userTools = {
   list_users: {
-    schema: z.object({
-      offset: z.number().min(0).optional().default(0).describe('number'),
-      limit: z.number().min(1).max(1000).optional().default(1000).describe('number')
-    }),
-    description: 'List users with pagination',
-    handler: async (args: { offset?: number; limit?: number }) => {
-      return createToolResponse(usersService.listUsers(args));
-    }
+    schema: paginationSchema,
+    description: "List users with pagination",
+    handler: async (args: { offset?: number; limit?: number }) =>
+      createToolResponse(usersService.listUsers(args)),
   },
+
   add_user: {
     schema: z.object({
-      email: z.string().email(),
-      name: z.string().nullable().optional(),
+      email: emailSchema,
+      name: nameSchema.optional(),
     }),
-    description: 'Add or update a user by email',
-    handler: async (args: { email: string; name: string | null; emailAddress: string }) => {
-      return createToolResponse(
+    description: "Add or update a user by email",
+    handler: async (args: {
+      email: string;
+      name: string | null;
+      emailAddress: string;
+    }) =>
+      createToolResponse(
         usersService.addUser(args.email, {
           name: args.name,
-          emailAddress: args.email,
+          emailAddress: args.emailAddress,
         })
-      );
-    }
+      ),
   },
+
   update_user: {
     schema: z.object({
-      email: z.string().email().describe('string'),
-      name: z.string().nullable().describe('string'),
-      emailAddress: z.string().email().describe('string')
+      email: emailSchema,
+      name: nameSchema.optional(),
+      emailAddress: emailSchema,
     }),
-    description: 'Update an existing user\'s information',
-    handler: async (args: { email: string; name?: string | null; emailAddress?: string }) => {
-      return createToolResponse(
+    description: "Update an existing user's information",
+    handler: async (args: {
+      email: string;
+      name?: string | null;
+      emailAddress?: string;
+    }) =>
+      createToolResponse(
         usersService.updateUser(args.email, {
           name: args.name,
           emailAddress: args.emailAddress,
         })
-      );
-    }
+      ),
   },
+
   delete_user: {
     schema: z.object({
-      email: z.string().email().describe('string')
+      email: emailSchema,
     }),
-    description: 'Delete a user by email',
-    handler: async (args: { email: string }) => {
-      return createToolResponse(usersService.deleteUser(args.email));
-    }
+    description: "Delete a user by email",
+    handler: async (args: { email: string }) =>
+      createToolResponse(usersService.deleteUser(args.email)),
   },
+
   get_user: {
     schema: z.object({
-      email: z.string().email().describe('string')
+      email: emailSchema,
     }),
-    description: 'Get a single user by email',
-    handler: async (args: { email: string }) => {
-      return createToolResponse(usersService.getUser(args.email));
-    }
-  }
+    description: "Get a single user by email",
+    handler: async (args: { email: string }) =>
+      createToolResponse(usersService.getUser(args.email)),
+  },
 };

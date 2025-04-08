@@ -1,5 +1,7 @@
-import { TeamRetroService } from "../../services/TeamRetro.service.js";
-import { createSearchParams } from "../../utils/url.js";
+import { Team, TeamMember } from 'src/schemas/Team.js';
+
+import { TeamRetroService } from '../../services/TeamRetro.service.js';
+import { createSearchParams } from '../../utils/url.js';
 
 class TeamsService extends TeamRetroService {
   /**
@@ -20,9 +22,7 @@ class TeamsService extends TeamRetroService {
       teamIds: { value: params?.teamIds },
     });
 
-    return this.get<ListApiResponse<Team>>(`/v1/teams?${searchString}`, {
-      method: "GET",
-    });
+    return this.get<ListApiResponse<Team>>(`/v1/teams?${searchString}`);
   }
 
   /**
@@ -32,9 +32,7 @@ class TeamsService extends TeamRetroService {
    * @throws ErrorMCP if team not found
    */
   async getTeam(teamId: string): Promise<SingleApiResponse<Team>> {
-    return this.get<SingleApiResponse<Team>>(`/v1/teams/${teamId}`, {
-      method: "GET",
-    });
+    return this.get<SingleApiResponse<Team>>(`/v1/teams/${teamId}`);
   }
 
   /**
@@ -73,8 +71,8 @@ class TeamsService extends TeamRetroService {
    */
   async deleteTeam(
     teamId: string
-  ): Promise<SingleApiResponse<Record<string, never>>> {
-    await this.delete<void>(`/v1/teams/${teamId}`);
+  ): Promise<SingleApiResponse<any>> {
+    await this.delete<any>(`/v1/teams/${teamId}`);
     return {
       success: true,
       data: {},

@@ -44,8 +44,8 @@
     "README.md"
   ],
   "scripts": {
-    "dev": "tsc -w",
-    "build": "rimraf dist && tsc",
+    "dev": "rimraf dist && concurrently -k -n TSC,ALIAS \"tsc -w\" \"tsc-alias -w\"",
+    "build": "rimraf dist && tsc && tsc-alias",
     "start": "node dist/index.js",
     "clean": "rimraf dist",
     "test": "echo \"Error: no test specified\" && exit 0",
@@ -59,7 +59,9 @@
   },
   "devDependencies": {
     "@types/node": "^20.17.19",
+    "concurrently": "^9.1.2",
     "rimraf": "^6.0.1",
+    "tsc-alias": "^1.8.11",
     "typescript": "^5.0.0"
   }
 }
