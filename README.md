@@ -20,6 +20,10 @@ All API endpoints and functionality are based on TeamRetro's official API docume
 - Implementation strictly follows the public API specifications
 - Any changes to the TeamRetro API may affect this MCP server's functionality
 
+## Available Tools
+
+For a complete list of available MCP tools and their usage, see [TOOLS.md](TOOLS.md).
+
 ## Installation
 
 ```bash
@@ -68,6 +72,16 @@ Add to your Claude MCP settings (`cline_mcp_settings.json`):
 ```
 
 ### Environment Variables Examples
+
+#### Logging Configuration
+```json
+{
+  "env": {
+    "LOG_DIR": "/your-directory/logs",  // Custom log directory path
+    "LOG_LEVEL": "info",  // error, warn, info, debug
+    "LOG_MAX_FILES": 30   // Maximum number of log files to keep
+  }
+}
 
 #### API Key Authentication (Default)
 ```json
