@@ -82,6 +82,7 @@ Add to your Claude MCP settings (`cline_mcp_settings.json`):
     "LOG_MAX_FILES": 30   // Maximum number of log files to keep
   }
 }
+```
 
 #### API Key Authentication (Default)
 ```json
