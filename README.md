@@ -28,6 +28,10 @@ All API endpoints and functionality are based on TeamRetro's official API docume
 
 For a complete list of available MCP tools and their usage, see [TOOLS.md](TOOLS.md).
 
+## Changelog
+
+For a detailed list of changes and updates, see [CHANGELOG.md](CHANGELOG.md).
+
 ## How to Use
 
 Add to your Claude (`claude_desktop_config.json`) OR Cline settings (`cline_mcp_settings.json`) or another client that supports MCP servers:
