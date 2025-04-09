@@ -1,15 +1,20 @@
 import env from 'env-var';
-import { fileURLToPath } from 'url';
+import fs from 'fs';
 import * as path from 'path';
+import { fileURLToPath } from 'url';
 
 function getCurrentDir() {
   return path.dirname(fileURLToPath(import.meta.url));
 }
 
+const packageJsonPath = path.join(getCurrentDir(), '..', 'package.json');
+const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+
 // Create env reader instance
 const envVars = env.from(process.env);
 
 export const config: TeamRetroConfig = {
+  version: packageJson.version,
   baseUrl: envVars.get('TEAMRETRO_BASE_URL')
     .default('https://api.teamretro.com')
     .asString(),
@@ -26,16 +31,16 @@ export const config: TeamRetroConfig = {
     .default('simple')
     .asEnum(['simple', 'json']) as ResponseFormat,
   log: {
-    enabled: envVars.get('LOG_ENABLED')
+    enabled: envVars.get('TEAMRETRO_LOG_ENABLED')
       .default('false')
       .asBool(),
-    dir: envVars.get('LOG_DIR')
+    dir: envVars.get('TEAMRETRO_LOG_DIR')
       .default(path.join(getCurrentDir(), '..', 'logs'))
       .asString(),
-    level: envVars.get('LOG_LEVEL')
+    level: envVars.get('TEAMRETRO_LOG_LEVEL')
       .default('info')
       .asEnum(['error', 'warn', 'info', 'debug']),
-    maxFiles: envVars.get('LOG_MAX_FILES').default(30).asInt()
+    maxFiles: envVars.get('TEAMRETRO_LOG_MAX_FILES').default(30).asInt()
   }
 };
 

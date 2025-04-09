@@ -85,10 +85,10 @@ npm run build
 ```json
 {
   "env": {
-    "LOG_ENABLED": true,
-    "LOG_DIR": "/your-directory/logs",
-    "LOG_LEVEL": "info",
-    "LOG_MAX_FILES": 30
+    "TEAMRETRO_LOG_ENABLED": true,
+    "TEAMRETRO_LOG_DIR": "/your-directory/logs",
+    "TEAMRETRO_LOG_LEVEL": "info",
+    "TEAMRETRO_LOG_MAX_FILES": 30
   }
 }
 ```

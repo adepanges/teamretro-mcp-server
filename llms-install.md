@@ -46,7 +46,7 @@ The simplest way to install is using NPX:
 ### Logging Configuration
 | Variable | Required | Description | Example |
 |----------|----------|-------------|---------|
-| LOG_ENABLED | No | Enable logging (default false) | `true` |
-| LOG_DIR | No | Log directory path | `/your-directory/logs` |
-| LOG_LEVEL | No | Log level (error, warn, info, debug) | `info` |
-| LOG_MAX_FILES | No | Maximum log files to keep | `30` |
+| TEAMRETRO_LOG_ENABLED | No | Enable logging (default false) | `true` |
+| TEAMRETRO_LOG_DIR | No | Log directory path | `/your-directory/logs` |
+| TEAMRETRO_LOG_LEVEL | No | Log level (error, warn, info, debug) | `info` |
+| TEAMRETRO_LOG_MAX_FILES | No | Maximum log files to keep | `30` |

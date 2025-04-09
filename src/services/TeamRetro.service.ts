@@ -141,6 +141,7 @@ export abstract class TeamRetroService {
     const url = `${config.baseUrl}${endpoint}`;
     const headers = {
       "Content-Type": "application/json",
+      "User-Agent": `TeamRetro MCP Server v${config.version}`,
       ...this.getAuthHeaders(),
       ...options.headers,
     };
