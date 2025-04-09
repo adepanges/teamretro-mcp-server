@@ -14,7 +14,7 @@ const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
 const envVars = env.from(process.env);
 
 export const config: TeamRetroConfig = {
-  version: packageJson.version,
+  version: "v" + packageJson.version,
   baseUrl: envVars.get('TEAMRETRO_BASE_URL')
     .default('https://api.teamretro.com')
     .asString(),
