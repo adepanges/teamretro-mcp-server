@@ -68,8 +68,18 @@ class TeamRetroMCPServer {
       } catch (error: any) {
         logger.error(error, { tool: name, arguments: args });
         const clientError = formatClientError(error);
-        throw new McpError(ErrorCode.InternalError, clientError.message, clientError.code);
+        response = {
+          isError: true,
+          content: [
+            {
+              type: "text",
+              text: clientError.message,
+            },
+          ],
+        };
       }
+
+      logger.info(`${name} Tool response:\n${JSON.stringify(response, null, 2)}`)
 
       return response;
     });

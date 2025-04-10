@@ -18,7 +18,7 @@ export const teamTools = {
       teamTags: tagFilterSchema,
       teamIds: idFilterSchema,
     }),
-    description: "List teams from TeamRetro with filtering and pagination",
+    description: "List teams from TeamRetro with filtering by tags and IDs, and pagination using offset and limit parameters",
     handler: async (args: {
       offset?: number;
       limit?: number;
@@ -29,7 +29,7 @@ export const teamTools = {
 
   detail_team: {
     schema: teamSchema.pick({ id: true }),
-    description: "Get a single team by ID",
+    description: "Retrieve detailed information about a single team by its unique ID",
     handler: async (args: { id: string }) =>
       createToolResponse(teamsService.getTeam(args.id)),
   },
@@ -40,7 +40,7 @@ export const teamTools = {
       name: true,
       tags: true
     }),
-    description: "Update an existing team",
+    description: "Update an existing team's details, such as its name and associated tags, by providing the team's ID",
     handler: async (args: {
       id: string;
       name?: string;
@@ -57,7 +57,7 @@ export const teamTools = {
       tags: true,
       members: true,
     }),
-    description: "Create a new team with optional members and tags",
+    description: "Create a new team with a required name, and optional tags and members",
     handler: async (args: {
       name: string;
       tags?: string[];
@@ -69,7 +69,7 @@ export const teamTools = {
     schema: z.object({
       teamId: idSchema,
     }),
-    description: "Delete an existing team",
+    description: "Delete an existing team by its ID",
     handler: async (args: { teamId: string }) =>
       createToolResponse(teamsService.deleteTeam(args.teamId)),
   },

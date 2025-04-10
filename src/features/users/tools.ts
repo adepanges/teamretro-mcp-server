@@ -11,7 +11,7 @@ import {
 export const userTools = {
   list_users: {
     schema: paginationSchema,
-    description: "List users with pagination",
+    description: "List users with pagination using offset and limit parameters to control the number of results returned",
     handler: async (args: { offset?: number; limit?: number }) =>
       createToolResponse(usersService.listUsers(args)),
   },
@@ -21,7 +21,7 @@ export const userTools = {
       email: emailSchema,
       name: nameSchema.optional(),
     }),
-    description: "Add or update a user by email",
+    description: "Add a new user or update an existing user's information by their email address, specifying optional name and emailAddress",
     handler: async (args: {
       email: string;
       name: string | null;
@@ -41,7 +41,7 @@ export const userTools = {
       name: nameSchema.optional(),
       emailAddress: emailSchema,
     }),
-    description: "Update an existing user's information",
+    description: "Update an existing user's details, such as their name and emailAddress, by providing their current email",
     handler: async (args: {
       email: string;
       name?: string | null;
@@ -59,7 +59,7 @@ export const userTools = {
     schema: z.object({
       email: emailSchema,
     }),
-    description: "Delete a user by email",
+    description: "Delete a user by their email address",
     handler: async (args: { email: string }) =>
       createToolResponse(usersService.deleteUser(args.email)),
   },
@@ -68,7 +68,7 @@ export const userTools = {
     schema: z.object({
       email: emailSchema,
     }),
-    description: "Get a single user by email",
+    description: "Retrieve detailed information about a single user by their email address",
     handler: async (args: { email: string }) =>
       createToolResponse(usersService.getUser(args.email)),
   },
