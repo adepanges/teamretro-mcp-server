@@ -7,7 +7,7 @@ import { teamMembersService } from './service.js';
 export const teamMembersTools = {
   list_team_members: {
     schema: paginationSchema.merge(teamIdSchema),
-    description: "List team members with pagination",
+    description: "Retrieve a list of team members for a specified team ID with pagination controls for offset and limit.",
     handler: async (args: {
       teamId: string;
       offset?: number;
@@ -19,7 +19,7 @@ export const teamMembersTools = {
 
   get_team_member: {
     schema: teamMemberSchema.pick({ teamId: true, email: true }),
-    description: "Get a team member by email",
+    description: "Fetch a team member by their email address within a specified team.",
     handler: async (args: { teamId: string; email: string }) => {
       return createToolResponse(teamMembersService.getTeamMember(args));
     },
@@ -31,7 +31,7 @@ export const teamMembersTools = {
       email: true,
       teamAdmin: true,
     }),
-    description: "Update a team member by email",
+    description: "Update a team member's details, such as their name or team admin status, by their email address within a specified team.",
     handler: async (args: {
       teamId: string;
       email: string;
@@ -54,7 +54,7 @@ export const teamMembersTools = {
 
   remove_team_member: {
     schema: teamMemberSchema.pick({ teamId: true, email: true }),
-    description: "Remove a team member by email",
+    description: "Remove a team member from a team by their email address.",
     handler: async (args: { teamId: string; email: string }) => {
       return createToolResponse(teamMembersService.removeTeamMember(args));
     },
@@ -66,7 +66,7 @@ export const teamMembersTools = {
       email: true,
       teamAdmin: true,
     }),
-    description: "Add a team member by email",
+    description: "Add a new team member to a team by their email address, with optional specification of team admin status.",
     handler: async (args: {
       teamId: string;
       email: string;
