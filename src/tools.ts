@@ -4,12 +4,14 @@ import { actionTools } from './features/actions/tools.js';
 import { teamMembersTools } from './features/team-members/tools.js';
 import { teamTools } from './features/teams/tools.js';
 import { userTools } from './features/users/tools.js';
+import { retrospectiveTools } from './features/retrospectives/tools.js';
 
 const tools = {
   ...userTools,
   ...teamTools,
   ...teamMembersTools,
   ...actionTools,
+  ...retrospectiveTools,
 };
 
 const toolSchema = Object.entries(tools).map(([name, tool]) => ({
