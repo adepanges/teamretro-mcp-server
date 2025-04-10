@@ -10,7 +10,7 @@ export const retrospectiveTools = {
       teamIds: idFilterSchema,
     }),
     description:
-      "List retrospectives from TeamRetro with filtering and pagination",
+      "List retrospectives from TeamRetro with filtering by team tags and IDs, and pagination using offset and limit parameters",
     handler: async (args: {
       offset?: number;
       limit?: number;
@@ -21,14 +21,14 @@ export const retrospectiveTools = {
 
   get_retrospective: {
     schema: onlyIdSchema,
-    description: "Get a single retrospective by ID",
+    description: "Retrieve detailed information about a single retrospective by its unique ID",
     handler: async (args: { id: string }) =>
       createToolResponse(retrospectivesService.getRetrospective(args.id)),
   },
 
   delete_retrospective: {
     schema: onlyIdSchema,
-    description: "Delete an existing retrospective",
+    description: "Delete an existing retrospective by its ID",
     handler: async (args: { id: string }) => {
       return createToolResponse(
         retrospectivesService.deleteRetrospective(args.id)
