@@ -8,15 +8,20 @@ Model Context Protocol (MCP) server for TeamRetro integration.
 
 ## Important Notes
 
-### Unofficial Integration
-This is an unofficial integration with TeamRetro.com. This MCP server is a community-developed tool and is not affiliated with, endorsed by, or officially connected to TeamRetro.com or its parent company.
+### Unofficial MCP Server
+This MCP server is an unofficial community-developed interface to TeamRetro's services. While not developed or endorsed by TeamRetro, it provides standardized access to their platform.
 
-### API Integration Approach
-This MCP server operates as a direct pass-through to TeamRetro's public API endpoints:
-- All API calls are made directly to TeamRetro's public API endpoints
-- No request interception or modification is performed
-- Responses are passed through as received from TeamRetro's API
-- Authentication is handled using your provided credentials
+### Official API Integration
+The server connects directly to TeamRetro's official public API:
+- Uses documented endpoints from TeamRetro's API specifications
+- Maintains full API compliance and version tracking
+- Implements all required authentication methods
+- Preserves original API responses without modification
+
+Key points:
+✅ MCP server: Unofficial community project  
+✅ API connection: Direct to TeamRetro's official endpoints  
+✅ Implementation: Follows published API specifications  
 
 ### API Documentation Source
 All API endpoints and functionality are based on TeamRetro's official API documentation:
