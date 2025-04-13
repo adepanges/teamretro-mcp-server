@@ -15,6 +15,7 @@ declare global {
 
   // Service Configuration type
   interface TeamRetroConfig {
+    version: string;
     baseUrl: string;
     auth: {
       type: 'apiKey' | 'basic' | 'bearer';
