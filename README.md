@@ -34,8 +34,6 @@ For a detailed list of changes and updates, see [CHANGELOG.md](CHANGELOG.md).
 
 ## How to Use
 
-Add to your Claude (`claude_desktop_config.json`) OR Cline settings (`cline_mcp_settings.json`) or another client that supports MCP servers:
-
 ### NPX (Recommended, Easy Setup)
 
 ```json
@@ -56,6 +54,7 @@ Add to your Claude (`claude_desktop_config.json`) OR Cline settings (`cline_mcp_
 
 ### From Source Code
 
+1. Clone the repository, install dependencies, and build the project:
 ```bash
 git clone https://github.com/adepanges/teamretro-mcp-server.git
 cd teamretro-mcp-server
@@ -63,6 +62,9 @@ npm install
 npm run build
 ```
 
+#### Running in AI Client
+
+1. Configure the AI client with the following settings:
 ```json
 {
   "mcpServers": {
@@ -79,16 +81,24 @@ npm run build
 }
 ```
 
+#### Running with Inspector
+
+1. Configure the environment variables by copying `.env.example` to `.env` and modifying it according to your needs.
+2. Run the server with inspector:
+```bash
+npm run inspector
+```
+
 ### Environment Variables Examples
 
 #### Logging Configuration
 ```json
 {
   "env": {
-    "LOG_ENABLED": true,
-    "LOG_DIR": "/your-directory/logs",
-    "LOG_LEVEL": "info",
-    "LOG_MAX_FILES": 30
+    "TEAMRETRO_LOG_ENABLED": true,
+    "TEAMRETRO_LOG_DIR": "/your-directory/logs",
+    "TEAMRETRO_LOG_LEVEL": "info",
+    "TEAMRETRO_LOG_MAX_FILES": 30
   }
 }
 ```
