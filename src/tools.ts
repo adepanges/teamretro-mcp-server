@@ -1,6 +1,10 @@
 import { zodToJsonSchema } from 'zod-to-json-schema';
 
 import { actionTools } from './features/actions/tools.js';
+import { agreementTools } from './features/agreements/tools.js';
+import { healthCheckTools } from './features/health-checks/tools.js';
+import { healthModelTools } from './features/health-models/tools.js';
+import { retrospectiveTools } from './features/retrospectives/tools.js';
 import { teamMembersTools } from './features/team-members/tools.js';
 import { teamTools } from './features/teams/tools.js';
 import { userTools } from './features/users/tools.js';
@@ -10,6 +14,10 @@ const tools = {
   ...teamTools,
   ...teamMembersTools,
   ...actionTools,
+  ...retrospectiveTools,
+  ...agreementTools,
+  ...healthModelTools,
+  ...healthCheckTools,
 };
 
 const toolSchema = Object.entries(tools).map(([name, tool]) => ({
