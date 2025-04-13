@@ -18,11 +18,6 @@ The server connects directly to TeamRetro's official public API:
 - Implements all required authentication methods
 - Preserves original API responses without modification
 
-Key points:
-✅ MCP server: Unofficial community project  
-✅ API connection: Direct to TeamRetro's official endpoints  
-✅ Implementation: Follows published API specifications  
-
 ### API Documentation Source
 All API endpoints and functionality are based on TeamRetro's official API documentation:
 - Source: https://groupmap.stoplight.io/docs/teamretro/
