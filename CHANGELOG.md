@@ -4,3 +4,4 @@
 - [v0.6.2](./changelog/v0.6.2.md)
 - [v0.6.4](./changelog/v0.6.4.md)
 - [v0.9.1](./changelog/v0.9.1.md)
+- [v0.9.3-alpha.1](./changelog/v0.9.3-alpha.1.md)
