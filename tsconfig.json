@@ -12,8 +12,8 @@
     "resolveJsonModule": true,
     "baseUrl": "./",
     "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
+    "declarationMap": false,
+    "sourceMap": false,
     "rootDirs":  ["src/**/*.ts", "!src/**/*.d.ts", "!**/node_modules/**", "!**/dist/**", "!node_modules", "!dist"],
     "paths": {
       "@types/*": ["src/types/*"],
