@@ -16,21 +16,6 @@ export abstract class TeamRetroService {
         }
         return { "X-API-KEY": config.auth.apiKey };
 
-      case "basic":
-        if (!config.auth.username || !config.auth.password) {
-          throw new ErrorMCP("Basic auth requires both username and password. Please configure both in your config.", "AUTH_ERROR");
-        }
-        const basicAuth = Buffer.from(
-          `${config.auth.username}:${config.auth.password}`
-        ).toString("base64");
-        return { Authorization: `Basic ${basicAuth}` };
-
-      case "bearer":
-        if (!config.auth.token) {
-          throw new ErrorMCP("Bearer token is required for authentication. Please configure the 'token' in your config.", "AUTH_ERROR");
-        }
-        return { Authorization: `Bearer ${config.auth.token}` };
-
       default:
         throw new ErrorMCP("Invalid authentication type configured. Supported types: 'apiKey', 'basic', 'bearer'.", "AUTH_ERROR");
     }
