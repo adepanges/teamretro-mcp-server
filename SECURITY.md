@@ -9,14 +9,37 @@ Following semantic versioning, we provide security updates for:
 | 0.9.x   | :white_check_mark: |
 | < 0.6   | :x:                |
 
+## Security Contact
+
+For direct security concerns, please contact:
+- Name: Ade
+- Email: adepanges@gmail.com
+
 ## Reporting a Vulnerability
 
-Please report security vulnerabilities through GitHub Security Advisories:
-1. Navigate to the repository's "Security" tab
-2. Click "Report a vulnerability"
-3. Follow the instructions to submit a private report
+Please report security vulnerabilities via email to adepanges@gmail.com with:
+1. Detailed description of the vulnerability
+2. Steps to reproduce
+3. Impact assessment
+4. Affected versions
 
-Our security team will:
+## Email Template
+
+**Subject:** [SECURITY] Vulnerability Report
+
+**Body:**
+- Vulnerability description
+- Reproduction steps  
+- Expected vs actual behavior
+- Environment details
+- Suggested fix (if known)
+
+Attachments (optional):
+- Screenshots
+- Log files
+- Proof of concept code
+
+## Our security team will:
 - Acknowledge receipt within 48 hours
 - Provide regular updates on progress
 - Disclose vulnerabilities after fixes are released
