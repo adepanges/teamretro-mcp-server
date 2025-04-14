@@ -1,6 +1,6 @@
 {
   "name": "teamretro-mcp-server",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "type": "module",
   "main": "dist/index.js",
   "bin": "./dist/index.js",
@@ -41,7 +41,7 @@
   },
   "files": [
     "dist",
-    "README.md",
+    "README.md", 
     "llms-install.md"
   ],
   "scripts": {

@@ -51,6 +51,16 @@ export class AgreementsService extends TeamRetroService {
     return this.delete<any>(`/v1/agreements/${agreementId}`);
   }
 
+  /**
+   * Lists agreements with optional pagination and filtering.
+   *
+   * @param params - Optional parameters for filtering and pagination
+   * @param params.offset - Number of records to skip (for pagination)
+   * @param params.limit - Maximum number of records to return (for pagination)
+   * @param params.teamTags - Comma-separated list of team tags to filter by
+   * @param params.teamIds - Comma-separated list of team IDs to filter by
+   * @returns Promise resolving to a paginated response containing Agreement objects
+   */
   async listAgreements(params?: {
     offset?: number;
     limit?: number;
