@@ -1,20 +1,13 @@
 #!/usr/bin/env node
-import { Server } from "@modelcontextprotocol/sdk/server/index.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { logger } from "./utils/logger.js";
+import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import {
-  CallToolRequestSchema,
-  ErrorCode,
-  ListPromptsRequestSchema,
-  ListResourcesRequestSchema,
-  ListResourceTemplatesRequestSchema,
-  ListToolsRequestSchema,
-  McpError,
-  ReadResourceRequestSchema,
-} from "@modelcontextprotocol/sdk/types.js";
+    CallToolRequestSchema, ErrorCode, ListToolsRequestSchema, McpError
+} from '@modelcontextprotocol/sdk/types.js';
 
-import { toolHandlers, toolSchema } from "./tools.js";
-import { formatClientError } from "./utils/error.js";
+import { toolHandlers, toolSchema } from './tools.js';
+import { formatClientError } from './utils/error.js';
+import { logger } from './utils/logger.js';
 
 class TeamRetroMCPServer {
   private server: Server;
@@ -35,7 +28,6 @@ class TeamRetroMCPServer {
     );
 
     this.setupTools();
-    this.setupResource();
 
     this.server.onerror = (error) => logger.error(error, { source: "MCP Server" });
 
@@ -83,43 +75,6 @@ class TeamRetroMCPServer {
 
       return response;
     });
-  }
-
-  private setupResource(): void {
-    // List available resources
-    this.server.setRequestHandler(ListResourcesRequestSchema, async () => ({
-      resources: [],
-    }));
-
-    // List resource templates
-    this.server.setRequestHandler(
-      ListResourceTemplatesRequestSchema,
-      async () => ({
-        resourceTemplates: [],
-      })
-    );
-
-    // Handle resource requests
-    this.server.setRequestHandler(
-      ReadResourceRequestSchema,
-      async (request) => {
-        const errorMessage = `Resource not found: ${request.params.uri}`;
-        logger.error(errorMessage, { type: "ResourceNotFound" });
-        const clientError = formatClientError(new Error(errorMessage));
-        throw new McpError(
-          ErrorCode.MethodNotFound,
-          clientError.message,
-          clientError.code
-        );
-      }
-    );
-  }
-
-  private setupPrompts(): void {
-    // List available prompts
-    this.server.setRequestHandler(ListPromptsRequestSchema, async () => ({
-      prompts: [],
-    }));
   }
 
   async run(): Promise<void> {

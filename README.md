@@ -18,14 +18,10 @@ The server connects directly to TeamRetro's official public API:
 - Implements all required authentication methods
 - Preserves original API responses without modification
 
-Key points:
-✅ MCP server: Unofficial community project  
-✅ API connection: Direct to TeamRetro's official endpoints  
-✅ Implementation: Follows published API specifications  
-
 ### API Documentation Source
-All API endpoints and functionality are based on TeamRetro's official API documentation:
-- Source: https://groupmap.stoplight.io/docs/teamretro/
+All API endpoints and functionality are based on TeamRetro's official documentation:
+- API Help Article: https://help.teamretro.com/article/320-teamretro-api
+- API Specifications: https://groupmap.stoplight.io/docs/teamretro/
 - Implementation strictly follows the public API specifications
 - Any changes to the TeamRetro API may affect this MCP server's functionality
 
@@ -96,18 +92,6 @@ npm run inspector
 
 ### Environment Variables Examples
 
-#### Logging Configuration
-```json
-{
-  "env": {
-    "TEAMRETRO_LOG_ENABLED": true,
-    "TEAMRETRO_LOG_DIR": "/your-directory/logs",
-    "TEAMRETRO_LOG_LEVEL": "info",
-    "TEAMRETRO_LOG_MAX_FILES": 30
-  }
-}
-```
-
 #### API Key Authentication (Default)
 ```json
 {
@@ -138,6 +122,18 @@ npm run inspector
     "TEAMRETRO_BASE_URL": "https://api.teamretro.com",
     "TEAMRETRO_AUTH_TYPE": "bearer",
     "TEAMRETRO_TOKEN": "your-bearer-token"
+  }
+}
+```
+
+#### Logging Configuration
+```json
+{
+  "env": {
+    "TEAMRETRO_LOG_ENABLED": true,
+    "TEAMRETRO_LOG_DIR": "/your-directory/logs",
+    "TEAMRETRO_LOG_LEVEL": "info",
+    "TEAMRETRO_LOG_MAX_FILES": 30
   }
 }
 ```

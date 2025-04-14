@@ -41,7 +41,7 @@
   },
   "files": [
     "dist",
-    "README.md",
+    "README.md", 
     "llms-install.md"
   ],
   "scripts": {
