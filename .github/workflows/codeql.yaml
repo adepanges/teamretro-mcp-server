@@ -9,7 +9,7 @@
 # the `language` matrix defined below to confirm you have the correct set of
 # supported CodeQL languages.
 #
-name: "1. CodeQL Advanced"
+name: "CodeQL Advanced"
 
 on:
   pull_request:
