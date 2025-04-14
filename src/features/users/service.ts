@@ -21,6 +21,15 @@ class UsersService extends TeamRetroService {
     return this.get<ListApiResponse<User>>(`/v1/users?${searchString}`);
   }
 
+  /**
+   * Adds a new user to the system or updates an existing user.
+   * 
+   * @param email - The email of the user to add or update, used as an identifier in the API path
+   * @param userData - The user data to be added
+   * @param userData.name - The name of the user, can be null
+   * @param userData.emailAddress - The email address of the user
+   * @returns A promise that resolves to a SingleApiResponse containing the created or updated User
+   */
   async addUser(
     email: string,
     userData: { name: string | null; emailAddress: string }

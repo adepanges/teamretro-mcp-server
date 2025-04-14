@@ -1,6 +1,6 @@
 {
   "name": "teamretro-mcp-server",
-  "version": "0.6.4",
+  "version": "0.9.3",
   "type": "module",
   "main": "dist/index.js",
   "bin": "./dist/index.js",
@@ -41,7 +41,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "llms-install.md"
   ],
   "scripts": {
     "watch": "rimraf dist && concurrently -k -n TSC,ALIAS \"tsc -w\" \"tsc-alias -w\"",

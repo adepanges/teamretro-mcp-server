@@ -1,0 +1,23 @@
+name: Code Review
+on:
+  pull_request_target:
+    types:
+      - opened      # Triggers when a PR is opened
+      - reopened    # Triggers when a PR is reopened
+      - synchronize # Triggers when a commit is pushed to the PR
+
+permissions:
+  pull-requests: write
+
+jobs:
+  setup-deepseek-review:
+    runs-on: ubuntu-latest
+    name: Code Review
+    if: contains(github.event.pull_request.labels.*.name, 'deepseek-review')
+    steps:
+      - name: DeepSeek Code Review
+        uses: hustcer/deepseek-review@v1
+        with:
+          chat-token: ${{ secrets.AI_TOKEN }}
+          model: deepseek/deepseek-chat-v3-0324:free
+          base-url: 'https://openrouter.ai/api/v1'
