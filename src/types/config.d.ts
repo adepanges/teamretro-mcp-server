@@ -18,7 +18,7 @@ declare global {
     version: string;
     baseUrl: string;
     auth: {
-      type: 'apiKey' | 'basic' | 'bearer';
+      type: 'apiKey';
       // For API Key auth
       apiKey?: string;
       // For Basic auth

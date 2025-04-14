@@ -30,19 +30,6 @@ The simplest way to install is using NPX:
 | TEAMRETRO_AUTH_TYPE | Yes | Must be set to `apiKey` | `apiKey` |
 | TEAMRETRO_API_KEY | Yes | Your TeamRetro API key | `your-api-key` |
 
-### Basic Authentication  
-| Variable | Required | Description | Example |
-|----------|----------|-------------|---------|
-| TEAMRETRO_AUTH_TYPE | Yes | Must be set to `basic` | `basic` |
-| TEAMRETRO_USERNAME | Yes | Your TeamRetro username | `your-username` |
-| TEAMRETRO_PASSWORD | Yes | Your TeamRetro password | `your-password` |
-
-### Bearer Token Authentication
-| Variable | Required | Description | Example |
-|----------|----------|-------------|---------|
-| TEAMRETRO_AUTH_TYPE | Yes | Must be set to `bearer` | `bearer` |
-| TEAMRETRO_TOKEN | Yes | Your bearer token | `your-bearer-token` |
-
 ### Logging Configuration
 | Variable | Required | Description | Example |
 |----------|----------|-------------|---------|
