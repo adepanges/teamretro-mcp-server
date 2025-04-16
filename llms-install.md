@@ -8,7 +8,7 @@ The simplest way to install is using NPX:
 
 **Environment Configuration:**
 ```json
-{"mcpServers":{"teamretro-mcp-server":{"command":"npx","args":["-y","teamretro-mcp-server"],"env":{"TEAMRETRO_BASE_URL":"https://api.teamretro.com","TEAMRETRO_AUTH_TYPE":"apiKey","TEAMRETRO_API_KEY":"your-api-key"}}}}
+{"mcpServers":{"teamretro-mcp-server":{"command":"npx","args":["-y","teamretro-mcp-server"],"env":{"TEAMRETRO_AUTH_TYPE":"apiKey","TEAMRETRO_API_KEY":"your-api-key"}}}}
 ```
 
 ## Required Environment Variables
