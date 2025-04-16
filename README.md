@@ -36,7 +36,6 @@ All API endpoints and functionality are based on TeamRetro's official documentat
       "command": "npx",
       "args": ["-y", "teamretro-mcp-server"],
       "env": {
-        "TEAMRETRO_BASE_URL": "https://api.teamretro.com",
         "TEAMRETRO_AUTH_TYPE": "apiKey",
         "TEAMRETRO_API_KEY": "your-api-key"
       }
@@ -65,7 +64,6 @@ npm run build
       "command": "node",
       "args": ["/path/to/teamretro-mcp-server/dist/index.js"],
       "env": {
-        "TEAMRETRO_BASE_URL": "https://api.teamretro.com",
         "TEAMRETRO_AUTH_TYPE": "apiKey",
         "TEAMRETRO_API_KEY": "your-api-key"
       }
@@ -84,48 +82,13 @@ npm run inspector
 
 ### Environment Variables Examples
 
-#### API Key Authentication (Default)
+#### API Key Authentication
 ```json
 {
   "env": {
     "TEAMRETRO_BASE_URL": "https://api.teamretro.com",
     "TEAMRETRO_AUTH_TYPE": "apiKey",
     "TEAMRETRO_API_KEY": "your-api-key"
-  }
-}
-```
-
-#### Basic Authentication
-```json
-{
-  "env": {
-    "TEAMRETRO_BASE_URL": "https://api.teamretro.com",
-    "TEAMRETRO_AUTH_TYPE": "basic",
-    "TEAMRETRO_USERNAME": "your-username",
-    "TEAMRETRO_PASSWORD": "your-password"
-  }
-}
-```
-
-#### Bearer Token Authentication
-```json
-{
-  "env": {
-    "TEAMRETRO_BASE_URL": "https://api.teamretro.com",
-    "TEAMRETRO_AUTH_TYPE": "bearer",
-    "TEAMRETRO_TOKEN": "your-bearer-token"
-  }
-}
-```
-
-#### Logging Configuration
-```json
-{
-  "env": {
-    "TEAMRETRO_LOG_ENABLED": true,
-    "TEAMRETRO_LOG_DIR": "/your-directory/logs",
-    "TEAMRETRO_LOG_LEVEL": "info",
-    "TEAMRETRO_LOG_MAX_FILES": 30
   }
 }
 ```
