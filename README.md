@@ -82,11 +82,22 @@ npm run inspector
 
 ### Environment Variables Examples
 
+### Base URL
+
+The base URL for the TeamRetro API can be set using the `TEAMRETRO_BASE_URL` environment variable. By default, it is set to `https://api.teamretro.com`.
+
+```json
+{
+  "env": {
+    "TEAMRETRO_BASE_URL": "https://api.teamretro.com"
+  }
+}
+```
+
 #### API Key Authentication
 ```json
 {
   "env": {
-    "TEAMRETRO_BASE_URL": "https://api.teamretro.com",
     "TEAMRETRO_AUTH_TYPE": "apiKey",
     "TEAMRETRO_API_KEY": "your-api-key"
   }
