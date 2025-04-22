@@ -8,7 +8,7 @@ The simplest way to install is using NPX:
 
 **Environment Configuration:**
 ```json
-{"mcpServers":{"teamretro-mcp-server":{"command":"npx","args":["-y","teamretro-mcp-server"],"env":{"TEAMRETRO_BASE_URL":"https://api.teamretro.com","TEAMRETRO_AUTH_TYPE":"apiKey","TEAMRETRO_API_KEY":"your-api-key"}}}}
+{"mcpServers":{"teamretro-mcp-server":{"command":"npx","args":["-y","teamretro-mcp-server"],"env":{"TEAMRETRO_AUTH_TYPE":"apiKey","TEAMRETRO_API_KEY":"your-api-key"}}}}
 ```
 
 ## Required Environment Variables
@@ -29,19 +29,6 @@ The simplest way to install is using NPX:
 |----------|----------|-------------|---------|
 | TEAMRETRO_AUTH_TYPE | Yes | Must be set to `apiKey` | `apiKey` |
 | TEAMRETRO_API_KEY | Yes | Your TeamRetro API key | `your-api-key` |
-
-### Basic Authentication  
-| Variable | Required | Description | Example |
-|----------|----------|-------------|---------|
-| TEAMRETRO_AUTH_TYPE | Yes | Must be set to `basic` | `basic` |
-| TEAMRETRO_USERNAME | Yes | Your TeamRetro username | `your-username` |
-| TEAMRETRO_PASSWORD | Yes | Your TeamRetro password | `your-password` |
-
-### Bearer Token Authentication
-| Variable | Required | Description | Example |
-|----------|----------|-------------|---------|
-| TEAMRETRO_AUTH_TYPE | Yes | Must be set to `bearer` | `bearer` |
-| TEAMRETRO_TOKEN | Yes | Your bearer token | `your-bearer-token` |
 
 ### Logging Configuration
 | Variable | Required | Description | Example |
