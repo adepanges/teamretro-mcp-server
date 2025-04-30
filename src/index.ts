@@ -5,6 +5,7 @@ import {
     CallToolRequestSchema, ErrorCode, ListToolsRequestSchema, McpError
 } from '@modelcontextprotocol/sdk/types.js';
 
+import { config } from './config.js';
 import { toolHandlers, toolSchema } from './tools.js';
 import { formatClientError } from './utils/error.js';
 import { logger } from './utils/logger.js';
@@ -17,7 +18,8 @@ class TeamRetroMCPServer {
     this.server = new Server(
       {
         name: "teamretro-mcp-server",
-        version: "1.0.0",
+        version: config.version,
+        description: "TeamRetro MCP Server",
       },
       {
         capabilities: {
@@ -55,23 +57,8 @@ class TeamRetroMCPServer {
         throw new McpError(ErrorCode.MethodNotFound, `Tool not found: ${name}`);
       }
 
-      try {
-        response = await func(args);
-      } catch (error: any) {
-        logger.error(error, { tool: name, arguments: args });
-        const clientError = formatClientError(error);
-        response = {
-          isError: true,
-          content: [
-            {
-              type: "text",
-              text: clientError.message,
-            },
-          ],
-        };
-      }
-
-      logger.info(`${name} Tool response:\n${JSON.stringify(response, null, 2)}`)
+      response = await func(args);
+      logger.info(`${name} Tool response:\n${JSON.stringify(response, null, 2)}`);
 
       return response;
     });
