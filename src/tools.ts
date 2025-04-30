@@ -8,8 +8,7 @@ import { retrospectiveTools } from './features/retrospectives/tools.js';
 import { teamMembersTools } from './features/team-members/tools.js';
 import { teamTools } from './features/teams/tools.js';
 import { userTools } from './features/users/tools.js';
-import { formatClientError } from './utils/error.js';
-import { logger } from './utils/logger.js';
+import { toolErrorHandlers } from './utils/tools.js';
 
 const tools = {
   ...userTools,
@@ -39,22 +38,3 @@ Object.entries(tools).forEach(([name, tool]) => {
 });
 
 export { toolSchema, toolHandlers };
-
-async function toolErrorHandlers(handler: (args: any) => Promise<any>, args: any): Promise<any> {
-  let response: any;
-  try {
-    response = await handler(args);
-  } catch (error: unknown) {
-    const err = error instanceof Error ? error : new Error(String(error));
-    logger.error(err, { tool: name, args });
-    const clientError = formatClientError(err);
-    response = {
-      isError: true,
-      content: [{
-        type: "text",
-        text: clientError.message
-      }]
-    };
-  }
-  return response;
-}

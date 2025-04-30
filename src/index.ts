@@ -49,17 +49,15 @@ class TeamRetroMCPServer {
     // Handle tool calls
     this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const { name, arguments: args = {} } = request.params;
-      let response;
-
-      const func = toolHandlers[name];
-
-      if (!func) {
+      const handler = toolHandlers[name];
+      
+      if (!handler) {
         throw new McpError(ErrorCode.MethodNotFound, `Tool not found: ${name}`);
       }
 
-      response = await func(args);
-      logger.info(`${name} Tool response:\n${JSON.stringify(response, null, 2)}`);
-
+      const response = await handler(args);
+      logger.info(`${name} Tool response:`, { response });
+      
       return response;
     });
   }
