@@ -8,6 +8,7 @@ import { retrospectiveTools } from './features/retrospectives/tools.js';
 import { teamMembersTools } from './features/team-members/tools.js';
 import { teamTools } from './features/teams/tools.js';
 import { userTools } from './features/users/tools.js';
+import { toolErrorHandlers } from './utils/tools.js';
 
 const tools = {
   ...userTools,
@@ -33,9 +34,7 @@ const toolHandlers: {
 } = {};
 
 Object.entries(tools).forEach(([name, tool]) => {
-  toolHandlers[name] = async (args) => {
-    return tool.handler(args);
-  };
+  toolHandlers[name] = (args: any) => toolErrorHandlers(tool.handler, args);
 });
 
 export { toolSchema, toolHandlers };

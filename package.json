@@ -46,7 +46,7 @@
   ],
   "scripts": {
     "watch": "rimraf dist && concurrently -k -n TSC,ALIAS \"tsc -w\" \"tsc-alias -w\"",
-    "inspector": "./scripts/run-inspector.sh",
+    "inspector": "npm run build && ./scripts/run-inspector.sh",
     "build": "rimraf dist && tsc && tsc-alias",
     "start": "node dist/index.js",
     "clean": "rimraf dist",
