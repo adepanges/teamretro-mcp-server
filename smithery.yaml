@@ -1,0 +1,38 @@
+# Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
+
+startCommand:
+  type: stdio
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - teamretroAuthType
+      - teamretroApiKey
+    properties:
+      teamretroAuthType:
+        type: string
+        default: apiKey
+        description: Authentication type for TeamRetro API, e.g., 'apiKey'
+      teamretroApiKey:
+        type: string
+        description: Your TeamRetro API key
+      teamretroBaseUrl:
+        type: string
+        default: https://api.teamretro.com
+        description: Base URL for TeamRetro API
+  commandFunction:
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    |-
+    (config) => ({
+      command: 'node',
+      args: ['dist/index.js'],
+      env: {
+        TEAMRETRO_AUTH_TYPE: config.teamretroAuthType,
+        TEAMRETRO_API_KEY: config.teamretroApiKey,
+        TEAMRETRO_BASE_URL: config.teamretroBaseUrl
+      }
+    })
+  exampleConfig:
+    teamretroAuthType: apiKey
+    teamretroApiKey: YOUR_TEAMRETRO_API_KEY
+    teamretroBaseUrl: https://api.teamretro.com
