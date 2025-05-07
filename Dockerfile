@@ -6,7 +6,6 @@ WORKDIR /app
 # Install dependencies and build
 COPY package.json package-lock.json tsconfig.json ./
 COPY src ./src
-COPY scripts ./scripts
 RUN npm ci && npm run build
 
 # Stage 2: Runtime
