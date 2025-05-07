@@ -29,14 +29,6 @@ All API endpoints and functionality are based on TeamRetro's official documentat
 
 ## How to Use
 
-### Installing via Smithery
-
-To install TeamRetro MCP Server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@adepanges/teamretro-mcp-server):
-
-```bash
-npx -y @smithery/cli install @adepanges/teamretro-mcp-server --client claude
-```
-
 ### NPX (Recommended, Easy Setup)
 
 ```json
@@ -52,6 +44,14 @@ npx -y @smithery/cli install @adepanges/teamretro-mcp-server --client claude
     }
   }
 }
+```
+
+### Installing via Smithery
+
+To install TeamRetro MCP Server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@adepanges/teamretro-mcp-server):
+
+```bash
+npx -y @smithery/cli install @adepanges/teamretro-mcp-server --client claude
 ```
 
 ### From Source Code
