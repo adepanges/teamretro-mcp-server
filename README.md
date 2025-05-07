@@ -1,6 +1,15 @@
-# TeamRetro MCP Server
+# [TeamRetro](https://www.teamretro.com?utm_source=teamretro-mcp-server&utm_medium=github&utm_campaign=readme) MCP Server
 
-Model Context Protocol (MCP) server for TeamRetro integration.
+A Model Context Protocol (MCP) server that provides AI-powered integration with [TeamRetro](https://www.teamretro.com?utm_source=teamretro-mcp-server&utm_medium=github&utm_campaign=readme)'s platform. This server acts as a bridge between AI clients and [TeamRetro's official API](https://groupmap.stoplight.io/docs/teamretro/), enabling seamless interaction with team management, retrospectives, health checks, and other [TeamRetro](https://www.teamretro.com?utm_source=teamretro-mcp-server&utm_medium=github&utm_campaign=readme) features through standardized MCP tools.
+
+Key features:
+- Complete TeamRetro API coverage with 20+ tools for managing teams, users, actions, and more
+- Simplified AI client integration through standardized MCP interfaces
+- Built-in pagination and filtering support for efficient data handling
+- Secure API authentication handling and environment configuration
+- Comprehensive documentation and easy setup options
+
+Whether you're building AI-powered team analytics, automated retrospective management, or integrating [TeamRetro](https://www.teamretro.com?utm_source=teamretro-mcp-server&utm_medium=github&utm_campaign=readme) into your AI workflow, this MCP server provides the foundation you need.
 
 <a href="https://smithery.ai/server/@adepanges/teamretro-mcp-server"><img alt="Smithery Badge" src="https://smithery.ai/badge/@adepanges/teamretro-mcp-server"></a>
 
@@ -11,17 +20,18 @@ Model Context Protocol (MCP) server for TeamRetro integration.
 ## Important Notes
 
 ### Unofficial MCP Server
-This MCP server is an unofficial community-developed interface to TeamRetro's services. While not developed or endorsed by TeamRetro, it provides standardized access to their platform.
+This MCP server is an unofficial community-developed interface to [TeamRetro](https://www.teamretro.com?utm_source=teamretro-mcp-server&utm_medium=github&utm_campaign=readme)'s services. While not developed or endorsed by [TeamRetro](https://www.teamretro.com?utm_source=teamretro-mcp-server&utm_medium=github&utm_campaign=readme), it provides standardized access to their platform.
 
 ### Official API Integration
-The server connects directly to TeamRetro's official public API:
-- Uses documented endpoints from TeamRetro's API specifications
+The server connects directly to [TeamRetro](https://www.teamretro.com?utm_source=teamretro-mcp-server&utm_medium=github&utm_campaign=readme)'s official public API:
+- Uses documented endpoints from [TeamRetro](https://www.teamretro.com?utm_source=teamretro-mcp-server&utm_medium=github&utm_campaign=readme)'s API specifications
 - Maintains full API compliance and version tracking
 - Implements all required authentication methods
 - Preserves original API responses without modification
 
 ### API Documentation Source
-All API endpoints and functionality are based on TeamRetro's official documentation:
+All API endpoints and functionality are based on [TeamRetro](https://www.teamretro.com?utm_source=teamretro-mcp-server&utm_medium=github&utm_campaign=readme)'s official documentation:
+
 - API Help Article: https://help.teamretro.com/article/320-teamretro-api
 - API Specifications: https://groupmap.stoplight.io/docs/teamretro/
 - Implementation strictly follows the public API specifications
@@ -94,7 +104,7 @@ npm run inspector
 
 ### Base URL
 
-The base URL for the TeamRetro API can be set using the `TEAMRETRO_BASE_URL` environment variable. By default, it is set to `https://api.teamretro.com`.
+The base URL for the [TeamRetro](https://www.teamretro.com?utm_source=teamretro-mcp-server&utm_medium=github&utm_campaign=readme) API can be set using the `TEAMRETRO_BASE_URL` environment variable. By default, it is set to `https://api.teamretro.com`.
 
 ```json
 {
