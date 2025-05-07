@@ -6,6 +6,8 @@ Model Context Protocol (MCP) server for TeamRetro integration.
   <img width="380" height="200" src="https://glama.ai/mcp/servers/@adepanges/teamretro-mcp-server/badge" />
 </a>
 
+<a href="https://smithery.ai/server/@adepanges/teamretro-mcp-server"><img alt="Smithery Badge" src="https://smithery.ai/badge/@adepanges/teamretro-mcp-server"></a>
+
 ## Important Notes
 
 ### Unofficial MCP Server
@@ -26,6 +28,14 @@ All API endpoints and functionality are based on TeamRetro's official documentat
 - Any changes to the TeamRetro API may affect this MCP server's functionality
 
 ## How to Use
+
+### Installing via Smithery
+
+To install TeamRetro MCP Server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@adepanges/teamretro-mcp-server):
+
+```bash
+npx -y @smithery/cli install @adepanges/teamretro-mcp-server --client claude
+```
 
 ### NPX (Recommended, Easy Setup)
 
