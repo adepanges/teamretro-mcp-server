@@ -1,5 +1,13 @@
 # [TeamRetro](https://www.teamretro.com?utm_source=teamretro-mcp-server&utm_medium=github&utm_campaign=readme) MCP Server
 
+<a href="https://smithery.ai/server/@adepanges/teamretro-mcp-server"><img alt="Smithery Badge" src="https://smithery.ai/badge/@adepanges/teamretro-mcp-server"></a>
+
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/adepanges-teamretro-mcp-server-badge.png)](https://mseep.ai/app/adepanges-teamretro-mcp-server)
+
+<a href="https://glama.ai/mcp/servers/@adepanges/teamretro-mcp-server">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@adepanges/teamretro-mcp-server/badge" />
+</a>
+
 A Model Context Protocol (MCP) server that provides AI-powered integration with [TeamRetro](https://www.teamretro.com?utm_source=teamretro-mcp-server&utm_medium=github&utm_campaign=readme)'s platform. This server acts as a bridge between AI clients and [TeamRetro's official API](https://groupmap.stoplight.io/docs/teamretro/), enabling seamless interaction with team management, retrospectives, health checks, and other [TeamRetro](https://www.teamretro.com?utm_source=teamretro-mcp-server&utm_medium=github&utm_campaign=readme) features through standardized MCP tools.
 
 Key features:
@@ -10,12 +18,6 @@ Key features:
 - Comprehensive documentation and easy setup options
 
 Whether you're building AI-powered team analytics, automated retrospective management, or integrating [TeamRetro](https://www.teamretro.com?utm_source=teamretro-mcp-server&utm_medium=github&utm_campaign=readme) into your AI workflow, this MCP server provides the foundation you need.
-
-<a href="https://smithery.ai/server/@adepanges/teamretro-mcp-server"><img alt="Smithery Badge" src="https://smithery.ai/badge/@adepanges/teamretro-mcp-server"></a>
-
-<a href="https://glama.ai/mcp/servers/@adepanges/teamretro-mcp-server">
-  <img width="380" height="200" src="https://glama.ai/mcp/servers/@adepanges/teamretro-mcp-server/badge" />
-</a>
 
 ## Important Notes
 
