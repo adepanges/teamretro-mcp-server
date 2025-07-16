@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/adepanges-teamretro-mcp-server-badge.png)](https://mseep.ai/app/adepanges-teamretro-mcp-server)
+
 # [TeamRetro](https://www.teamretro.com?utm_source=teamretro-mcp-server&utm_medium=github&utm_campaign=readme) MCP Server
 
 A Model Context Protocol (MCP) server that provides AI-powered integration with [TeamRetro](https://www.teamretro.com?utm_source=teamretro-mcp-server&utm_medium=github&utm_campaign=readme)'s platform. This server acts as a bridge between AI clients and [TeamRetro's official API](https://groupmap.stoplight.io/docs/teamretro/), enabling seamless interaction with team management, retrospectives, health checks, and other [TeamRetro](https://www.teamretro.com?utm_source=teamretro-mcp-server&utm_medium=github&utm_campaign=readme) features through standardized MCP tools.
