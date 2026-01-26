@@ -1,10 +1,11 @@
 import { HealthModel, healthModelSchema } from 'src/schemas/HealthModel.js';
 import { paginationSchema } from 'src/schemas/generic.js';
 import { createToolResponse } from 'src/utils/tools.js';
+import { Tools } from 'src/types/tool.js';
 
 import { healthModelsService } from './service.js';
 
-export const healthModelTools = {
+export const healthModelTools: Tools = {
   get_health_model: {
     schema: healthModelSchema.pick({ id: true }),
     description: "Retrieve a single health model by its unique identifier. This will return the health model's details including its name, dimensions, and creation date.",

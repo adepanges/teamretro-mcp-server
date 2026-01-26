@@ -1,10 +1,11 @@
 import { Action, actionSchema } from 'src/schemas/Action.js';
 import { idFilterSchema, paginationSchema, tagFilterSchema } from 'src/schemas/generic.js';
 import { createToolResponse } from 'src/utils/tools.js';
+import { Tools } from 'src/types/tool.js';
 
 import { actionsService } from './service.js';
 
-export const actionTools = {
+export const actionTools: Tools = {
   list_actions: {
     schema: paginationSchema.extend({
       teamTags: tagFilterSchema,
