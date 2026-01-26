@@ -11,6 +11,9 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.25.3
         version: 1.25.3(hono@4.11.5)(zod@3.25.76)
+      csv-to-markdown-table:
+        specifier: ^1.6.3
+        version: 1.6.3
       env-var:
         specifier: ^7.5.0
         version: 7.5.0
@@ -187,6 +190,10 @@ packages:
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
+
+  csv-to-markdown-table@1.6.3:
+    resolution: {integrity: sha512-o/s0+YHKbtw4PCTKUxdBwRKzWIi300CvIbqOm+lNmPWc5t9tNCfLfmHUF00CXGwvajPAdFG9XkwRUcL0XZRzjg==}
+    hasBin: true
 
   debug@4.4.3:
     resolution: {integrity: sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==}
@@ -873,6 +880,8 @@ snapshots:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
+
+  csv-to-markdown-table@1.6.3: {}
 
   debug@4.4.3:
     dependencies:

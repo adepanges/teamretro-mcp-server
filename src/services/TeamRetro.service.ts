@@ -1,3 +1,4 @@
+import { date } from 'zod/v4/index.js';
 import { config } from '../config.js';
 import { ErrorMCP } from '../utils/error.js';
 import { logger } from '../utils/logger.js';
@@ -154,12 +155,17 @@ export abstract class TeamRetroService {
         };
         logger.error(`API request failed`, errorContext);
         throw new ErrorMCP(
-          `API request failed with status ${response.status}. Check your request parameters and try again.`, 
-          "API_REQUEST_FAILED", 
+          `API request failed with status ${response.status}. Check your request parameters and try again.`,
+          "API_REQUEST_FAILED",
           { ...errorContext, body: response.body }
         );
       }
 
+      // Handle CSV responses - return raw text instead of parsing as JSON
+      const contentType = response.headers.get('content-type');
+      if (contentType?.includes('text/csv')) {
+        return { data: await response.text() } as unknown as T;
+      }
       return response.json();
     } catch (error) {
       const errorContext = {

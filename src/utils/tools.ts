@@ -1,3 +1,4 @@
+import csvToMarkdown from 'csv-to-markdown-table';
 import { config } from '../config.js';
 import { formatClientError } from './error.js';
 import { formatItem, formatTable } from './formatter.js';
@@ -37,7 +38,12 @@ export async function createToolResponse<T extends Record<string, any>>(
   const response = await promise;
   let text = "";
 
-  if (config.responseFormat === 'json') {
+  // If response.data is a string (CSV), transform it to markdown table
+  if (typeof response.data === 'string') {
+    text = csvToMarkdown(response.data.trim(), ",", true);
+  }
+  // Existing JSON/simple mode handling for structured data
+  else if (config.responseFormat === 'json') {
     text = JSON.stringify(response.data, null, 2);
   } else if (config.responseFormat === 'simple') {
     if (Array.isArray(response.data) && isListResponse(response)) {
