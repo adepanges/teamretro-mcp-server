@@ -179,6 +179,15 @@ The server provides the following tools:
 - `get_retrospective`: Retrieve detailed information about a single retrospective by its unique ID
 - `delete_retrospective`: Delete an existing retrospective by its ID
 
+### Reports
+- `team_activity_report`: Generate a team activity report from TeamRetro with filtering by team tags and team IDs
+- `team_actions_activity_report`: Generate a team actions activity report from TeamRetro with filtering by team tags and team IDs. Returns CSV data with action statistics including open, completed, and overdue action counts grouped by age ranges
+- `retrospective_activity_report`: Generate a retrospective activity report from TeamRetro with filtering by date range, team tags and team IDs. Returns CSV data with retrospective statistics including participation rate, idea count, comment count, action count, and agreement count
+- `health_check_activity_report`: Generate a health check activity report from TeamRetro with filtering by date range, team tags and team IDs. Returns CSV data with health check statistics including participation rate, comment count, action count, and agreement count
+- `team_health_latest_report`: Generate a team health (latest) report from TeamRetro for a specific health model with filtering by date range, team tags and team IDs. Returns CSV data with latest team health scores including health dimensions
+- `team_health_historical_report`: Generate a team health (historical) report from TeamRetro for a specific health model with filtering by date range, team tags and team IDs. Returns CSV data with historical team health scores including health dimensions
+- `users_report`: Generate a users report from TeamRetro with filtering by team tags and team IDs. Returns CSV data with user information including account roles, team memberships, and activity statistics
+
 ## Changelog
 
 For a detailed list of changes and updates, see [CHANGELOG.md](CHANGELOG.md).
