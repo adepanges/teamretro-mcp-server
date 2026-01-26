@@ -65,8 +65,7 @@ jobs:
 
       - name: Publish package
         run: |
-          pnpm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
-          pnpm publish --access public --tag latest --no-git-checks
+          npm publish --access public --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
