@@ -16,7 +16,7 @@ declare global {
   }
 
   // Generic Response type for internal use
-  type ApiResponse<T> = ListApiResponse<T> | SingleApiResponse<T>;
+  type ApiResponse<T> = ListApiResponse<T> | SingleApiResponse<T> | { success: boolean; data: string; error?: string };
 
   // Tool Input/Output types
   interface ToolContent {

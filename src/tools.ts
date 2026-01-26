@@ -4,6 +4,7 @@ import { actionTools } from './features/actions/tools.js';
 import { agreementTools } from './features/agreements/tools.js';
 import { healthCheckTools } from './features/health-checks/tools.js';
 import { healthModelTools } from './features/health-models/tools.js';
+import { reportTools } from './features/reports/tools.js';
 import { retrospectiveTools } from './features/retrospectives/tools.js';
 import { teamMembersTools } from './features/team-members/tools.js';
 import { teamTools } from './features/teams/tools.js';
@@ -19,6 +20,7 @@ const tools = {
   ...agreementTools,
   ...healthModelTools,
   ...healthCheckTools,
+  ...reportTools,
 };
 
 const toolSchema = Object.entries(tools).map(([name, tool]) => ({
