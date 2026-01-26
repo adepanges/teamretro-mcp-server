@@ -20,7 +20,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install conventional-changelog
-        run: pnpm add -g conventional-changelog-cli
+        run: npm install -g conventional-changelog-cli
 
       - id: semver
         uses: gandarez/semver-action@v2.0.0
