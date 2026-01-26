@@ -124,7 +124,7 @@ export class Logger {
     }
 
     const formattedMessage = this.formatMessage(LogLevel.INFO, infoMessage);
-    console.info(formattedMessage);
+    console.error(formattedMessage);
     this.writeToFile(formattedMessage);
   }
 
@@ -142,7 +142,7 @@ export class Logger {
     }
 
     const formattedMessage = this.formatMessage(LogLevel.DEBUG, debugMessage);
-    console.debug(formattedMessage);
+    console.error(formattedMessage);
     this.writeToFile(formattedMessage);
   }
 }
