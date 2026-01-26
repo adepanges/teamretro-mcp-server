@@ -10,3 +10,4 @@
 - [v0.9.5](./changelog/v0.9.5.md)
 - [v0.9.6](./changelog/v0.9.6.md)
 - [v0.10.0](./changelog/v0.10.0.md)
+- [v0.10.1](./changelog/v0.10.1.md)
