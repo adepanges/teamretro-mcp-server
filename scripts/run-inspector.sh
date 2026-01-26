@@ -12,4 +12,4 @@ for var in $(compgen -v | grep '^TEAMRETRO_'); do
 done
 
 # Run inspector
-npx -y @modelcontextprotocol/inspector $env_args node dist/index.js
+pnpm dlx @modelcontextprotocol/inspector $env_args node dist/index.js

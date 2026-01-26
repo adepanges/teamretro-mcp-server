@@ -24,7 +24,7 @@ const tools = {
 const toolSchema = Object.entries(tools).map(([name, tool]) => ({
   name,
   description: tool.description,
-  inputSchema: zodToJsonSchema(tool.schema, {
+  inputSchema: zodToJsonSchema(tool.schema as any, {
     $refStrategy: "none",
   }),
 }));

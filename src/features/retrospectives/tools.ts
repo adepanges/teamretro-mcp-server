@@ -1,9 +1,10 @@
 import { idFilterSchema, idSchema, onlyIdSchema, paginationSchema, tagFilterSchema } from 'src/schemas/generic.js';
 import { createToolResponse } from 'src/utils/tools.js';
+import { Tools } from 'src/types/tool.js';
 
 import { retrospectivesService } from './service.js';
 
-export const retrospectiveTools = {
+export const retrospectiveTools: Tools = {
   list_retrospectives: {
     schema: paginationSchema.extend({
       teamTags: tagFilterSchema,
