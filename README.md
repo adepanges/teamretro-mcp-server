@@ -72,8 +72,8 @@ npx -y @smithery/cli install @adepanges/teamretro-mcp-server --client claude
 ```bash
 git clone https://github.com/adepanges/teamretro-mcp-server.git
 cd teamretro-mcp-server
-npm install
-npm run build
+pnpm install
+pnpm run build
 ```
 
 #### Running in AI Client
@@ -99,7 +99,7 @@ npm run build
 1. Configure the environment variables by copying `.env.example` to `.env` and modifying it according to your needs.
 2. Run the server with inspector:
 ```bash
-npm run inspector
+pnpm run inspector
 ```
 
 ### Environment Variables Examples

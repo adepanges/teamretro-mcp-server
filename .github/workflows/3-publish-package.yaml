@@ -52,16 +52,21 @@ jobs:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Install and Build
         run: |
-          npm install
+          pnpm install
 
           chmod +x ./dist/index.js
 
       - name: Publish package
         run: |
-          npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
-          npm publish --access public --tag latest
+          pnpm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
+          pnpm publish --access public --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 

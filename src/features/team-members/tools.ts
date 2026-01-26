@@ -1,10 +1,11 @@
 import { paginationSchema } from 'src/schemas/generic.js';
 import { teamIdSchema, teamMemberSchema } from 'src/schemas/Team.js';
 import { createToolResponse } from 'src/utils/tools.js';
+import { Tools } from 'src/types/tool.js';
 
 import { teamMembersService } from './service.js';
 
-export const teamMembersTools = {
+export const teamMembersTools: Tools = {
   list_team_members: {
     schema: paginationSchema.merge(teamIdSchema),
     description: "Retrieve a list of team members for a specified team ID with pagination controls for offset and limit.",
