@@ -28,6 +28,8 @@ export const emailSchema = z.string().email().describe("email");
 
 export const dateStringSchema = z.string().datetime().describe("iso datetime");
 
+export const dateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format (expected YYYY-MM-DD)").describe("date (YYYY-MM-DD)");
+
 export const booleanSchema = z.boolean().default(false).describe("boolean");
 
 export const tagFilterSchema = z.string()

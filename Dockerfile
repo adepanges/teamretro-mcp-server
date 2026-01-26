@@ -3,20 +3,26 @@
 FROM node:lts-alpine AS build
 WORKDIR /app
 
+# Install pnpm
+RUN npm install -g pnpm
+
 # Install dependencies and build
-COPY package.json package-lock.json tsconfig.json ./
+COPY package.json pnpm-lock.yaml tsconfig.json ./
 COPY src ./src
-RUN npm ci && npm run build
+RUN pnpm install --frozen-lockfile && pnpm run build
 
 # Stage 2: Runtime
 FROM node:lts-alpine AS runtime
 WORKDIR /app
 
+# Install pnpm
+RUN npm install -g pnpm
+
 # Copy package files
-COPY package.json package-lock.json ./
+COPY package.json pnpm-lock.yaml ./
 
 # Install only production dependencies without running scripts
-RUN npm ci --omit=dev --ignore-scripts
+RUN pnpm install --frozen-lockfile --prod --ignore-scripts
 
 # Copy built files
 COPY --from=build /app/dist ./dist

@@ -46,17 +46,20 @@
   ],
   "scripts": {
     "watch": "rimraf dist && concurrently -k -n TSC,ALIAS \"tsc -w\" \"tsc-alias -w\"",
-    "inspector": "npm run build && ./scripts/run-inspector.sh",
+    "inspector": "pnpm run build && ./scripts/run-inspector.sh",
     "build": "rimraf dist && tsc && tsc-alias",
     "start": "node dist/index.js",
     "clean": "rimraf dist",
     "test": "echo \"Error: no test specified\" && exit 0",
-    "prepare": "npm run build"
+    "prepare": "pnpm run build"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.6.0",
+    "@modelcontextprotocol/sdk": "^1.25.3",
+    "csv-to-markdown-table": "^1.6.3",
     "env-var": "^7.5.0",
-    "markdown-table": "^3.0.4"
+    "markdown-table": "^3.0.4",
+    "zod": "^3.24.2",
+    "zod-to-json-schema": "^3.24.1"
   },
   "devDependencies": {
     "@types/node": "^20.17.19",

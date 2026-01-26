@@ -1,10 +1,11 @@
 import { Agreement, agreementSchema } from 'src/schemas/Agreement.js';
 import { idFilterSchema, paginationSchema, tagFilterSchema } from 'src/schemas/generic.js';
 import { createToolResponse } from 'src/utils/tools.js';
+import { Tools } from 'src/types/tool.js';
 
 import { agreementsService } from './service.js';
 
-export const agreementTools = {
+export const agreementTools: Tools = {
   delete_agreement: {
     schema: agreementSchema.pick({ id: true }),
     description: "Delete an existing agreement by specifying its unique identifier",
