@@ -23,7 +23,7 @@ jobs:
         run: npm install -g conventional-changelog-cli
 
       - id: semver
-        uses: gandarez/semver-action@v2.0.0
+        uses: gandarez/semver-action@v2.1.1
         with:
           prerelease_id: "alpha"
           debug: true
