@@ -2,6 +2,7 @@ import env from 'env-var';
 import fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
+import { ErrorMCP } from './utils/error.js';
 
 function getCurrentDir() {
   return path.dirname(fileURLToPath(import.meta.url));
@@ -48,7 +49,7 @@ export const config: TeamRetroConfig = {
 switch (config.auth.type) {
   case 'apiKey':
     if (!config.auth.apiKey) {
-      throw new TeamRetroError('API_KEY_REQUIRED', 'CONFIG_ERROR');
+      throw new ErrorMCP('API_KEY_REQUIRED', 'CONFIG_ERROR');
     }
     break;
 }
