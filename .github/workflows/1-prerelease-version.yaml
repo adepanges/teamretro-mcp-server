@@ -21,11 +21,11 @@ jobs:
           fetch-depth: 0
 
       - id: semver
-        uses: gandarez/semver-action@v2.0.0
+        uses: gandarez/semver-action@v2.1.1
         with:
           prerelease_id: "alpha"
           debug: true
-      
+
       - name: Create version tag
         if: ${{ steps.semver.outputs.is_prerelease == 'true' }}
         run: |
@@ -51,11 +51,11 @@ jobs:
           fetch-depth: 0
 
       - id: semver
-        uses: gandarez/semver-action@v2.0.0
+        uses: gandarez/semver-action@v2.1.1
         with:
           prerelease_id: "alpha"
           debug: true
-      
+
       - name: Create version tag
         run: |
           semver_tag=${{ steps.semver.outputs.semver_tag }}
