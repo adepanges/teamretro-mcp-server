@@ -1,4 +1,4 @@
-import { zodToJsonSchema } from 'zod-to-json-schema';
+import { z } from 'zod';
 
 import { actionTools } from './features/actions/tools.js';
 import { agreementTools } from './features/agreements/tools.js';
@@ -26,9 +26,7 @@ const tools = {
 const toolSchema = Object.entries(tools).map(([name, tool]) => ({
   name,
   description: tool.description,
-  inputSchema: zodToJsonSchema(tool.schema as any, {
-    $refStrategy: "none",
-  }),
+  inputSchema: z.toJSONSchema(tool.schema as any),
 }));
 
 const toolHandlers: {
