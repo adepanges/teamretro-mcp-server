@@ -2,7 +2,7 @@ version: 2
 updates:
   - package-ecosystem: "npm"
     directory: "/"
-    target-branch: "develop"
+    target-branch: "bugfix/bump-version"
     schedule:
       interval: "weekly"
     commit-message:
