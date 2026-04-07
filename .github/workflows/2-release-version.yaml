@@ -84,7 +84,8 @@ jobs:
     if: |
       github.event_name == 'pull_request' &&
       github.event.pull_request.merged == true &&
-      startsWith(github.event.pull_request.head.ref, 'version/')
+      startsWith(github.event.pull_request.head.ref, 'version/') &&
+      github.event.pull_request.base.ref == 'master'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
