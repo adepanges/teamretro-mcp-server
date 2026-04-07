@@ -28,13 +28,21 @@ jobs:
           prerelease_id: "alpha"
           debug: true
 
+      - name: Compute release version
+        id: release
+        run: |
+          VERSION="${{ steps.semver.outputs.semver_tag }}"
+          # Strip prerelease suffix (e.g., -alpha.2) if present
+          RELEASE_VERSION="${VERSION%%-*}"
+          echo "version=$RELEASE_VERSION" >> $GITHUB_OUTPUT
+
       - name: Branching
         id: branch
         run: |
           git fetch --tags
 
-          git checkout -b version/${{ steps.semver.outputs.semver_tag }}
-          git push origin version/${{ steps.semver.outputs.semver_tag }}
+          git checkout -b version/${{ steps.release.outputs.version }}
+          git push origin version/${{ steps.release.outputs.version }}
           
           echo "target=master" >> $GITHUB_OUTPUT
 
@@ -44,32 +52,32 @@ jobs:
       - name: Update package.json version
         run: |
           
-          npm version ${{ steps.semver.outputs.semver_tag }} --no-git-tag-version
+          npm version ${{ steps.release.outputs.version }} --no-git-tag-version
           git add package.json
-          git commit -m "chore: update version to ${{ steps.semver.outputs.semver_tag }}"
+          git commit -m "chore: update version to ${{ steps.release.outputs.version }}"
 
       - name: Generate Version Changelog
         run: |
           mkdir -p changelog
 
-          rm -f changelog/${{ steps.semver.outputs.semver_tag }}.md
+          rm -f changelog/${{ steps.release.outputs.version }}.md
 
-          conventional-changelog -p angular --skip-unstable -o changelog/${{ steps.semver.outputs.semver_tag }}.md
-          echo "- [${{ steps.semver.outputs.semver_tag }}](./changelog/${{ steps.semver.outputs.semver_tag }}.md)" >> CHANGELOG.md
+          conventional-changelog -p angular --skip-unstable -o changelog/${{ steps.release.outputs.version }}.md
+          echo "- [${{ steps.release.outputs.version }}](./changelog/${{ steps.release.outputs.version }}.md)" >> CHANGELOG.md
           
           git add changelog/ CHANGELOG.md
-          git commit -m "docs: add changelog for ${{ steps.semver.outputs.semver_tag }}"
+          git commit -m "docs: add changelog for ${{ steps.release.outputs.version }}"
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: version/${{ steps.semver.outputs.semver_tag }}
+          branch: version/${{ steps.release.outputs.version }}
           base: "${{ steps.branch.outputs.target }}"
-          title: "Version Update: ${{ steps.semver.outputs.semver_tag }}"
+          title: "Version Update: ${{ steps.release.outputs.version }}"
           body: |
             ### Version Update
-            - New version: ${{ steps.semver.outputs.semver_tag }}
+            - New version: ${{ steps.release.outputs.version }}
             - Changelog generated
             - Package.json updated
           draft: false
