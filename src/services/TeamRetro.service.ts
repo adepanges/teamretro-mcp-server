@@ -1,4 +1,4 @@
-import { date } from 'zod/v4/index.js';
+import { date } from 'zod/v4';
 import { config } from '../config.js';
 import { ErrorMCP } from '../utils/error.js';
 import { logger } from '../utils/logger.js';

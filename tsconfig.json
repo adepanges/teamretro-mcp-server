@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "ES2022",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "outDir": "dist",
     "rootDir": "src",
     "strict": true,
@@ -10,13 +10,12 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "baseUrl": "./",
     "declaration": true,
     "declarationMap": false,
     "sourceMap": false,
     "rootDirs":  ["src/**/*.ts", "!src/**/*.d.ts", "!**/node_modules/**", "!**/dist/**", "!node_modules", "!dist"],
     "paths": {
-      "@types/*": ["src/types/*"],
+      "@types/*": ["./src/types/*"],
       "src/*": ["./src/*"]
     }
   },
