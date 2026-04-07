@@ -51,6 +51,8 @@ jobs:
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
+        with:
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install and Build
         run: |
