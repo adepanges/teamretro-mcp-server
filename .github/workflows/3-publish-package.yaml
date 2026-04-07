@@ -51,8 +51,6 @@ jobs:
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
-        with:
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Install and Build
         run: |
@@ -62,6 +60,7 @@ jobs:
 
       - name: Publish package
         run: |
+          npm set //registry.npmjs.org/:_authToken $NODE_AUTH_TOKEN
           npm publish --access public --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
