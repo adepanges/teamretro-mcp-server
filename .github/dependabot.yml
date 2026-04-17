@@ -12,17 +12,7 @@ updates:
 
   - package-ecosystem: "github-actions"
     directory: "/"
-    target-branch: "develop"
-    schedule:
-      interval: "weekly"
-    commit-message:
-      prefix: "chore(deps)"
-    labels:
-      - "dependencies"
-
-  - package-ecosystem: "docker"
-    directory: "/"
-    target-branch: "develop"
+    target-branch: "bugfix/bump-version"
     schedule:
       interval: "weekly"
     commit-message:
