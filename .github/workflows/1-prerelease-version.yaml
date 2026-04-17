@@ -21,7 +21,7 @@ jobs:
           fetch-depth: 0
 
       - id: semver
-        uses: gandarez/semver-action@v2.1.1
+        uses: gandarez/semver-action@v2.1.3
         with:
           prerelease_id: "alpha"
           debug: true
@@ -51,7 +51,7 @@ jobs:
           fetch-depth: 0
 
       - id: semver
-        uses: gandarez/semver-action@v2.1.1
+        uses: gandarez/semver-action@v2.1.3
         with:
           prerelease_id: "alpha"
           debug: true
