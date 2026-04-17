@@ -29,7 +29,8 @@ jobs:
         id: check_conflicts
         run: |
           git fetch origin master develop
-          if git merge-base --is-ancestor origin/master origin/develop; then
+          # Check if there are any actual commits in master that aren't in develop
+          if ! git log --oneline origin/develop..origin/master | grep -q .; then
             echo "status=up-to-date" >> $GITHUB_OUTPUT
           elif git merge-tree $(git merge-base origin/develop origin/master) origin/develop origin/master | grep -q '^<<<<<<'; then
             echo "status=conflict" >> $GITHUB_OUTPUT
