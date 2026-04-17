@@ -72,7 +72,6 @@ jobs:
   sync-develop-to-bump-version:
     name: Sync develop → bugfix/bump-version
     runs-on: ubuntu-latest
-    needs: sync-master-to-develop
     if: always()
     steps:
       - name: Checkout repository
