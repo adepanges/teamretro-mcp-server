@@ -1,0 +1,128 @@
+name: Sync Branches
+
+on:
+  schedule:
+    - cron: '0 0 * * 1' # Every Monday at midnight UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync-master-to-develop:
+    name: Sync master → develop
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Check for changes and conflicts
+        id: check_conflicts
+        run: |
+          git fetch origin master develop
+          # Check if there are any actual commits in master that aren't in develop
+          if ! git log --oneline origin/develop..origin/master | grep -q .; then
+            echo "status=up-to-date" >> $GITHUB_OUTPUT
+          elif git merge-tree $(git merge-base origin/develop origin/master) origin/develop origin/master | grep -q '^<<<<<<'; then
+            echo "status=conflict" >> $GITHUB_OUTPUT
+          else
+            echo "status=clean" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check for existing PR
+        if: steps.check_conflicts.outputs.status != 'up-to-date'
+        id: check_pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          count=$(gh pr list --base develop --head master --state open --json number --jq 'length')
+          echo "count=$count" >> $GITHUB_OUTPUT
+
+      - name: Create PR (clean merge)
+        if: steps.check_conflicts.outputs.status == 'clean' && steps.check_pr.outputs.count == '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --base develop \
+            --head master \
+            --title "sync: master → develop" \
+            --body "Automated weekly sync from \`master\` into \`develop\`. No conflicts detected — safe to merge."
+
+      - name: Create PR (conflicts detected)
+        if: steps.check_conflicts.outputs.status == 'conflict' && steps.check_pr.outputs.count == '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --base develop \
+            --head master \
+            --title "sync: master → develop" \
+            --body "Automated weekly sync detected merge conflicts between \`master\` and \`develop\`. Manual resolution required."
+
+  sync-develop-to-bump-version:
+    name: Sync develop → bugfix/bump-version
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge origin/master into local develop, then into bugfix/bump-version
+        id: merge
+        run: |
+          git fetch origin master develop bugfix/bump-version
+
+          # Apply master into local develop (no push)
+          git checkout develop
+          git merge --no-edit origin/master || git merge --abort
+
+          # Merge local develop (now up-to-date with master) into bugfix/bump-version
+          git checkout bugfix/bump-version
+          if git merge --no-edit develop; then
+            echo "status=success" >> $GITHUB_OUTPUT
+          else
+            git merge --abort
+            echo "status=conflict" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Push bugfix/bump-version to origin
+        if: steps.merge.outputs.status == 'success'
+        run: git push origin bugfix/bump-version
+
+      - name: Check for existing PR
+        if: steps.merge.outputs.status == 'conflict'
+        id: check_pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          count=$(gh pr list --base bugfix/bump-version --head develop --state open --json number --jq 'length')
+          echo "count=$count" >> $GITHUB_OUTPUT
+
+      - name: Create PR (conflicts detected)
+        if: steps.merge.outputs.status == 'conflict' && steps.check_pr.outputs.count == '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --base bugfix/bump-version \
+            --head develop \
+            --title "sync: develop → bugfix/bump-version" \
+            --body "Automated weekly sync detected merge conflicts between \`develop\` and \`bugfix/bump-version\`. Manual resolution required."
