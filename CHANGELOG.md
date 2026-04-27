@@ -16,3 +16,4 @@
 - [v0.12.3](./changelog/v0.12.3.md)
 - [v0.12.4](./changelog/v0.12.4.md)
 - [v0.12.5](./changelog/v0.12.5.md)
+- [v0.12.6](./changelog/v0.12.6.md)
